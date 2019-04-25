@@ -65,7 +65,7 @@ document.addEventListener('navi', function(event) {
 
 document.addEventListener('mysql', function(event) {
   console.log('Event: ' + event.type)
-  console.log(event.details)
+  console.log(event.detail)
   // ... code
 })
 

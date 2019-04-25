@@ -5,8 +5,6 @@ class Mysql { // aka mysql
 
   constructor(options) {
 
-    this.data = []
-
     this.init({
       table: 'A5',
       client: 'homepage',
@@ -17,19 +15,18 @@ class Mysql { // aka mysql
 
   init(request) {
 
-    const data = JSON.stringify(this.data)
-    request.data = data
+    const data = []
+    request.data = JSON.stringify(data)
     const json = JSON.stringify(request)
 
     let xhttp = new XMLHttpRequest()
-    xhttp.onreadystatechange = function() {
-      if (this.readyState == 4) {
-        this.data = JSON.parse(this.responseText).data
-        console.log(this.data[0])
-        // const responseText = JSON.parse(this.responseText)
-        //
-        // const event = new CustomEvent('mysql', { 'detail': responseText })
-        // document.dispatchEvent(event)
+    xhttp.onreadystatechange = () => {
+      if (xhttp.readyState == 4) {
+        const responseText = JSON.parse(xhttp.responseText).data
+        // console.log(responseText)
+
+        const event = new CustomEvent('mysql', { 'detail': responseText })
+        document.dispatchEvent(event)
       }
     }
     xhttp.open("POST", "../request/", true)
