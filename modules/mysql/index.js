@@ -24,7 +24,7 @@ class Mysql { // aka mysql
     let xhttp = new XMLHttpRequest()
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4) {
-        // console.log(JSON.parse(this.responseText).data)
+        console.log(JSON.parse(this.responseText).data)
         // const responseText = JSON.parse(this.responseText)
         //
         // const event = new CustomEvent('mysql', { 'detail': responseText })
