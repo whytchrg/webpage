@@ -1,7 +1,7 @@
 
 'use strict'
 
-class Whyturbocharge { // aka mysql
+class Mysql { // aka mysql
 
   constructor(options) {
 
@@ -24,14 +24,14 @@ class Whyturbocharge { // aka mysql
     let xhttp = new XMLHttpRequest()
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4) {
-        console.log(this.responseText)
+        // console.log(JSON.parse(this.responseText).data)
         // const responseText = JSON.parse(this.responseText)
         //
-        // const event = new CustomEvent('whyturbocharge', { 'detail': responseText })
+        // const event = new CustomEvent('mysql', { 'detail': responseText })
         // document.dispatchEvent(event)
       }
     }
-    xhttp.open("POST", "http://debruen.com/request/", true)
+    xhttp.open("POST", "../request/", true)
     xhttp.setRequestHeader("Content-Type", "application/json")
     xhttp.send(json)
   } // init

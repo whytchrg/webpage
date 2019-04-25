@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-  const whyturbocharge = new Whyturbocharge()
+  const mysql = new Mysql()
 
   const html = new Html({
     sidebarActiv: 'active'
@@ -63,7 +63,7 @@ document.addEventListener('navi', function(event) {
   html.shape()
 })
 
-document.addEventListener('whyturbocharge', function(event) {
+document.addEventListener('mysql', function(event) {
   console.log('Event: ' + event.type)
   console.log(event.details)
   // ... code
