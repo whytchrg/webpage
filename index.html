@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <html><head>
@@ -5,13 +6,19 @@
 
   <title>wtc</title>
 
+  <!-- replace .. against https://whyturbocharge.github.io -->
   <link rel="stylesheet" href="https://whyturbocharge.github.io/html/html.css">
-  <script src="https://whyturbocharge.github.io/html/html.js"></script>
+  <link rel="stylesheet" href="css/app.css">
 
+  <script src="https://whyturbocharge.github.io/html/html.js"></script>
   <script src="https://whyturbocharge.github.io/navigation/navigation.js"></script>
+
   <script src="https://unpkg.com/masonry-layout/dist/masonry.pkgd.js"></script>
   <script src="https://whyturbocharge.github.io/grid/grid.js"></script>
 
+  <script src="./modules/whyturbocharge/index.js"></script>
+
+  <script src="homepage.js"></script>
   <script src="js/app.js"></script>
 
 </head><body>
@@ -19,18 +26,31 @@
   <header><h1></h1></header>
 
   <nav>
-    <span class="filtercategory" data-data="a">A</span>
-    <span class="filtercategory" data-data="b">B</span>
-    <span class="filtercategory" data-data="c">C</span>
+    <span class="ioA" data-data="a">A</span>
+    <span class="ioA" data-data="b">B</span>
+    <span class="ioA" data-data="c">C</span>
     &#160; | &#160;
-    <span class="filtercolor" data-data="bw">Black & White</span>
+    <span class="ioB" data-data="bw">Black & White</span>
     &#160;
-    <span class="filtercolor" data-data="color">Color</span>
+    <span class="ioB" data-data="color">Color</span>
   </nav>
 
   <main>
 
-    <section class="grid">
+    <section>
+
+      <template>
+        <article class="" data-name="">
+          <figure>
+            <img src="" alt="">
+            <figcaption>figcaption</figcaption>
+          </figure>
+          <details>
+            <summary>details summary</summary>
+            details
+          </details>
+        </article>
+      </template>
 
       <article class="block w4" data-orientation="landscape"></article>
       <article class="block"></article>
@@ -110,21 +130,25 @@
       <article class="block"></article>
       <article class="block"></article>
       <article class="block"></article>
+
     </section>
 
     <aside>
-      <article id="demoA"></article>
-      <article id="demoB"></article>
-      <article id="demoC"></article>
+
+      <template>
+        <article class="" data-name="">
+          <header><h4>header</h4></header>
+          <details>
+            <summary>details summary</summary>
+            details
+          </details>
+        </article>
+      </template>
+
     </aside>
 
   </main>
 
-  <footer>
-    <span style="font-size:10px; position:relative; top: -1px;">&#9775;</span>
-    <span class="year"></span>
-    <a href="#">link</a>
-    <span class="toggleaside">toggle sidebar</span>
-  </footer>
+  <footer></footer>
 
 </body></html>

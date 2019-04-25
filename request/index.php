@@ -3,7 +3,7 @@
 $str_json = file_get_contents('php://input');
 $json = json_decode($str_json, true);
 
-$json['server'] = date('U');;
+$json['server'] = date('U');
 
 echo '<code>{ ';
 echo 'name: &#160; "'.$json['name'].'",<br>';
