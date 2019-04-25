@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
     init:     'off'
   })
 
-console.log(Object.getPrototypeOf(sidebar))
+// console.log(Object.getPrototypeOf(sidebar))
 
 // Html Sidebar event
 document.addEventListener('sidebar', function(event) {
@@ -65,7 +65,7 @@ document.addEventListener('navi', function(event) {
 
 document.addEventListener('mysql', function(event) {
   console.log('Event: ' + event.type)
-  // console.log(event.details)
+  console.log(event.details)
   // ... code
 })
 
