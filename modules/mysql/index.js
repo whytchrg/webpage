@@ -1,7 +1,7 @@
 
 'use strict'
 
-class Mysql { // aka mysql
+class Mysql {
 
   constructor(options) {
 
@@ -10,20 +10,20 @@ class Mysql { // aka mysql
       client: 'homepage',
       request: 'init'
     })
-
   }
 
   init(request) {
 
     const data = []
-    request.data = JSON.stringify(data)
+    request.data = data
     const json = JSON.stringify(request)
+
+    // console.log(json)
 
     let xhttp = new XMLHttpRequest()
     xhttp.onreadystatechange = () => {
-      if (xhttp.readyState == 4) {
-        const responseText = JSON.parse(xhttp.responseText).data
-        // console.log(responseText)
+      if (xhttp.readyState == 4 && xhttp.status == 200) {
+        const responseText = JSON.parse(JSON.parse(xhttp.responseText).data)
 
         const event = new CustomEvent('mysql', { 'detail': responseText })
         document.dispatchEvent(event)

@@ -1,21 +1,20 @@
-document.addEventListener('DOMContentLoaded', function() {
 
-  const mysql = new Mysql()
+document.addEventListener('DOMContentLoaded', function() {
 
   const html = new Html({
     sidebarActiv: 'active'
   })
 
   const filtercategory = new Navigation({
-    name:     'ioA',              // string
-    elements: 'ioA',              // css class name
+    name:     'category',         // string
+    elements: 'category',         // css class name
     target:   html.requestTarget, // DOM element
     init:     'random'
   })
 
   const filtercolor = new Navigation({
-    name:     'ioB',              // string
-    elements: 'ioB',              // css class name
+    name:     'color',            // string
+    elements: 'color',            // css class name
     target:   html.requestTarget, // DOM element
     init:     'random'
   })
@@ -28,8 +27,8 @@ document.addEventListener('DOMContentLoaded', function() {
   })
 
   const gridContent = new Navigation({
-    name:     'grid',              // string
-    elements: 'block',              // css class name
+    name:     'grid',             // string
+    elements: 'block',            // css class name
     target:   html.requestTarget, // DOM element
     init:     'off'
   })
@@ -41,32 +40,40 @@ document.addEventListener('DOMContentLoaded', function() {
     init:     'off'
   })
 
+  const mysql = new Mysql()
+
+  const display = new Display()
+
 // console.log(Object.getPrototypeOf(sidebar))
 
-// Html Sidebar event
+// Html Sidebar event / send width of grid container to grid
 document.addEventListener('sidebar', function(event) {
   console.log('Event: ' + event.type + ' { ' + event.detail + ' }')
-  // ... code
   grid.reload(html.grid.clientWidth)
 })
 
-// Html Resize event
+// Html Resize event not in use / grid resizes on its own
 document.addEventListener('resize', function(event) {
-  console.log('Event: ' + event.type + '  { width: ' + window.innerWidth + 'px, height: ' + window.innerHeight + 'px }')
   // ... code
 })
 
-// Navigation navi Resize event
+// Navigation response event ||
 document.addEventListener('navi', function(event) {
-  console.log('Event: ' + event.type + '  { width: ' + window.innerWidth + 'px, height: ' + window.innerHeight + 'px }')
+  console.log('Event: ' + event.type)
   // ... code
   html.shape()
 })
 
 document.addEventListener('mysql', function(event) {
   console.log('Event: ' + event.type)
-  console.log(event.detail)
+  display.evaluate(event.detail)
   // ... code
 })
 
+document.addEventListener('display', function(event) {
+  console.log('Event: ' + event.type)
+  grid.reload(html.grid.clientWidth)
+  // ... code
 })
+
+}) // DOMContentLoaded
