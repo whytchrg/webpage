@@ -1,3 +1,4 @@
+
 'use strict'
 
 class Html {
@@ -164,7 +165,7 @@ class Html {
       return headline
     }
 
-    // creates and returns the current headline
+    // creates and returns the current copyright text & url
     if(option == 'copyright') {
       let link
       let text
@@ -173,18 +174,18 @@ class Html {
         text = 'localhost'
       }
       if(window.location.host.includes('debruen.com')) {
-        link = 'debruen.com'
+        link = 'http://debruen.com'
         text = 'Florian de Brün'
       }
 
       if(window.location.host.includes('whyturbocharge.com')) {
-        link = 'whyturbocharge.com'
-        text = 'whyturbocharge?'
+        link = 'http://whyturbocharge.com'
+        text = 'Whyturbocharge?'
       }
 
       if(window.location.host.includes('github')) {
         link = 'https://github.com/whyturbocharge'
-        text = 'whyturbocharge?'
+        text = 'Whyturbocharge?'
       }
 
       return {link: link, text: text}

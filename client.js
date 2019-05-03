@@ -44,11 +44,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
   const display = new Display()
 
-// console.log(Object.getPrototypeOf(sidebar))
-
 // Html Sidebar event / send width of grid container to grid
 document.addEventListener('sidebar', function(event) {
-  console.log('Event: ' + event.type + ' { ' + event.detail + ' }')
   grid.reload(html.grid.clientWidth)
 })
 
@@ -60,8 +57,8 @@ document.addEventListener('resize', function(event) {
 // Navigation response event ||
 document.addEventListener('navi', function(event) {
   console.log('Event: ' + event.type)
-  // ... code
   html.shape()
+  // ... code
 })
 
 document.addEventListener('mysql', function(event) {
