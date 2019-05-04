@@ -24,7 +24,6 @@ class Mysql {
     xhttp.onreadystatechange = () => {
       if (xhttp.readyState == 4 && xhttp.status == 200) {
         const responseText = JSON.parse(JSON.parse(xhttp.responseText).data)
-
         const event = new CustomEvent('mysql', { 'detail': responseText })
         document.dispatchEvent(event)
       }

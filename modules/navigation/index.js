@@ -5,6 +5,13 @@ class Navigation {
 
   constructor(options) {
 
+    this.meta = { // experimental
+      name: options.name,
+      rule: options.rule || 'random',
+      stat: options.init || 'off'
+    }
+
+    // css class Style
     this.activ = 'activ'
     this.deact = Navigation.key(4, 'css')
 

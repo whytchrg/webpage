@@ -6,10 +6,8 @@ class Html {
   constructor(options) {
     // options: sidebar, sidebarWidth, sidebarActiv, sidebarDeact
 
-    this.website   = Html.information('website')
-    this.directory = Html.information('directory')
-    this.title     = Html.information('title')
-    this.headline  = Html.information('headline')
+    this.init()
+
     this.copyright = Html.information('copyright')
     this.footer    = Html.information('footer')
 
@@ -30,6 +28,21 @@ class Html {
     // for class Grid
     this.grid = document.querySelector('body main section')
     this.requestTarget = document.querySelector('body main aside')
+  }
+
+  init() {
+    const website = window.location.host
+    let directory = () => {
+      let dir = window.location.pathname.split('/')
+      for(let i = 0; i < dir.length; i++)
+        if(dir[i] == '')
+          dir.splice(i, 1)
+      return dir[dir.length-1]
+    }
+    const title = website + ' /' + directory()
+    document.title = title
+    const headline = directory()
+    document.querySelector('body header h1').innerHTML = headline
   }
 
   style() {
@@ -135,34 +148,13 @@ class Html {
 
   static information(option) {
 
-    // returns the current website
-    if(option == 'website') {
-      return window.location.host
-    }
-
-    // returns the current directory
-    if(option == 'directory') {
-      let directory = window.location.pathname.split('/')
-
-      for(let i = 0; i < directory.length; i++)
-        if(directory[i] == '')
-          directory.splice(i, 1)
-
-      return directory[directory.length-1]
-    }
-
-    // creates and returns the current title
-    if(option == 'title') {
-      let title = Html.information('website') + ' /' + Html.information('directory')
-      document.title = title
-      return title
-    }
-
-    // creates and returns the current headline
-    if(option == 'headline') {
-      let headline = Html.information('directory')
-      document.querySelector('body header h1').innerHTML = headline
-      return headline
+    const website = window.location.host
+    const directory = function() {
+      let dir = window.location.pathname.split('/')
+      for(let i = 0; i < dir.length; i++)
+        if(dir[i] == '')
+          dir.splice(i, 1)
+      return dir[dir.length-1]
     }
 
     // creates and returns the current copyright text & url
@@ -207,6 +199,27 @@ class Html {
     }
 
   } // information END !!
+
+  headline() {
+    if(window.location.host.includes('localhost')) {
+      text = 'localhost'
+      document.querySelector('body header h1').innerHTML = headline
+    }
+    if(window.location.host.includes('debruen.com')) {
+      link = 'http://debruen.com'
+      text = 'Florian de Brün'
+    }
+
+    if(window.location.host.includes('whyturbocharge.com')) {
+      link = 'http://whyturbocharge.com'
+      text = 'Whyturbocharge?'
+    }
+
+    if(window.location.host.includes('github')) {
+      link = 'https://github.com/whyturbocharge'
+      text = 'Whyturbocharge?'
+    }
+  }
 
   static key(length, type, test) {
     let key   = ''
