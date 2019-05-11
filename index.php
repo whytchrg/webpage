@@ -5,24 +5,29 @@
 
   <title>title</title>
 
+  <script src="./modules/extend/index.js"></script>
+
   <link rel="stylesheet" href="./modules/html/html.css">
   <script src="./modules/html/index.js"></script>
 
   <link rel="stylesheet" href="./modules/navigation/navigation.css">
   <script src="./modules/navigation/index.js"></script>
 
+  <script src="./modules/algorithm/index.js"></script>
+
   <script src="https://unpkg.com/masonry-layout/dist/masonry.pkgd.js"></script>
   <script src="./modules/grid/index.js"></script>
 
   <script src="./modules/mysql/index.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tinysort/3.2.5/tinysort.min.js"></script>
   <script src="./modules/display/index.js"></script>
 
   <script src="./client.js"></script>
 
 </head><body>
 
-  <header><h1></h1></header>
+  <header><h1>headline</h1></header>
 
   <nav>
     <span class="category" data-data="a">A</span>
@@ -38,7 +43,7 @@
     <section>
 
       <template>
-        <article class="block" data-name="">
+        <article class="block" data-filename="" data-created="">
           <figure>
             <img src="" alt="">
             <figcaption>figcaption</figcaption>

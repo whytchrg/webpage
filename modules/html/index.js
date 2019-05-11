@@ -1,83 +1,51 @@
 
 'use strict'
 
-class Html {
+class Html extends Extend{
 
   constructor(options) {
+    super()
     // options: sidebar, sidebarWidth, sidebarActiv, sidebarDeact
 
-    this.init()
+    this.init(options)
 
-    this.copyright = Html.information('copyright')
-    this.footer    = Html.information('footer')
-
-    console.log( this.footer )
+    // section, aside, aside show
 
     this.sidebar      = options.sidebar || false
-    this.sidebarLink  = document.querySelector('body footer').lastChild.classList[0]
+    this.sidebarLink
+
     this.sidebarWidth = options.sidebarWidth || 300
-    this.sidebarActiv = options.sidebarActiv || Html.key(4, 'css')
-    this.sidebarDeact = options.sidebarDeact || Html.key(4, 'css', this.sidebarActiv)
-
-    this.style()
-
-    // Events
-    this.resize()
-    this.click()
+    this.sidebarActiv = this.key(4, 'css')
+    this.sidebarDeact = this.key(4, 'css', this.sidebarActiv)
 
     // for class Grid
-    this.grid = document.querySelector('body main section')
+    this.section = document.querySelector('body main section')
     this.requestTarget = document.querySelector('body main aside')
   }
 
-  init() {
-    const website = window.location.host
-    let directory = () => {
-      let dir = window.location.pathname.split('/')
-      for(let i = 0; i < dir.length; i++)
-        if(dir[i] == '')
-          dir.splice(i, 1)
-      return dir[dir.length-1]
-    }
-    const title = website + ' /' + directory()
-    document.title = title
-    const headline = directory()
-    document.querySelector('body header h1').innerHTML = headline
-  }
+  init(options) {
+    Html.meta().then((info) => {
+      this.title(info)
+      this.headline(info)
+      this.navigation()
+      this.main()
+      this.footer(info)
 
-  style() {
-    // headline
-    let headline = document.querySelector('body header')
-    headline.style.cursor = 'default'
-    headline.style.paddingBottom = headline.offsetTop / 2 + 'px'
-    // navigation
-    let navigation = document.querySelector('body nav')
-    navigation.style.paddingBottom = headline.offsetTop / 2 + 'px'
-    navigation.style.cursor     = 'default'
-    navigation.style.userSelect = 'none'
-    // main
-    let main = document.querySelector('body main')
-    main.style.paddingBottom = headline.offsetTop / 2 + 'px'
-      // sidebar
-      let sidebar = document.querySelector('body main aside')
-      sidebar.style.display = 'none'
-      if(this.sidebar) sidebar.style.display = 'block'
-      sidebar.style.position      = 'absolute'
-      sidebar.style.overflowX     = 'scroll'
-      sidebar.style.width         = this.sidebarWidth + 'px'
-      sidebar.style.paddingLeft   = main.offsetLeft + 'px'
-      // sidebar.style.paddingBottom = main.offsetLeft + 'px'
-    // footer
-    let footer = document.querySelector('body footer')
-    footer.style.cursor     = 'default'
-    footer.style.userSelect = 'none'
-      // side
-      let sideLink = document.querySelector('body footer .' + this.sidebarLink)
-      sideLink.classList.add(this.sidebarDeact)
-      if(this.sidebar) sideLink.classList.add(this.sidebarActiv)
+      this.shape()
 
-    this.shape()
-  } // style END !!
+      this.resize()
+
+      let event = new CustomEvent('init', { 'detail': info })
+      document.dispatchEvent(event)
+    })
+
+  } // init
+
+  resize() {
+    window.addEventListener('resize', () => {
+      this.shape()
+    })
+  } // rezize END !!
 
   shape() {
     let header   = document.querySelector('body header')
@@ -86,7 +54,7 @@ class Html {
     let section  = document.querySelector('body main section')
     let sidebar  = document.querySelector('body main aside')
     let footer   = document.querySelector('body footer')
-    let sideLink = document.querySelector('body footer .' + this.sidebarLink)
+    let sideLink = document.querySelector('body footer').lastChild
 
     // Sidebar is hidden
     if (sideLink.classList.contains(this.sidebarDeact)) {
@@ -115,18 +83,55 @@ class Html {
     }
   } // shape END !!
 
-  resize() {
-    window.addEventListener('resize', function() {
+  title(info) {
+    document.title = info.title
+  } // title
 
-      this.shape()
+  headline(info) {
+    let headline = document.querySelector('body header h1')
+    headline.style.cursor = 'default'
+    headline.style.marginBottom = document.querySelector('body header').offsetTop / 2 + 'px'
+    headline.innerHTML = info.headline
+  } // headline
 
-      let event = new CustomEvent('resize')
-      document.dispatchEvent(event)
-    }.bind(this))
-  } // rezize END !!
+  navigation() {
+    let navigation = document.querySelector('body nav')
+    navigation.style.cursor = 'default'
+    navigation.style.userSelect = 'none'
+    navigation.style.marginBottom = document.querySelector('body header').offsetTop / 2 + 'px'
+  } // navigation
 
-  click() {
-    let sideLink = document.querySelector('body footer .' + this.sidebarLink)
+  main() {
+    let main = document.querySelector('body main') // main
+    main.style.paddingBottom = document.querySelector('body header').offsetTop / 2 + 'px'
+
+    let sidebar = document.querySelector('body main aside') // sidebar
+    sidebar.style.display = 'none'
+    if(this.sidebar) sidebar.style.display = 'block'
+    sidebar.style.position      = 'absolute'
+    sidebar.style.overflowX     = 'scroll'
+    sidebar.style.width         = this.sidebarWidth + 'px'
+    sidebar.style.paddingLeft   = main.offsetLeft + 'px'
+  } // main
+
+  footer(info) {
+    let footer = document.querySelector('body footer')
+    footer.style.cursor     = 'default'
+    footer.style.userSelect = 'none'
+    const copy = '<span style="font-size:10px; position:relative; top: -1px">☯</span>'
+    const year = '<span>' + new Date().getFullYear() + '</span>'
+    const link = '<span><a href="' + info.link + '">' + info.copyright + '</a></span>'
+    const text = copy + ' ' + year + ' ' + link
+    footer.insertAdjacentHTML('afterbegin', text)
+    const side = '<span class="' + this.key(4, 'css') +'" style="float: right; cursor: pointer">toggle sidebar</span>'
+    footer.insertAdjacentHTML('beforeend', side)
+
+    this.sidebarLink  = document.querySelector('body footer').lastChild.classList[0]
+    // side
+    let sideLink = document.querySelector('body footer').lastChild
+    sideLink.classList.add(this.sidebarDeact)
+    if(this.sidebar) sideLink.classList.add(this.sidebarActiv)
+
     sideLink.addEventListener('click', function() {
       sideLink.classList.toggle(this.sidebarDeact)
       sideLink.classList.toggle(this.sidebarActiv)
@@ -137,106 +142,55 @@ class Html {
       if(sideLink.classList.contains(this.sidebarDeact)) {
         eventDetail = false
       }
-      if(sideLink.classList.contains(this.sidebarActiv))
+      if(sideLink.classList.contains(this.sidebarActiv)) {
         eventDetail = true
+      }
 
       let event = new CustomEvent('sidebar', { 'detail': eventDetail })
       document.dispatchEvent(event)
-
     }.bind(this))
-  } // click END !!
 
-  static information(option) {
+  } // footer
 
-    const website = window.location.host
-    const directory = function() {
-      let dir = window.location.pathname.split('/')
-      for(let i = 0; i < dir.length; i++)
-        if(dir[i] == '')
-          dir.splice(i, 1)
-      return dir[dir.length-1]
-    }
+  static meta() {
+    return new Promise((resolve, reject) => {
+      let info = {
+        module: 'html',
+        name: 'html',
+        title: 'title',
+        headline: 'headline',
+        link: './contact',
+        copyright: 'whyturbocharge'
+      }
 
-    // creates and returns the current copyright text & url
-    if(option == 'copyright') {
-      let link
-      let text
       if(window.location.host.includes('localhost')) {
-        link = '../'
-        text = 'localhost'
+        info.title = 'localhost'
+        info.headline = 'localhost'
+        info.link = '../'
+        info.copyright = 'localhost'
       }
       if(window.location.host.includes('debruen.com')) {
-        link = 'http://debruen.com'
-        text = 'Florian de Brün'
+        info.title = 'Florian de Brün'
+        info.headline = ''
+        info.link = 'http://debruen.com/contact'
+        info.copyright = 'Florian de Brün'
       }
-
       if(window.location.host.includes('whyturbocharge.com')) {
-        link = 'http://whyturbocharge.com'
-        text = 'Whyturbocharge?'
+        info.title = 'Whyturbocharge?'
+        info.headline = ''
+        info.link = 'http://whyturbocharge.com/contact'
+        info.copyright = 'Florian de Brün'
       }
-
+      if(window.location.host.includes('tejat')) {
+        info.title = '~whyturbocharge'
+        info.headline = '~whyturbocharge'
+        info.copyright = 'Florian de Brün'
+      }
       if(window.location.host.includes('github')) {
-        link = 'https://github.com/whyturbocharge'
-        text = 'Whyturbocharge?'
+
       }
-
-      return {link: link, text: text}
-    }
-
-    // creates and returns the current footer
-    if(option == 'footer') {
-      const copy = '<span style="font-size:10px; position:relative; top: -1px">☯</span>'
-      const year = '<span>' + new Date().getFullYear() + '</span>'
-      const link = '<span><a href="' + Html.information('copyright').link + '">' + Html.information('copyright').text + '</a></span>'
-      const side = '<span class="' + Html.key(4, 'css') +'" style="float: right; cursor: pointer">toggle sidebar</span>'
-
-      const footer = copy + ' ' + year + ' ' + link
-
-      document.querySelector('body footer').insertAdjacentHTML('afterbegin', footer)
-      document.querySelector('body footer').insertAdjacentHTML('beforeend', side)
-
-      return '☯ ' + new Date().getFullYear() + ' ' + Html.information('copyright').text
-    }
-
-  } // information END !!
-
-  headline() {
-    if(window.location.host.includes('localhost')) {
-      text = 'localhost'
-      document.querySelector('body header h1').innerHTML = headline
-    }
-    if(window.location.host.includes('debruen.com')) {
-      link = 'http://debruen.com'
-      text = 'Florian de Brün'
-    }
-
-    if(window.location.host.includes('whyturbocharge.com')) {
-      link = 'http://whyturbocharge.com'
-      text = 'Whyturbocharge?'
-    }
-
-    if(window.location.host.includes('github')) {
-      link = 'https://github.com/whyturbocharge'
-      text = 'Whyturbocharge?'
-    }
+      resolve(info)
+    })
   }
 
-  static key(length, type, test) {
-    let key   = ''
-    let cssFirst = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
-    let space = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890-_'
-    for(var i = 0; i < length; i++) {
-      let array = space
-      if(type == 'css' && i == 0)
-        array = cssFirst
-      key += array.charAt( Math.floor( Math.random() * array.length ) )
-    }
-
-    // check against test
-    if(key == test)
-      Html.key(length, test)
-
-    return key
-  } // key END !!
-
-} // Html END !!
+} // Html

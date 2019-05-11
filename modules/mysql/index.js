@@ -28,7 +28,7 @@ class Mysql {
         document.dispatchEvent(event)
       }
     }
-    xhttp.open("POST", "../request/", true)
+    xhttp.open("POST", "./request/", true)
     xhttp.setRequestHeader("Content-Type", "application/json")
     xhttp.send(json)
   } // init

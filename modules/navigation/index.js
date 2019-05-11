@@ -1,10 +1,10 @@
 
 'use strict'
 
-class Navigation {
+class Navigation extends Extend {
 
   constructor(options) {
-
+    super()
     this.meta = { // experimental
       name: options.name,
       rule: options.rule || 'random',
@@ -13,17 +13,43 @@ class Navigation {
 
     // css class Style
     this.activ = 'activ'
-    this.deact = Navigation.key(4, 'css')
+    this.deact = this.key(4, 'css')
 
     this.name = options.name
     this.elements = document.getElementsByClassName(options.elements)
-    this.init = options.init
-    this.initState() // this.state
+    this.initAAA = options.init
+    // this.initState() // this.state
+    this.init(options)
     this.target = options.target
     this.sendIO()
     this.setStyle()
     this.click()
   }
+
+  init(options) {
+
+    const length = this.elements.length
+    let a = []
+    let b = []
+    let c = 0
+
+    if(options.init == 'off') {
+      for (let i = 0; i < this.elements.length; i++) // create ooo
+        a[i] = 'o'
+      this.state = a.join('') // return ooo
+    }
+
+    if(options.init == 'random') {
+      for (let i = 0; i < this.elements.length; i++) { // create random ioo
+        a[i] = Math.round(Math.random()) == 1 ? 'i' : 'o'
+        if (a[i] == 'i') c++
+      }
+      for (let i = 0; i < this.elements.length; i++) // create iii
+        b[i] = 'i'
+      this.state = c == 0 ? b.join('') : a.join('') // return iii if ooo
+    }
+
+  } // Navigation init
 
   initState() {
 
@@ -32,13 +58,13 @@ class Navigation {
     let b = []
     let c = 0
 
-    if(this.init == 'off') {
+    if(this.initAAA == 'off') {
       for (let i = 0; i < length; i++) // create ooo
         a[i] = 'o'
       this.state = a.join('') // return ooo
     }
 
-    if(this.init == 'random') {
+    if(this.initAAA == 'random') {
       for (let i = 0; i < length; i++) { // create random ioo
         a[i] = Math.round(Math.random()) == 1 ? 'i' : 'o'
         if (a[i] == 'i') c++
@@ -109,28 +135,28 @@ class Navigation {
         // O state
         if (this.state.charAt(i) == 'o') {
 
-          if(this.init == 'off') {
+          if(this.initAAA == 'off') {
             this.state = this.replaceCharAt(this.state, i, 'i')
             for (let j = 0; j < element.length; j++)
               if (j != i && this.state.charAt(j) == 'i')
                 this.state = this.replaceCharAt(this.state, j, 'o')
           }
 
-          if(this.init == 'random') {
+          if(this.initAAA == 'random') {
             this.state = this.replaceCharAt(this.state, i, 'i')
           }
 
         // I state
         } else if (this.state.charAt(i) == 'i') {
 
-          if(this.init == 'off') {
+          if(this.initAAA == 'off') {
             this.state = this.replaceCharAt(this.state, i, 'o')
             for (let j = 0; j < element.length; j++)
               if (j != i && this.state.charAt(j) == 'i')
                 this.state = this.replaceCharAt(this.state, j, 'o')
           }
 
-          if(this.init == 'random') {
+          if(this.initAAA == 'random') {
             let oc = 0; // count amount of o 's
             for (let j = 0; j < element.length; j++)
               if (j != i && this.state.charAt(j) == 'o')  oc++
@@ -162,22 +188,4 @@ class Navigation {
     return str.substring(0, i) + replace + str.substring(i + 1)
   } // replaceCharAt END !!
 
-  static key(length, type, test) {
-    let key   = ''
-    let cssFirst = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
-    let space = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890-_'
-    for(var i = 0; i < length; i++) {
-      let array = space
-      if(type == 'css' && i == 0)
-        array = cssFirst
-      key += array.charAt( Math.floor( Math.random() * array.length ) )
-    }
-
-    // check against test
-    if(key == test)
-      Navigation.key(length, test)
-
-    return key
-  } // key END !!
-
-}
+} // Navigation
