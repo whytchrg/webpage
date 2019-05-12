@@ -23,6 +23,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tinysort/3.2.5/tinysort.min.js"></script>
   <script src="./modules/display/index.js"></script>
 
+  <script src="./modules/homepage/index.js"></script>
+
   <script src="./client.js"></script>
 
 </head><body>
@@ -40,36 +42,18 @@
 
   <main>
 
-    <section>
-
-      <template>
-        <article class="block" data-filename="" data-created="">
-          <figure>
-            <img src="" alt="">
-            <figcaption>figcaption</figcaption>
-          </figure>
-          <details>
-            <summary>details summary</summary>
-            details
-          </details>
-        </article>
-      </template>
-
-    </section>
-
-    <aside>
-
-      <template>
-        <article class="" data-name="">
-          <header><h4>header</h4></header>
-          <details>
-            <summary>details summary</summary>
-            details
-          </details>
-        </article>
-      </template>
-
-    </aside>
+    <template>
+      <article class="block" data-filename="" data-created="">
+        <figure>
+          <img src="" alt="">
+          <figcaption>figcaption</figcaption>
+        </figure>
+        <details>
+          <summary>details summary</summary>
+          details
+        </details>
+      </article>
+    </template>
 
   </main>
 

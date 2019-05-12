@@ -3,42 +3,35 @@
 
 class Html extends Extend{
 
-  constructor(options) {
+  constructor() {
     super()
     // options: sidebar, sidebarWidth, sidebarActiv, sidebarDeact
 
-    this.init(options)
-
-    // section, aside, aside show
-
-    this.sidebar      = options.sidebar || false
-    this.sidebarLink
-
-    this.sidebarWidth = options.sidebarWidth || 300
-    this.sidebarActiv = this.key(4, 'css')
-    this.sidebarDeact = this.key(4, 'css', this.sidebarActiv)
+    // this.sidebar      = false
+    // this.sidebarLink
+    //
+    // this.sidebarWidth = 300
+    // this.sidebarActiv = this.key(4, 'css')
+    // this.sidebarDeact = this.key(4, 'css', this.sidebarActiv)
 
     // for class Grid
-    this.section = document.querySelector('body main section')
-    this.requestTarget = document.querySelector('body main aside')
+    this.section = document.querySelector('body main')
+    // this.requestTarget = document.querySelector('body main aside')
   }
 
-  init(options) {
-    Html.meta().then((info) => {
-      this.title(info)
-      this.headline(info)
-      this.navigation()
-      this.main()
-      this.footer(info)
+  async init() {
+    const meta       = await this.meta()
+    const title      = this.title(meta)
+    const headline   = this.headline(meta)
+    const navigation = this.navigation()
+    const main       = this.main()
+    const footer     = this.footer(meta)
 
-      this.shape()
-
-      this.resize()
-
-      let event = new CustomEvent('init', { 'detail': info })
-      document.dispatchEvent(event)
-    })
-
+    if(await title && await headline && await navigation && await main && await footer){
+      // this.shape()
+      // this.resize()
+      return true
+    }
   } // init
 
   resize() {
@@ -83,15 +76,55 @@ class Html extends Extend{
     }
   } // shape END !!
 
-  title(info) {
-    document.title = info.title
+  meta() {
+    let meta = {
+      module: 'html',
+      name: 'html',
+      title: 'title',
+      headline: 'headline',
+      link: './contact',
+      copyright: 'whyturbocharge'
+    }
+
+    if(window.location.host.includes('localhost')) {
+      meta.title = 'localhost'
+      meta.headline = 'localhost'
+      meta.link = '../'
+      meta.copyright = 'localhost'
+    }
+    if(window.location.host.includes('debruen.com')) {
+      meta.title = 'Florian de Brün'
+      meta.headline = ''
+      meta.link = 'http://debruen.com/contact'
+      meta.copyright = 'Florian de Brün'
+    }
+    if(window.location.host.includes('whyturbocharge.com')) {
+      meta.title = 'Whyturbocharge?'
+      meta.headline = ''
+      meta.link = 'http://whyturbocharge.com/contact'
+      meta.copyright = 'Florian de Brün'
+    }
+    if(window.location.host.includes('tejat')) {
+      meta.title = '~whyturbocharge'
+      meta.headline = '~whyturbocharge'
+      meta.copyright = 'Florian de Brün'
+    }
+    if(window.location.host.includes('github')) {
+    }
+    return(meta)
+  }
+
+  title(meta) {
+    document.title = meta.title
+    return true
   } // title
 
-  headline(info) {
+  headline(meta) {
     let headline = document.querySelector('body header h1')
     headline.style.cursor = 'default'
     headline.style.marginBottom = document.querySelector('body header').offsetTop / 2 + 'px'
-    headline.innerHTML = info.headline
+    headline.innerHTML = meta.headline
+    return true
   } // headline
 
   navigation() {
@@ -99,19 +132,21 @@ class Html extends Extend{
     navigation.style.cursor = 'default'
     navigation.style.userSelect = 'none'
     navigation.style.marginBottom = document.querySelector('body header').offsetTop / 2 + 'px'
+    return true
   } // navigation
 
   main() {
     let main = document.querySelector('body main') // main
-    main.style.paddingBottom = document.querySelector('body header').offsetTop / 2 + 'px'
-
-    let sidebar = document.querySelector('body main aside') // sidebar
-    sidebar.style.display = 'none'
-    if(this.sidebar) sidebar.style.display = 'block'
-    sidebar.style.position      = 'absolute'
-    sidebar.style.overflowX     = 'scroll'
-    sidebar.style.width         = this.sidebarWidth + 'px'
-    sidebar.style.paddingLeft   = main.offsetLeft + 'px'
+    // main.style.paddingBottom = document.querySelector('body header').offsetTop / 2 + 'px'
+    //
+    // let sidebar = document.querySelector('body main aside') // sidebar
+    // sidebar.style.display = 'none'
+    // if(this.sidebar) sidebar.style.display = 'block'
+    // sidebar.style.position      = 'absolute'
+    // sidebar.style.overflowX     = 'scroll'
+    // sidebar.style.width         = this.sidebarWidth + 'px'
+    // sidebar.style.paddingLeft   = main.offsetLeft + 'px'
+    return true
   } // main
 
   footer(info) {
@@ -123,74 +158,33 @@ class Html extends Extend{
     const link = '<span><a href="' + info.link + '">' + info.copyright + '</a></span>'
     const text = copy + ' ' + year + ' ' + link
     footer.insertAdjacentHTML('afterbegin', text)
-    const side = '<span class="' + this.key(4, 'css') +'" style="float: right; cursor: pointer">toggle sidebar</span>'
-    footer.insertAdjacentHTML('beforeend', side)
-
-    this.sidebarLink  = document.querySelector('body footer').lastChild.classList[0]
-    // side
-    let sideLink = document.querySelector('body footer').lastChild
-    sideLink.classList.add(this.sidebarDeact)
-    if(this.sidebar) sideLink.classList.add(this.sidebarActiv)
-
-    sideLink.addEventListener('click', function() {
-      sideLink.classList.toggle(this.sidebarDeact)
-      sideLink.classList.toggle(this.sidebarActiv)
-
-      this.shape()
-
-      let eventDetail
-      if(sideLink.classList.contains(this.sidebarDeact)) {
-        eventDetail = false
-      }
-      if(sideLink.classList.contains(this.sidebarActiv)) {
-        eventDetail = true
-      }
-
-      let event = new CustomEvent('sidebar', { 'detail': eventDetail })
-      document.dispatchEvent(event)
-    }.bind(this))
-
+    // const side = '<span class="' + this.key(4, 'css') +'" style="float: right; cursor: pointer">toggle sidebar</span>'
+    // footer.insertAdjacentHTML('beforeend', side)
+    //
+    // this.sidebarLink  = document.querySelector('body footer').lastChild.classList[0]
+    // // side
+    // let sideLink = document.querySelector('body footer').lastChild
+    // sideLink.classList.add(this.sidebarDeact)
+    // if(this.sidebar) sideLink.classList.add(this.sidebarActiv)
+    //
+    // sideLink.addEventListener('click', function() {
+    //   sideLink.classList.toggle(this.sidebarDeact)
+    //   sideLink.classList.toggle(this.sidebarActiv)
+    //
+    //   this.shape()
+    //
+    //   let eventDetail
+    //   if(sideLink.classList.contains(this.sidebarDeact)) {
+    //     eventDetail = false
+    //   }
+    //   if(sideLink.classList.contains(this.sidebarActiv)) {
+    //     eventDetail = true
+    //   }
+    //
+    //   let event = new CustomEvent('sidebar', { 'detail': eventDetail })
+    //   document.dispatchEvent(event)
+    // }.bind(this))
+    return true
   } // footer
-
-  static meta() {
-    return new Promise((resolve, reject) => {
-      let info = {
-        module: 'html',
-        name: 'html',
-        title: 'title',
-        headline: 'headline',
-        link: './contact',
-        copyright: 'whyturbocharge'
-      }
-
-      if(window.location.host.includes('localhost')) {
-        info.title = 'localhost'
-        info.headline = 'localhost'
-        info.link = '../'
-        info.copyright = 'localhost'
-      }
-      if(window.location.host.includes('debruen.com')) {
-        info.title = 'Florian de Brün'
-        info.headline = ''
-        info.link = 'http://debruen.com/contact'
-        info.copyright = 'Florian de Brün'
-      }
-      if(window.location.host.includes('whyturbocharge.com')) {
-        info.title = 'Whyturbocharge?'
-        info.headline = ''
-        info.link = 'http://whyturbocharge.com/contact'
-        info.copyright = 'Florian de Brün'
-      }
-      if(window.location.host.includes('tejat')) {
-        info.title = '~whyturbocharge'
-        info.headline = '~whyturbocharge'
-        info.copyright = 'Florian de Brün'
-      }
-      if(window.location.host.includes('github')) {
-
-      }
-      resolve(info)
-    })
-  }
 
 } // Html

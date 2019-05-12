@@ -7,8 +7,9 @@ class Algorithm {
 
   }
 
-  evaluate() {
+  evaluate(input) {
 
+    return input
   } // evaluate
 
 }

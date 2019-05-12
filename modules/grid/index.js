@@ -3,22 +3,37 @@
 
 class Grid {
 
-  constructor(grid, options) {
+  constructor(options) {
 
-    this.grid         = grid
+    this.grid         = options.grid
     this.elementClass = options.elements || 'block' // constructor, reload (masonry)
-    this.elements     = document.getElementsByClassName(this.elementClass)
+    this.elements
 
     this.gutterSize   = options.gutter || 1
     this.gutterFactor = 1
     this.gutterSave   = this.gutterFactor
-    this.gutter()
+    // this.gutter()
 
     this.sizeSize     = options.size || 48
     this.sizeFactor   = 1
     this.sizeClass    = options.sizeClass || 'w'
-    this.size()
+    // this.size()
+    this.msnry
+    // this.msnry     = new Masonry( this.grid, {
+    //   itemSelector: '.' + this.elementClass,
+    //   columnWidth: this.width + this.gutterSize * this.gutterFactor || 1,
+    //   transitionDuration: '0.4s'
+    // })
 
+    // this.resize()
+    // this.click()
+
+  } // constructor
+
+  init() {
+    this.elements     = document.getElementsByClassName(this.elementClass)
+    this.gutter()
+    this.size()
     this.msnry     = new Masonry( this.grid, {
       itemSelector: '.' + this.elementClass,
       columnWidth: this.width + this.gutterSize * this.gutterFactor || 1,
@@ -26,8 +41,8 @@ class Grid {
     })
 
     this.resize()
-    // this.click()
-  }
+    this.click()
+  } // init
 
   gutter(input = this.gutterFactor) {
 
@@ -85,8 +100,8 @@ class Grid {
       let gutter = this.gutterSize * this.gutterFactor;
 
       if(this.elements[i].classList.contains(this.sizeClass + '8')) { // Size 8
-
-        if(this.elements[i].getAttribute('data-orientation') == 'landscape') {
+        this.elements[i].querySelector('img').src  = this.elements[i].dataset.display
+        if(this.elements[i].dataset.orientation == 'landscape') {
           // Landscape
           width  = width  * 16 + gutter * 15;
           height = height * 8 + gutter * 7;
@@ -97,8 +112,8 @@ class Grid {
         }
 
       } else if(this.elements[i].classList.contains(this.sizeClass + '4')) { // Size 4
-
-        if(this.elements[i].getAttribute('data-orientation') == 'landscape') {
+        this.elements[i].querySelector('img').src  = this.elements[i].dataset.thumbnail
+        if(this.elements[i].dataset.orientation == 'landscape') {
           // Landscape
           width  = width  * 8 + gutter * 7;
           height = height * 4 + gutter * 3;
@@ -109,8 +124,8 @@ class Grid {
         }
 
       } else if(this.elements[i].classList.contains(this.sizeClass + '2')) { // Size 2
-
-        if(this.elements[i].getAttribute('data-orientation') == 'landscape') {
+        this.elements[i].querySelector('img').src  = this.elements[i].dataset.thumbnail
+        if(this.elements[i].dataset.orientation == 'landscape') {
           // Landscape
           width  = width  * 4 + gutter * 3;
           height = height * 2 + gutter;
@@ -121,8 +136,8 @@ class Grid {
         }
 
       } else { // Basic size
-
-        if(this.elements[i].getAttribute('data-orientation') == 'landscape') {
+        this.elements[i].querySelector('img').src  = this.elements[i].dataset.thumbnail
+        if(this.elements[i].dataset.orientation == 'landscape') {
           // Landscape
           width  = width  * 2 + gutter;
           height = height;
@@ -134,8 +149,11 @@ class Grid {
 
       }
 
-      this.elements[i].style.width  = width  + 'px';
-      this.elements[i].style.height = height + 'px';
+      this.elements[i].style.width  = width  + 'px'
+      this.elements[i].querySelector('img').style.width  = width  + 'px'
+
+      this.elements[i].style.height = height + 'px'
+      this.elements[i].querySelector('img').style.height = height + 'px'
       this.elements[i].style.overflow = 'hidden'
     }
     if(r) this.reload(this.grid.clientWidth);
@@ -150,7 +168,6 @@ class Grid {
 
   click() {
     this.grid.addEventListener('click', function(element){
-      console.log(element)
       if(element.path[2].classList.contains('w8')) {
         element.path[2].classList.remove('w8');
       } else {
