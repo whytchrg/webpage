@@ -62,18 +62,24 @@ class Homepage {
 
   async overview() {
     // console.log(this.mysql.data)
-    const result     = await this.algorithm.evaluate(this.mysql.data)
+    const result     = await this.algorithm.evaluate(this.mysql.data, this.category.state, this.color.state)
     const display    = await this.display.evaluate(result)
     const grid       = await this.grid.init()
-    const navigation = await this.navigation.init()
+    // const navigation = await this.navigation.init()
     return true
   } // overview
 
   listener() {
     // Mysql listener
     document.addEventListener('mysql', (event) => {
-      console.log(this.mysql.data)
+      // console.log(this.mysql.data)
       this.overview()
+    })
+
+    document.addEventListener('navi', (event) => {
+      if(event.detail === 'category' || event.detail === 'color') {
+        this.overview()
+      }
     })
 
     return true

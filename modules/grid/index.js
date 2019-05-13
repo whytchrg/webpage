@@ -31,7 +31,10 @@ class Grid {
   } // constructor
 
   init() {
-    this.elements     = document.getElementsByClassName(this.elementClass)
+    if(typeof this.msnry === 'object') {
+      this.msnry.destroy()
+    }
+    this.elements     = document.querySelectorAll('.' + this.elementClass)
     this.gutter()
     this.size()
     this.msnry     = new Masonry( this.grid, {

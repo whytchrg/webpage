@@ -10,30 +10,31 @@ class Display {
   }
 
   evaluate(data) {
+    let block = document.querySelectorAll('body main article')
 
-    const section = document.querySelector('body main')
+    for(let i = 0; i < block.length; i++) {
+      block[i].parentNode.removeChild(block[i])
+    }
+
+    const main = document.querySelector('body main')
     const article = document.querySelector('body main template').content.querySelector('article')
 
-    let c = 0
-    data.forEach((element, index, array) => {
+    for(let i = 0; i < data.length; i++) {
       const template = document.importNode(article, true)
 
-      template.querySelector('img').src = this.source + element.thumbnail
-      template.dataset.filename  = element.filename
-      template.dataset.created   = element.created
-      template.dataset.display   = this.source + element.display
-      template.dataset.thumbnail = this.source + element.thumbnail
-      section.appendChild(template)
+      template.querySelector('img').src = this.source + data[i].thumbnail
+      template.dataset.filename  = data[i].filename
+      template.dataset.created   = data[i].created
+      template.dataset.display   = this.source + data[i].display
+      template.dataset.thumbnail = this.source + data[i].thumbnail
+      main.appendChild(template)
 
-      c++
-      if(c === array.length) {
-        tinysort.defaults.order = 'desc'
-        tinysort(section.querySelectorAll('article') ,{data:'created'})
-        return true
-      }
+    }
 
-    })
+    tinysort.defaults.order = 'desc'
+    tinysort(main.querySelectorAll('article') ,{data:'created'})
 
-  }
+    return true
+  } // evaluate
 
 }

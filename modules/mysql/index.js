@@ -21,8 +21,7 @@ class Mysql {
 
     this.data = await this.get(this.request)
 
-    const event = new CustomEvent('mysql')
-    document.dispatchEvent(event)
+    const event = await this.event()
 
     return true
 

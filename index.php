@@ -41,7 +41,6 @@
   </nav>
 
   <main>
-
     <template>
       <article class="block" data-filename="" data-created="">
         <figure>
@@ -54,7 +53,6 @@
         </details>
       </article>
     </template>
-
   </main>
 
   <footer></footer>

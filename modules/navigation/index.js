@@ -17,6 +17,8 @@ class Navigation extends Extend {
     this.activ = 'activ'
     this.deact = this.key(4, 'css')
 
+    this.state
+
     // this.init()
   }
 
@@ -72,9 +74,7 @@ class Navigation extends Extend {
       if (this.readyState == 4 && this.status == 200) {
         // target.insertAdjacentHTML('beforeend', this.responseText)
         //console.log(this.responseText)
-        let eventDetail
-        // let event = new CustomEvent('navi', { 'detail': eventDetail })
-        // document.dispatchEvent(event)
+
       }
     }
     xhttp.open('POST', './request/', true)
@@ -154,6 +154,8 @@ class Navigation extends Extend {
         console.log(this.name + ': ' + this.state);
         this.sendIO(element[i].dataset)
         this.setStyle()
+        let event = new CustomEvent('navi', { 'detail': this.name })
+        document.dispatchEvent(event)
       }.bind(this)); // EventListener END !!
     }
 
