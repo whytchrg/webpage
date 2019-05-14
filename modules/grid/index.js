@@ -19,21 +19,10 @@ class Grid {
     this.sizeClass    = options.sizeClass || 'w'
     // this.size()
     this.msnry
-    // this.msnry     = new Masonry( this.grid, {
-    //   itemSelector: '.' + this.elementClass,
-    //   columnWidth: this.width + this.gutterSize * this.gutterFactor || 1,
-    //   transitionDuration: '0.4s'
-    // })
-
-    // this.resize()
-    // this.click()
 
   } // constructor
 
   init() {
-    if(typeof this.msnry === 'object') {
-      this.msnry.destroy()
-    }
     this.elements     = document.querySelectorAll('.' + this.elementClass)
     this.gutter()
     this.size()
@@ -64,7 +53,7 @@ class Grid {
     }
     if(r) this.reload(this.grid.clientWidth)
 
-  } // gutter END !!
+  } // gutter
 
   reload(width) {
     this.msnry.destroy()
@@ -76,7 +65,7 @@ class Grid {
       transitionDuration: '0.4s'
     })
     this.click()
-  }
+  } // reload
 
   size(input = this.sizeFactor) { //
     // size sizeSize
@@ -167,24 +156,28 @@ class Grid {
     window.addEventListener('resize', function() {
       this.reload(this.grid.clientWidth)
     }.bind(this))
-  }
+  } // resize
 
   click() {
-    this.grid.addEventListener('click', function(element){
-      if(element.path[2].classList.contains('w8')) {
-        element.path[2].classList.remove('w8');
-      } else {
-        let siblings = element.path[2].parentElement.children;
-        for(let i = 0; i < this.elements.length; i++) {
-          //console.log(siblings[i].classList);
-          if(this.elements[i].classList.contains('w8')) this.elements[i].classList.remove('w8');
-        }
-        element.path[2].classList.add('w8');
-      }
 
-      this.size();
-      this.msnry.layout();
-    }.bind(this), false);
-  }
+    for (let i = 0; i < this.elements.length; i++) {
+      this.elements[i].addEventListener('click', () => {
+
+        if(this.elements[i].classList.contains('w8')) {
+          this.elements[i].classList.remove('w8');
+        } else {
+          for(let j = 0; j < this.elements.length; j++) {
+            if(this.elements[j].classList.contains('w8')) this.elements[j].classList.remove('w8');
+          }
+          this.elements[i].classList.add('w8');
+        }
+
+        this.size();
+        this.msnry.layout();
+
+      }, false)
+    }
+
+  } // click
 
 }

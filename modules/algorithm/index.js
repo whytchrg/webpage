@@ -41,6 +41,7 @@ class Algorithm {
 
       if(category=='ioo'){
     		if(input[i].tags.search('abc') >= 0) select.push(input[i])
+
     	} else if(category=='oio'){
     		if(input[i].tags.search('acb') >= 0) select.push(input[i])
     	} else if(category=='ooi'){
