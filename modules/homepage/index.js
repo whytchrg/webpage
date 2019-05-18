@@ -8,14 +8,12 @@ class Homepage {
     this.html = new Html()
 
     this.category = new Navigation({
-      name:     'category',         // string
-      elements: 'category',         // css class name
+      selector: 'category',         // css class name
       init:     'random'
     })
 
     this.color = new Navigation({
-      name:     'color',            // string
-      elements: 'color',            // css class name
+      selector: 'color',            // css class name
       init:     'random'
     })
 
@@ -34,8 +32,7 @@ class Homepage {
     })
 
     this.navigation = new Navigation({
-      name:     'grid',             // string
-      elements: 'block',            // css class name
+      selector: 'block',            // css class name
       init:     'off'
     })
 
@@ -72,7 +69,7 @@ class Homepage {
   listener() {
     // Mysql listener
     document.addEventListener('mysql', (event) => {
-      // console.log(this.mysql.data)
+      console.log('mysql')
       this.overview()
     })
 

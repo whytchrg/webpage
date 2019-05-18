@@ -43,7 +43,6 @@ class Mysql {
       xhttp.open("POST", "./request/", true)
       xhttp.setRequestHeader("Content-Type", "application/json")
       xhttp.send(json)
-
     })
   } // get
 

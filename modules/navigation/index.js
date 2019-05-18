@@ -7,8 +7,7 @@ class Navigation extends Extend {
     super()
 
     // options
-    this.name = options.name
-    this.selector = options.elements
+    this.selector = options.selector
     this.elements
     // this.target = document.querySelector('body main aside')
     this.initState = options.init
@@ -45,6 +44,7 @@ class Navigation extends Extend {
         b[i] = 'i'
       this.state = c == 0 ? b.join('') : a.join('') // return iii if ooo
     }
+
     this.sendIO()
     this.setStyle()
     this.click()
@@ -52,7 +52,7 @@ class Navigation extends Extend {
 
   sendIO(data = 'init') {
 
-    const name   = this.name
+    const name   = this.selector
     const state  = this.state
     const date = Date.now()
     if(data != 'init')
@@ -151,18 +151,14 @@ class Navigation extends Extend {
           }
         }
 
-        console.log(this.name + ': ' + this.state);
+        console.log(this.selector + ': ' + this.state);
         this.sendIO(element[i].dataset)
         this.setStyle()
-        let event = new CustomEvent('navi', { 'detail': this.name })
+        let event = new CustomEvent('navi', { 'detail': this.selector })
         document.dispatchEvent(event)
       }.bind(this)); // EventListener END !!
     }
 
   } // click END !!
-
-  replaceCharAt(str, i, replace) {
-    return str.substring(0, i) + replace + str.substring(i + 1)
-  } // replaceCharAt END !!
 
 } // Navigation

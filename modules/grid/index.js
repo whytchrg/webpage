@@ -153,9 +153,9 @@ class Grid {
   }
 
   resize() {
-    window.addEventListener('resize', function() {
+    window.addEventListener('resize', () => {
       this.reload(this.grid.clientWidth)
-    }.bind(this))
+    })
   } // resize
 
   click() {

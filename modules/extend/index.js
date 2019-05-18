@@ -33,4 +33,8 @@ class Extend {
     return dir[dir.length-1]
   } // dir
 
+  replaceCharAt(str, i, replace) {
+    return str.substring(0, i) + replace + str.substring(i + 1)
+  } // replaceCharAt
+
 }
