@@ -7,9 +7,11 @@ class Navigation extends Extend {
     super()
 
     // options
+    this.client   = options.client
+    this.table    = options.table
+    this.request  = 'navigation'
     this.selector = options.selector
     this.elements
-    // this.target = document.querySelector('body main aside')
     this.initState = options.init
 
     // settings
@@ -18,7 +20,6 @@ class Navigation extends Extend {
 
     this.state
 
-    // this.init()
   }
 
   init() {
@@ -45,7 +46,7 @@ class Navigation extends Extend {
       this.state = c == 0 ? b.join('') : a.join('') // return iii if ooo
     }
 
-    this.sendIO()
+    // this.sendIO()
     this.setStyle()
     this.click()
   } // Navigation init
@@ -59,6 +60,9 @@ class Navigation extends Extend {
       data = JSON.stringify(data)
 
     const json = JSON.stringify({
+      client:  this.client,
+      table:   this.table,
+      request: 'navigation',
       name: name,
       url: window.location.href,
       date: date,
@@ -105,7 +109,7 @@ class Navigation extends Extend {
     const element = this.elements
 
     for (let i = 0; i < element.length; i++) {
-      element[i].addEventListener('click', function() {
+      element[i].addEventListener('click', () => {
 
         // O state
         if (this.state.charAt(i) == 'o') {
@@ -152,13 +156,13 @@ class Navigation extends Extend {
         }
 
         console.log(this.selector + ': ' + this.state);
-        this.sendIO(element[i].dataset)
+        // this.sendIO(element[i].dataset)
         this.setStyle()
         let event = new CustomEvent('navi', { 'detail': this.selector })
         document.dispatchEvent(event)
-      }.bind(this)); // EventListener END !!
+      }) // EventListener END !!
     }
 
-  } // click END !!
+  } // click
 
 } // Navigation

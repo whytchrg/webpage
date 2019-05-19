@@ -10,7 +10,6 @@
   <link rel="stylesheet" href="./modules/html/html.css">
   <script src="./modules/html/index.js"></script>
 
-  <link rel="stylesheet" href="./modules/navigation/navigation.css">
   <script src="./modules/navigation/index.js"></script>
 
   <script src="./modules/algorithm/index.js"></script>

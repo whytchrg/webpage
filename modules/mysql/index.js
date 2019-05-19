@@ -6,8 +6,8 @@ class Mysql {
   constructor(options) {
 
     this.request = {
+      client: options.client,
       table: 'A5',
-      client: 'homepage',
       request: 'init'
     }
 
@@ -21,11 +21,22 @@ class Mysql {
 
     this.data = await this.get(this.request)
 
-    const event = await this.event()
+    const fire = await this.event()
 
     return true
 
   } // init
+
+  // async getRequest(request) {
+  //   const header = await {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     credentials: 'omit',
+  //     body: JSON.stringify(request)
+  //   }
+  //   const response = await fetch('http://debruen.com/request/', header)
+  //   console.log(response)
+  // }
 
   get(request) {
     return new Promise((resolve, reject) => {

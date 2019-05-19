@@ -2,7 +2,8 @@
 document.addEventListener('DOMContentLoaded', function() {
 
   const homepage = new Homepage({
-    // sidebar: 'active'
+    client: 'homepage',
+    table: 'A5'
   })
 
   // const html = new Html({
