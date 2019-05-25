@@ -5,6 +5,7 @@
 
   <title>title</title>
 
+  <script src="./modules/math/index.js"></script>
   <script src="./modules/extend/index.js"></script>
 
   <link rel="stylesheet" href="./modules/html/html.css">

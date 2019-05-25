@@ -8,15 +8,11 @@ class Homepage {
     this.html = new Html()
 
     this.category = new Navigation({
-      client: options.client,
-      table: 'navigation',
       selector: 'category',         // css class name
       init:     'random'
     })
 
     this.color = new Navigation({
-      client:   options.client,
-      table:    'navigation',
       selector: 'color',            // css class name
       init:     'random'
     })
@@ -26,7 +22,9 @@ class Homepage {
       table:  options.table
     })
 
-    this.algorithm = new Algorithm()
+    this.algorithm = new Algorithm({
+      limit: options.limit
+    })
 
     this.display = new Display({
       table:  options.table
@@ -35,63 +33,62 @@ class Homepage {
     this.grid = new Grid({
       grid:      document.querySelector('body main'),
       elements:  'block', // class name
-      size :     48,
+      size :     options.size,
       gutter:    1,
       sizeClass: 'w'
     })
 
-    this.navigation = new Navigation({
-      client:   options.client,
-      table:    options.table,
+    this.block = new Navigation({
       selector: 'block',            // css class name
       init:     'off'
     })
 
     this.init()
-
   } // constructor
 
   async init() {
-
     const html     = await this.html.init()
+    const category = await this.category.init()
+    const color    = await this.color.init()
 
-    const category = this.category.init()
-    const color    = this.color.init()
-
-    if(await category && await color) {
-      const navigation = true
-    }
-
-    const mysql    = this.mysql.init()
+    const mysql    = await this.mysql.init()
+    const overview = await this.overview()
 
     return this.listener()
-
   } // init
 
   async overview() {
-    // console.log(this.mysql.data)
     const result     = await this.algorithm.evaluate(this.mysql.data, this.category.state, this.color.state)
-    const display    = await this.display.evaluate(result)
+    console.log(this.block.state)
+    const display    = await this.display.init(result, this.block.state)
+
     const grid       = await this.grid.init()
-    const navigation = await this.navigation.init()
+    const navigation = await this.block.init(this.block.state)
+
     return true
   } // overview
 
   listener() {
 
-    document.addEventListener('navi', (event) => {
+    document.addEventListener('navigation', (event) => {
+      console.log('navigation')
       if(event.detail === 'category' || event.detail === 'color') {
+        this.block.state = false
         this.overview()
       }
     })
 
-    // Mysql listener
     document.addEventListener('mysql', (event) => {
       console.log('mysql')
       this.overview()
     })
 
-
+    document.addEventListener('display', (event) => {
+      console.log('display')
+      if(!event.detail.activ) {
+        this.mysql.views(event.detail.filename)
+      }
+    })
 
     return true
   } // listener

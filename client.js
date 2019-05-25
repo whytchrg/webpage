@@ -3,7 +3,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
   const homepage = new Homepage({
     client: 'homepage',
-    table: 'A5'
+    table: 'A5',
+    size: 56,
+    limit: 72
   })
 
   // const html = new Html({

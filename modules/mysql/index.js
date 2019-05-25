@@ -5,9 +5,9 @@ class Mysql {
 
   constructor(options) {
 
-    this.request = {
+    this.message = {
       client: options.client,
-      table: 'A5',
+      table: options.table,
       request: 'init'
     }
 
@@ -17,28 +17,57 @@ class Mysql {
 
   async init() {
 
-    this.request.data = []
+    this.message.data = []
 
-    this.data = await this.get(this.request)
+    const request = await this.request(this.message)
 
-    const fire = await this.event()
+    this.data = await this.process(request)
 
     return true
 
   } // init
 
-  // async getRequest(request) {
-  //   const header = await {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     credentials: 'omit',
-  //     body: JSON.stringify(request)
-  //   }
-  //   const response = await fetch('http://debruen.com/request/', header)
-  //   console.log(response)
-  // }
+  async views(filename) {
 
-  get(request) {
+    this.message.request  = 'views'
+    this.message.filename = filename
+    this.message.cTime    = new Date().getTime()
+
+    const views = await this.request(this.message)
+
+    return views // true
+  } // views
+
+  process(request) {
+    request.sort((x,y) => (x.created > y.created) ? -1 : ((x.created < y.created) ? 1 : 0))
+
+    for(let i = 0; i < request.length; i++) {
+      let views = []
+
+      if(typeof request[i].views === 'string') {
+        const rawArray = request[i].views.split(';')
+
+        for(let j = 0; j < rawArray.length; j++) {
+          if(rawArray[j].includes('server')){
+            let view = JSON.parse(rawArray[j])
+            view.client = Math.floor(view.client / 1000)
+            view.server = parseInt(view.server, 10)
+            views.push(view)
+          }
+        }
+      }
+      request[i].views = views
+      // console.log(request[i].filename + '  ' + request[i].views.length)
+      // for(let j = 0; j < request[i].views.length; j++) {
+      //   console.log(request[i].views[j])
+      // }
+    }
+
+
+    return request
+  } // process
+
+  request(request) {
     return new Promise((resolve, reject) => {
 
       const json = JSON.stringify(request)
@@ -55,7 +84,7 @@ class Mysql {
       xhttp.setRequestHeader("Content-Type", "application/json")
       xhttp.send(json)
     })
-  } // get
+  } // request
 
   event() {
     const event = new CustomEvent('mysql')

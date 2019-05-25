@@ -7,9 +7,6 @@ class Navigation extends Extend {
     super()
 
     // options
-    this.client   = options.client
-    this.table    = options.table
-    this.request  = 'navigation'
     this.selector = options.selector
     this.elements
     this.initState = options.init
@@ -22,7 +19,7 @@ class Navigation extends Extend {
 
   }
 
-  init() {
+  init(state) {
 
     this.elements = document.getElementsByClassName(this.selector)
     const length = this.elements.length
@@ -30,61 +27,30 @@ class Navigation extends Extend {
     let b = []
     let c = 0
 
-    if(this.initState == 'off') {
-      for (let i = 0; i < this.elements.length; i++) // create ooo
-        a[i] = 'o'
-      this.state = a.join('') // return ooo
-    }
-
-    if(this.initState == 'random') {
-      for (let i = 0; i < this.elements.length; i++) { // create random ioo
-        a[i] = Math.round(Math.random()) == 1 ? 'i' : 'o'
-        if (a[i] == 'i') c++
+    if(!state) {
+      if(this.initState == 'off') {
+        for (let i = 0; i < this.elements.length; i++) // create ooo
+          a[i] = 'o'
+        this.state = a.join('') // return ooo
       }
-      for (let i = 0; i < this.elements.length; i++) // create iii
-        b[i] = 'i'
-      this.state = c == 0 ? b.join('') : a.join('') // return iii if ooo
+
+      if(this.initState == 'random') {
+        for (let i = 0; i < this.elements.length; i++) { // create random ioo
+          a[i] = Math.round(Math.random()) == 1 ? 'i' : 'o'
+          if (a[i] == 'i') c++
+        }
+        for (let i = 0; i < this.elements.length; i++) // create iii
+          b[i] = 'i'
+        this.state = c == 0 ? b.join('') : a.join('') // return iii if ooo
+      }
+    } else {
+      this.state = state
     }
 
-    // this.sendIO()
+
     this.setStyle()
     this.click()
   } // Navigation init
-
-  sendIO(data = 'init') {
-
-    const name   = this.selector
-    const state  = this.state
-    const date = Date.now()
-    if(data != 'init')
-      data = JSON.stringify(data)
-
-    const json = JSON.stringify({
-      client:  this.client,
-      table:   this.table,
-      request: 'navigation',
-      name: name,
-      url: window.location.href,
-      date: date,
-      state: state,
-      data: data
-    })
-
-    console.log(data)
-
-    // const target = this.target
-    let xhttp = new XMLHttpRequest()
-    xhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        // target.insertAdjacentHTML('beforeend', this.responseText)
-        //console.log(this.responseText)
-
-      }
-    }
-    xhttp.open('POST', './request/', true)
-    xhttp.setRequestHeader("Content-Type", "application/json")
-    xhttp.send( json )
-  } // sendIO END !!
 
   setStyle() {
     const state   = this.state
@@ -155,10 +121,8 @@ class Navigation extends Extend {
           }
         }
 
-        console.log(this.selector + ': ' + this.state);
-        // this.sendIO(element[i].dataset)
         this.setStyle()
-        let event = new CustomEvent('navi', { 'detail': this.selector })
+        let event = new CustomEvent('navigation', { 'detail': this.selector })
         document.dispatchEvent(event)
       }) // EventListener END !!
     }

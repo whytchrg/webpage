@@ -14,7 +14,7 @@ class Grid {
     this.gutterSave   = this.gutterFactor
     // this.gutter()
 
-    this.sizeSize     = options.size || 48
+    this.sizeSize     = options.size
     this.sizeFactor   = 1
     this.sizeClass    = options.sizeClass || 'w'
     // this.size()
@@ -104,7 +104,7 @@ class Grid {
         }
 
       } else if(this.elements[i].classList.contains(this.sizeClass + '4')) { // Size 4
-        this.elements[i].querySelector('img').src  = this.elements[i].dataset.thumbnail
+        this.elements[i].querySelector('img').src  = this.elements[i].dataset.display
         if(this.elements[i].dataset.orientation == 'landscape') {
           // Landscape
           width  = width  * 8 + gutter * 7;
@@ -154,7 +154,8 @@ class Grid {
 
   resize() {
     window.addEventListener('resize', () => {
-      this.reload(this.grid.clientWidth)
+      const width = window.innerWidth - (document.querySelector('body main').offsetLeft * 2)
+      this.reload(width)
     })
   } // resize
 

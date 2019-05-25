@@ -36,7 +36,7 @@ class Html extends Extend{
 
   resize() {
     window.addEventListener('resize', () => {
-      this.shape()
+      // this.shape()
     })
   } // rezize END !!
 
@@ -137,7 +137,7 @@ class Html extends Extend{
 
   main() {
     let main = document.querySelector('body main') // main
-    // main.style.paddingBottom = document.querySelector('body header').offsetTop / 2 + 'px'
+    main.style.paddingBottom = document.querySelector('body header').offsetTop / 2 + 'px'
     //
     // let sidebar = document.querySelector('body main aside') // sidebar
     // sidebar.style.display = 'none'
