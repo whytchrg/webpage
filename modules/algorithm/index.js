@@ -67,8 +67,8 @@ class Algorithm {
     const sml = Math.min(...input.map(o => o.algorithm))
     const dif = big - sml
 
-    const p1 = ((dif / 3) * 2.6) + sml
-    const p2 = ((dif / 3) * 2.9) + sml
+    const p1 = ((dif / 3) * 2.4) + sml //
+    const p2 = ((dif / 3) * 2.95) + sml
 
     // console.log(big) //
     //

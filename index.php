@@ -5,6 +5,8 @@
 
   <title>title</title>
 
+  <link rel="icon" type="image/x-icon" href="./favicon.ico">
+
   <script src="./modules/math/index.js"></script>
   <script src="./modules/extend/index.js"></script>
 
