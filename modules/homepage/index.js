@@ -59,7 +59,6 @@ class Homepage {
 
   async overview() {
     const result     = await this.algorithm.evaluate(this.mysql.data, this.category.state, this.color.state)
-    console.log(this.block.state)
     const display    = await this.display.init(result, this.block.state)
 
     const grid       = await this.grid.init()
@@ -71,7 +70,6 @@ class Homepage {
   listener() {
 
     document.addEventListener('navigation', (event) => {
-      console.log('navigation')
       if(event.detail === 'category' || event.detail === 'color') {
         this.block.state = false
         this.overview()
@@ -79,12 +77,10 @@ class Homepage {
     })
 
     document.addEventListener('mysql', (event) => {
-      console.log('mysql')
       this.overview()
     })
 
     document.addEventListener('display', (event) => {
-      console.log('display')
       if(!event.detail.activ) {
         this.mysql.views(event.detail.filename)
       }

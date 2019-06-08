@@ -1,7 +1,7 @@
 
 document.addEventListener('DOMContentLoaded', function() {
 
-  const homepage = new Homepage({
+  const contact = new Contact({
     client: 'homepage',
     table: 'A5',
     size: 56,

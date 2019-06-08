@@ -32,14 +32,17 @@ class Algorithm {
     const viewed = Math.max(...input.map(o => o.views.length))
     const blackd = Math.min(...input.map(o => o.views.length))
 
-    // console.log(viewed)
-    // console.log(blackd)
+    const flickred = Math.max(...input.map(o => o.views_flickr.length))
+    const flicked = Math.min(...input.map(o => o.views_flickr.length))
 
     for(let i = 0; i < input.length; i++) {
       const a = Math.map(input[i].created, oldest, latest, 0, 1)
       const b = Math.map(input[i].views.length, blackd, viewed, 0, 1)
+      const c = Math.map(input[i].views_flickr.length, flicked, flickred, 0, 1)
 
-      input[i].algorithm = (a + b) / 2
+      // console.log(a + ' ' + Math.pow(a, 0.5))
+
+      input[i].algorithm = (Math.pow(a, 1) + Math.pow(b, 1) + Math.pow(c, 1)) / 3 //
       // console.log(input[i].algorithm)
     }
 
@@ -67,7 +70,7 @@ class Algorithm {
     const sml = Math.min(...input.map(o => o.algorithm))
     const dif = big - sml
 
-    const p1 = ((dif / 3) * 2.4) + sml //
+    const p1 = ((dif / 3) * 2) + sml //
     const p2 = ((dif / 3) * 2.95) + sml
 
     // console.log(big) //
