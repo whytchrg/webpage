@@ -165,7 +165,8 @@ class Grid {
       this.elements[i].addEventListener('click', () => {
 
         if(this.elements[i].classList.contains('w8')) {
-          this.elements[i].classList.remove('w8');
+          this.elements[i].classList.remove('w8')
+
         } else {
           for(let j = 0; j < this.elements.length; j++) {
             if(this.elements[j].classList.contains('w8')) this.elements[j].classList.remove('w8');
@@ -173,8 +174,14 @@ class Grid {
           this.elements[i].classList.add('w8');
         }
 
-        this.size();
-        this.msnry.layout();
+        this.size()
+        this.msnry.layout()
+
+        this.elements[i].scrollIntoView(true)
+
+        // if(this.elements[i].offsetTop === 0) {
+        //   window.scrollBy(0, 10)
+        // }
 
       }, false)
     }

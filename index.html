@@ -1,9 +1,20 @@
-<? include_once('./server.php'); ?><!DOCTYPE html>
+<!DOCTYPE html>
 <html><head>
 
   <meta charset="UTF-8">
 
   <title>title</title>
+
+  <script>
+  const user = window.location.pathname.split('/').filter( (e) => { return e.includes('~')}) + '/'
+  if(window.location.pathname.includes('~')) {
+    document.write('<base href="/' + user + '">')
+  } else {
+    document.write('<base href="/">')
+  }
+  </script>
+
+
 
   <link rel="icon" type="image/x-icon" href="./favicon.ico">
 
@@ -22,6 +33,7 @@
 
   <script src="./modules/mysql/index.js"></script>
 
+  <link rel="stylesheet" href="./modules/display/display.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tinysort/3.2.5/tinysort.min.js"></script>
   <script src="./modules/display/index.js"></script>
 

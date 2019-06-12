@@ -5,6 +5,10 @@ class Homepage {
 
   constructor(options) {
 
+    this.categoryState
+    this.colorState
+    this.contact
+
     this.html = new Html()
 
     this.category = new Navigation({
@@ -42,6 +46,17 @@ class Homepage {
       selector: 'block',            // css class name
       init:     'off'
     })
+
+    let base
+    if(window.location.pathname.includes('~')) {
+      base = ''
+    } else {
+      base = ''
+    }
+
+    window.history.pushState("object or string", "Title", base + "new-url");
+
+    console.log( window.location.pathname.split('/').filter( (e) => { return e.includes('~') }) )
 
     this.init()
   } // constructor
