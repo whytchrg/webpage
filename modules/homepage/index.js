@@ -35,7 +35,7 @@ class Homepage {
     })
 
     this.grid = new Grid({
-      grid:      document.querySelector('body main'),
+      grid:      this.html.content,
       elements:  'block', // class name
       size :     options.size,
       gutter:    1,

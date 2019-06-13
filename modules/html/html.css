@@ -15,7 +15,7 @@ a {
 	color: rgba(0, 0, 0, 0.8);
 }
 
-.activ { /* Active marker: makes elements look like a */
+.activ, .active { /* Active marker: makes elements look like a */
   color: rgba(0, 0, 0, 0.8);
 }
 

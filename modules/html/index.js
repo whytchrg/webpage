@@ -5,19 +5,11 @@ class Html extends Extend{
 
   constructor() {
     super()
-    // options: sidebar, sidebarWidth, sidebarActiv, sidebarDeact
 
-    // this.sidebar      = false
-    // this.sidebarLink
-    //
-    // this.sidebarWidth = 300
-    // this.sidebarActiv = this.key(4, 'css')
-    // this.sidebarDeact = this.key(4, 'css', this.sidebarActiv)
+    this.content = document.querySelector('body main')
+    this.contact = this.getContact()
 
-    // for class Grid
-    this.section = document.querySelector('body main')
-    // this.requestTarget = document.querySelector('body main aside')
-  }
+  } // constructor
 
   async init() {
     const meta       = await this.meta()
@@ -27,54 +19,10 @@ class Html extends Extend{
     const main       = this.main()
     const footer     = this.footer(meta)
 
-    if(await title && await headline && await navigation && await main && await footer){
-      // this.shape()
-      // this.resize()
+    if(await Promise.all([title, headline, navigation, main, footer])) {
       return true
     }
   } // init
-
-  resize() {
-    window.addEventListener('resize', () => {
-      // this.shape()
-    })
-  } // rezize END !!
-
-  shape() {
-    let header   = document.querySelector('body header')
-    let nav      = document.querySelector('body nav')
-    let main     = document.querySelector('body main')
-    let section  = document.querySelector('body main section')
-    let sidebar  = document.querySelector('body main aside')
-    let footer   = document.querySelector('body footer')
-    let sideLink = document.querySelector('body footer').lastChild
-
-    // Sidebar is hidden
-    if (sideLink.classList.contains(this.sidebarDeact)) {
-      section.style.width = main.clientWidth + 'px'
-      section.style.removeProperty('min-height')
-      sidebar.style.display = 'none';
-    }
-
-    // Sidebar is visible
-    if (sideLink.classList.contains(this.sidebarActiv)) {
-      section.style.width = main.clientWidth - this.sidebarWidth - main.offsetLeft + 'px'
-      let minHeight = window.innerHeight - header.offsetHeight - nav.offsetHeight - footer.offsetHeight - header.offsetTop - (header.offsetTop / 2) * 3
-      sidebar.style.display = 'block'
-      sidebar.style.left = section.clientWidth + main.offsetLeft + 'px'
-      sidebar.style.top =  section.offsetTop + 'px';
-
-      if(minHeight > sidebar.clientHeight)
-        minHeight = sidebar.clientHeight
-
-      console.log(window.innerHeight )
-      section.style.minHeight = minHeight + 'px'
-
-      sidebar.style.maxHeight = section.clientHeight + 'px'
-      sidebar.style.overflowY = 'scroll'
-      sidebar.scrollTo(0,sidebar.scrollHeight)
-    }
-  } // shape END !!
 
   meta() {
     let meta = {
@@ -82,26 +30,23 @@ class Html extends Extend{
       name: 'html',
       title: 'title',
       headline: 'headline',
-      link: './contact',
+      link: 'contact',
       copyright: 'whyturbocharge'
     }
 
     if(window.location.host.includes('localhost')) {
       meta.title = 'localhost'
       meta.headline = 'localhost'
-      meta.link = '../'
       meta.copyright = 'localhost'
     }
     if(window.location.host.includes('debruen.com')) {
       meta.title = 'Florian de Brün'
       meta.headline = ''
-      meta.link = 'http://debruen.com/contact'
       meta.copyright = 'Florian de Brün'
     }
     if(window.location.host.includes('whyturbocharge.com')) {
       meta.title = 'Whyturbocharge?'
       meta.headline = ''
-      meta.link = 'http://whyturbocharge.com/contact'
       meta.copyright = 'Florian de Brün'
     }
     if(window.location.host.includes('tejat')) {
@@ -116,6 +61,7 @@ class Html extends Extend{
 
   title(meta) {
     document.title = meta.title
+
     return true
   } // title
 
@@ -124,6 +70,7 @@ class Html extends Extend{
     headline.style.cursor = 'default'
     headline.style.marginBottom = document.querySelector('body header').offsetTop / 2 + 'px'
     headline.innerHTML = meta.headline
+
     return true
   } // headline
 
@@ -132,20 +79,14 @@ class Html extends Extend{
     navigation.style.cursor = 'default'
     navigation.style.userSelect = 'none'
     navigation.style.marginBottom = document.querySelector('body header').offsetTop / 2 + 'px'
+
     return true
   } // navigation
 
   main() {
     let main = document.querySelector('body main') // main
     main.style.paddingBottom = document.querySelector('body header').offsetTop / 2 + 'px'
-    //
-    // let sidebar = document.querySelector('body main aside') // sidebar
-    // sidebar.style.display = 'none'
-    // if(this.sidebar) sidebar.style.display = 'block'
-    // sidebar.style.position      = 'absolute'
-    // sidebar.style.overflowX     = 'scroll'
-    // sidebar.style.width         = this.sidebarWidth + 'px'
-    // sidebar.style.paddingLeft   = main.offsetLeft + 'px'
+
     return true
   } // main
 
@@ -155,36 +96,24 @@ class Html extends Extend{
     footer.style.userSelect = 'none'
     const copy = '<span style="font-size:10px; position:relative; top: -1px">☯</span>'
     const year = '<span>' + new Date().getFullYear() + '</span>'
-    const link = '<span><a href="' + info.link + '">' + info.copyright + '</a></span>'
+    const link = '<span class="active">' + info.copyright + '</span>'
     const text = copy + ' ' + year + ' ' + link
     footer.insertAdjacentHTML('afterbegin', text)
-    // const side = '<span class="' + this.key(4, 'css') +'" style="float: right; cursor: pointer">toggle sidebar</span>'
-    // footer.insertAdjacentHTML('beforeend', side)
-    //
-    // this.sidebarLink  = document.querySelector('body footer').lastChild.classList[0]
-    // // side
-    // let sideLink = document.querySelector('body footer').lastChild
-    // sideLink.classList.add(this.sidebarDeact)
-    // if(this.sidebar) sideLink.classList.add(this.sidebarActiv)
-    //
-    // sideLink.addEventListener('click', function() {
-    //   sideLink.classList.toggle(this.sidebarDeact)
-    //   sideLink.classList.toggle(this.sidebarActiv)
-    //
-    //   this.shape()
-    //
-    //   let eventDetail
-    //   if(sideLink.classList.contains(this.sidebarDeact)) {
-    //     eventDetail = false
-    //   }
-    //   if(sideLink.classList.contains(this.sidebarActiv)) {
-    //     eventDetail = true
-    //   }
-    //
-    //   let event = new CustomEvent('sidebar', { 'detail': eventDetail })
-    //   document.dispatchEvent(event)
-    // }.bind(this))
+
+    console.log(document.querySelector('body footer .active'))
+
     return true
   } // footer
+
+  getContact() {
+    const path = window.location.pathname.split('/').filter( (e) => { return e.includes('contact') })
+
+    let contact = false
+    if(path.length !== 0) {
+      contact = true
+    }
+
+    return contact
+  } // getContact
 
 } // Html
