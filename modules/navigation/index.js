@@ -12,8 +12,7 @@ class Navigation extends Extend {
     this.initState = options.init
 
     // settings
-    this.activ = 'activ'
-    this.deact = this.key(4, 'css')
+    this.activ = 'active'
 
     this.state
 
@@ -75,11 +74,9 @@ class Navigation extends Extend {
         element[i].style.cursor = 'pointer'
       if (state.charAt(i)  == 'i' && !element[i].classList.contains(this.activ)) {
         element[i].classList.add(this.activ)
-        element[i].classList.remove(this.deact)
       }
       if (state.charAt(i) == 'o' && element[i].classList.contains(this.activ)) {
         element[i].classList.remove(this.activ)
-        element[i].classList.add(this.deact)
       }
     }
   } // setStyle END !!

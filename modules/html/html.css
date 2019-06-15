@@ -15,8 +15,8 @@ a {
 	color: rgba(0, 0, 0, 0.8);
 }
 
-.activ, .active { /* Active marker: makes elements look like a */
-  color: rgba(0, 0, 0, 0.8);
+address {
+  cursor: default;
 }
 
 code {
@@ -36,4 +36,17 @@ details {
 }
 summary {
   display: none;
+}
+
+.activ, .active, .link {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.hidden {
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.hidden.isvisible {
+  opacity: 1;
 }

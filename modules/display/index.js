@@ -32,7 +32,7 @@ class Display {
       template.dataset.orientation = data[i].orientation
       template.dataset.display     = this.source + data[i].display
       template.dataset.thumbnail   = this.source + data[i].thumbnail
-
+      template.classList.add('isvisible')
       template.classList.add('hidden')
 
       loaded.push(img.onload = () => { return true })

@@ -5,10 +5,6 @@ class Homepage {
 
   constructor(options) {
 
-    this.categoryState
-    this.colorState
-    this.contact
-
     this.html = new Html()
 
     this.category = new Navigation({
@@ -47,15 +43,6 @@ class Homepage {
       init:     'off'
     })
 
-    let base
-    if(window.location.pathname.includes('~')) {
-      base = ''
-    } else {
-      base = ''
-    }
-
-    window.history.pushState("object or string", "Title", base + "new-url");
-
     console.log( window.location.pathname.split('/').filter( (e) => { return e.includes('~') }) )
 
     this.init()
@@ -63,19 +50,23 @@ class Homepage {
 
   async init() {
     const html     = await this.html.init()
-    const category = await this.category.init()
-    const color    = await this.color.init()
 
-    const mysql    = await this.mysql.init()
-    const overview = await this.overview()
+    const category = this.category.init()
+    const color    = this.color.init()
+    const mysql    = this.mysql.init()
 
-    return this.listener()
+    if(await Promise.all([category, color, mysql])) {
+      const overview = await this.overview()
+      this.listener()
+
+      return true
+    }
   } // init
 
   async overview() {
     const result     = await this.algorithm.evaluate(this.mysql.data, this.category.state, this.color.state)
-    const display    = await this.display.init(result, this.block.state)
 
+    const display    = await this.display.init(result, this.block.state)
     const grid       = await this.grid.init()
     const navigation = await this.block.init(this.block.state)
 
@@ -98,6 +89,12 @@ class Homepage {
     document.addEventListener('display', (event) => {
       if(!event.detail.activ) {
         this.mysql.views(event.detail.filename)
+      }
+    })
+
+    document.addEventListener('address', (event) => {
+      if(event.detail === false) {
+        this.overview()
       }
     })
 

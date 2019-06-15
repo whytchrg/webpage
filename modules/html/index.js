@@ -6,8 +6,11 @@ class Html extends Extend{
   constructor() {
     super()
 
+    this.link = 'link'
+
     this.content = document.querySelector('body main')
-    this.contact = this.getContact()
+    this.addressState = this.getAddressState()
+    this.navigationState = ''
 
   } // constructor
 
@@ -17,6 +20,7 @@ class Html extends Extend{
     const headline   = this.headline(meta)
     const navigation = this.navigation()
     const main       = this.main()
+    const address    = this.address()
     const footer     = this.footer(meta)
 
     if(await Promise.all([title, headline, navigation, main, footer])) {
@@ -84,8 +88,22 @@ class Html extends Extend{
   } // navigation
 
   main() {
-    let main = document.querySelector('body main') // main
+    let main = document.querySelector('body main')
+    if(this.addressState) {
+      main.style.display = 'none'
+    }
     main.style.paddingBottom = document.querySelector('body header').offsetTop / 2 + 'px'
+
+    return true
+  } // main
+
+  address() {
+    let address = document.querySelector('body address')
+    address.style.display = 'none'
+    if(this.addressState) {
+      address.style.display = 'block'
+    }
+    address.style.paddingBottom = document.querySelector('body header').offsetTop / 2 + 'px'
 
     return true
   } // main
@@ -94,26 +112,50 @@ class Html extends Extend{
     let footer = document.querySelector('body footer')
     footer.style.cursor     = 'default'
     footer.style.userSelect = 'none'
-    const copy = '<span style="font-size:10px; position:relative; top: -1px">☯</span>'
+    const copy = '<span style="font-size: 10px; position: relative; top: -1px">☯</span>'
     const year = '<span>' + new Date().getFullYear() + '</span>'
-    const link = '<span class="active">' + info.copyright + '</span>'
-    const text = copy + ' ' + year + ' ' + link
-    footer.insertAdjacentHTML('afterbegin', text)
+    const link = '<span id="address" class="' + this.link + '">' + info.copyright + '</span>'
+    const note = copy + ' ' + year + ' ' + link
 
-    console.log(document.querySelector('body footer .active'))
+    footer.insertAdjacentHTML('afterbegin', note)
+    this.click()
 
     return true
   } // footer
 
-  getContact() {
+  click() {
+    const link = document.getElementById('address')
+    link.style.cursor = 'pointer'
+
+    link.addEventListener('click', () => {
+      if(this.addressState) {
+        window.history.pushState('object or string', 'display',  this.navigationState)
+        document.querySelector('body main').style.display = 'block'
+        document.querySelector('body address').style.display = 'none'
+
+        this.navigationState = ''
+
+        this.addressState = false
+        let event = new CustomEvent('address', { 'detail': this.addressState })
+        document.dispatchEvent(event)
+      } else {
+        this.navigationState = window.location.pathname
+
+        window.history.pushState('object or string', 'contact',  'contact')
+        document.querySelector('body main').style.display = 'none'
+        document.querySelector('body address').style.display = 'block'
+
+        this.addressState = true
+        let event = new CustomEvent('address', { 'detail': this.addressState })
+        document.dispatchEvent(event)
+      }
+    })
+  } // footerClick
+
+  getAddressState() {
     const path = window.location.pathname.split('/').filter( (e) => { return e.includes('contact') })
 
-    let contact = false
-    if(path.length !== 0) {
-      contact = true
-    }
-
-    return contact
-  } // getContact
+    return path.length > 0 ? true : false
+  } // getAddressState
 
 } // Html
