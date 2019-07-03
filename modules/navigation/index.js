@@ -3,67 +3,30 @@
 
 class Navigation extends Extend {
 
-  constructor(options) { // name, elements, target, init
+  constructor(options) {
     super()
 
-    // options
+    this.active   = options.active || 'active'
     this.selector = options.selector
+    this.rule     = options.rule || 'random'
+    this.url      = options.url || false
+
+    this.history
+
     this.elements
-    this.initState = options.init
-
-    // settings
-    this.activ = 'active'
-
     this.state
 
-  }
+  } // constructor
 
   init(state) {
 
-    // console.log(this.findGetParameter(this.selector))
+    this.elements = this.getElements(this.selector)
 
-    this.elements = document.getElementsByClassName(this.selector)
-    const length = this.elements.length
-    let a = []
-    let b = []
-    let c = 0
-
-    if(!state) {
-      if(this.initState == 'off') {
-        for (let i = 0; i < this.elements.length; i++) // create ooo
-          a[i] = 'o'
-        this.state = a.join('') // return ooo
-      }
-
-      if(this.initState == 'random') {
-        for (let i = 0; i < this.elements.length; i++) { // create random ioo
-          a[i] = Math.round(Math.random()) == 1 ? 'i' : 'o'
-          if (a[i] == 'i') c++
-        }
-        for (let i = 0; i < this.elements.length; i++) // create iii
-          b[i] = 'i'
-        this.state = c == 0 ? b.join('') : a.join('') // return iii if ooo
-      }
-    } else {
-      this.state = state
-    }
+    this.state = this.getState(this.elements.length, this.rule)
 
     this.setStyle()
     this.click()
   } // Navigation init
-
-  // findGetParameter(parameterName) {
-  //     var result = null,
-  //         tmp = [];
-  //     location.search
-  //         .substr(1)
-  //         .split("&")
-  //         .forEach(function (item) {
-  //           tmp = item.split("=");
-  //           if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
-  //         });
-  //     return result;
-  // }
 
   setStyle() {
     const state   = this.state
@@ -72,11 +35,11 @@ class Navigation extends Extend {
     for(let i = 0; i < element.length; i++) {
       if (element[i].style.cursor != 'pointer')
         element[i].style.cursor = 'pointer'
-      if (state.charAt(i)  == 'i' && !element[i].classList.contains(this.activ)) {
-        element[i].classList.add(this.activ)
+      if (state.charAt(i)  == 'i' && !element[i].classList.contains(this.active)) {
+        element[i].classList.add(this.active)
       }
-      if (state.charAt(i) == 'o' && element[i].classList.contains(this.activ)) {
-        element[i].classList.remove(this.activ)
+      if (state.charAt(i) == 'o' && element[i].classList.contains(this.active)) {
+        element[i].classList.remove(this.active)
       }
     }
   } // setStyle END !!
@@ -91,28 +54,28 @@ class Navigation extends Extend {
         // O state
         if (this.state.charAt(i) == 'o') {
 
-          if(this.initState == 'off') {
+          if(this.rule == 'off') {
             this.state = this.replaceCharAt(this.state, i, 'i')
             for (let j = 0; j < element.length; j++)
               if (j != i && this.state.charAt(j) == 'i')
                 this.state = this.replaceCharAt(this.state, j, 'o')
           }
 
-          if(this.initState == 'random') {
+          if(this.rule == 'random') {
             this.state = this.replaceCharAt(this.state, i, 'i')
           }
 
         // I state
         } else if (this.state.charAt(i) == 'i') {
 
-          if(this.initState == 'off') {
+          if(this.rule == 'off') {
             this.state = this.replaceCharAt(this.state, i, 'o')
             for (let j = 0; j < element.length; j++)
               if (j != i && this.state.charAt(j) == 'i')
                 this.state = this.replaceCharAt(this.state, j, 'o')
           }
 
-          if(this.initState == 'random') {
+          if(this.rule == 'random') {
             let oc = 0; // count amount of o 's
             for (let j = 0; j < element.length; j++)
               if (j != i && this.state.charAt(j) == 'o')  oc++
@@ -132,6 +95,33 @@ class Navigation extends Extend {
           }
         }
 
+        if(this.url) {
+          let past = window.location.pathname
+          if(past.includes('contact')) {
+            past = this.history
+          }
+          let pathPart = past.split('/')
+          let test = false
+
+          for (let i = 0; i < pathPart.length; i++) {
+            if(this.isState(pathPart[i], this.state.length)) {
+              pathPart[i] = this.state
+              test = true
+            }
+            if(pathPart[i] == 'contact' || pathPart[i] == '') {
+              pathPart.splice(i, 1)
+              i--
+            }
+          }
+          if(!test) pathPart.push(this.state)
+          const path = pathPart.join('/')
+          // console.log(path)
+          window.history.pushState('object or string', 'contact', path)
+        }
+
+        document.querySelector('body main').style.display = 'block'
+        document.querySelector('body address').style.display = 'none'
+
         this.setStyle()
         let event = new CustomEvent('navigation', { 'detail': this.selector })
         document.dispatchEvent(event)
@@ -139,5 +129,59 @@ class Navigation extends Extend {
     }
 
   } // click
+
+  getElements(selector) {
+    return document.getElementsByClassName(selector)
+  } // getElements
+
+  getState(length, rule) {
+
+    // get state from url
+    const raw = window.location.pathname.split('/')
+    let state
+    for (let i = 0; i < raw.length; i++) {
+
+      if(this.isState(raw[i],length)) state = raw[i]
+    }
+
+    // create state from rule
+    if(!state) {
+
+      if(rule === 'off') { // ooo
+        state = 'o'.repeat(length)
+      }
+
+      if(rule === 'random') {
+        let a = []
+        let c = 0
+        for (let i = 0; i < length; i++) { // create random ioo
+          a[i] = Math.round(Math.random()) === 1 ? 'i' : 'o'
+          if (a[i] === 'i') c++
+        }
+        const b = 'i'.repeat(length)
+        state = c === 0 ? b : a.join('') // return iii if ooo
+      }
+
+    }
+
+    return state
+  } // getState
+
+  isState(str, length) {
+    let test = false
+    if(str.length === length) {
+      test = true
+      for (let i = 0; i < length; i++) {
+        if(str.charAt(i) !== 'i' && str.charAt(i) !== 'o') {
+          test = false
+        }
+      }
+    }
+    return test
+  }
+
+  recieveHistory(path) {
+    this.history = path
+  } // recieveHistory
 
 } // Navigation

@@ -9,12 +9,16 @@ class Homepage {
 
     this.category = new Navigation({
       selector: 'category',         // css class name
-      init:     'random'
+      rule:     'random',
+      url:      true,
+      active:   this.html.active
     })
 
     this.color = new Navigation({
       selector: 'color',            // css class name
-      init:     'random'
+      rule:     'random',
+      url:      true,
+      active:   this.html.active
     })
 
     this.mysql = new Mysql({
@@ -27,7 +31,8 @@ class Homepage {
     })
 
     this.display = new Display({
-      table:  options.table
+      table:  options.table,
+      active: this.html.active
     })
 
     this.grid = new Grid({
@@ -40,10 +45,9 @@ class Homepage {
 
     this.block = new Navigation({
       selector: 'block',            // css class name
-      init:     'off'
+      rule:     'off',
+      active: this.html.active
     })
-
-    console.log( window.location.pathname.split('/').filter( (e) => { return e.includes('~') }) )
 
     this.init()
   } // constructor
@@ -68,7 +72,7 @@ class Homepage {
 
     const display    = await this.display.init(result, this.block.state)
     const grid       = await this.grid.init()
-    const navigation = await this.block.init(this.block.state)
+    const navigation = await this.block.init()
 
     return true
   } // overview
@@ -87,7 +91,7 @@ class Homepage {
     })
 
     document.addEventListener('display', (event) => {
-      if(!event.detail.activ) {
+      if(!event.detail.active) {
         this.mysql.views(event.detail.filename)
       }
     })
@@ -95,6 +99,10 @@ class Homepage {
     document.addEventListener('address', (event) => {
       if(event.detail === false) {
         this.overview()
+      } else {
+        // console.log(this.html.navigationState)
+        this.category.recieveHistory(this.html.navigationState)
+        this.color.recieveHistory(this.html.navigationState)
       }
     })
 

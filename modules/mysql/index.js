@@ -42,8 +42,9 @@ class Mysql {
     request.sort((x,y) => (x.created > y.created) ? -1 : ((x.created < y.created) ? 1 : 0))
 
     for(let i = 0; i < request.length; i++) {
-      let views = []
 
+      // Views
+      let views = []
       if(typeof request[i].views === 'string') {
         const rawArray = request[i].views.split(';')
 
@@ -57,6 +58,14 @@ class Mysql {
         }
       }
       request[i].views = views
+
+      // Flickr views
+      let flickrViews = []
+      if(typeof request[i].views_flickr === 'string') {
+        flickrViews = JSON.parse(request[i].views_flickr)
+      }
+      request[i].views_flickr = flickrViews
+
       // console.log(request[i].filename + '  ' + request[i].views.length)
       // for(let j = 0; j < request[i].views.length; j++) {
       //   console.log(request[i].views[j])

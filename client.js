@@ -8,4 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
     limit: 86 //
   })
 
+  window.addEventListener('resize', () => {
+    console.log(document.querySelector('body main').offsetHeight)
+  })
+
 }) // DOMContentLoaded

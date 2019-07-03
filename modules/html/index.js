@@ -6,10 +6,12 @@ class Html extends Extend{
   constructor() {
     super()
 
-    this.link = 'link'
+    // CSS settings
+    this.link   = 'link'
+    this.active = 'active'
 
     this.content = document.querySelector('body main')
-    this.addressState = this.getAddressState()
+    this.addressState = this.getState()
     this.navigationState = ''
 
   } // constructor
@@ -124,14 +126,18 @@ class Html extends Extend{
   } // footer
 
   click() {
+    const main = document.querySelector('body main')
+    const address = document.querySelector('body address')
+
     const link = document.getElementById('address')
     link.style.cursor = 'pointer'
 
     link.addEventListener('click', () => {
+      this.addressState = this.getState()
       if(this.addressState) {
         window.history.pushState('object or string', 'display',  this.navigationState)
-        document.querySelector('body main').style.display = 'block'
-        document.querySelector('body address').style.display = 'none'
+        main.style.display = 'block'
+        address.style.display = 'none'
 
         this.navigationState = ''
 
@@ -142,8 +148,8 @@ class Html extends Extend{
         this.navigationState = window.location.pathname
 
         window.history.pushState('object or string', 'contact',  'contact')
-        document.querySelector('body main').style.display = 'none'
-        document.querySelector('body address').style.display = 'block'
+        main.style.display = 'none'
+        address.style.display = 'block'
 
         this.addressState = true
         let event = new CustomEvent('address', { 'detail': this.addressState })
@@ -152,10 +158,10 @@ class Html extends Extend{
     })
   } // footerClick
 
-  getAddressState() {
-    const path = window.location.pathname.split('/').filter( (e) => { return e.includes('contact') })
+  getState() {
+    const path = window.location.pathname.split('/').filter((e) => { return e.includes('contact') })
 
     return path.length > 0 ? true : false
-  } // getAddressState
+  } // getState
 
 } // Html

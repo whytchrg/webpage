@@ -6,6 +6,7 @@ class Display {
   constructor(options) {
 
     this.source = './src/' + options.table + '/'
+    this.active = options.active
 
   }
 
@@ -87,12 +88,12 @@ class Display {
   click(article) {
     for (let i = 0; i < article.length; i++) {
       article[i].addEventListener('click', () => {
-        let activ = false
-        if(article[i].classList.contains('activ')) {
-          activ = true
+        let active = false
+        if(article[i].classList.contains(this.active)) {
+          active = true
         }
 
-        const detail = { filename: article[i].dataset.filename, activ: activ }
+        const detail = { filename: article[i].dataset.filename, active: active }
 
         let event = new CustomEvent('display', { 'detail': detail })
         document.dispatchEvent(event)

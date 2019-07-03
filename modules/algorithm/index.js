@@ -23,28 +23,65 @@ class Algorithm {
 
   algorithm(input) {
 
-    const latest = Math.max(...input.map(o => o.created))
-    const oldest = Math.min(...input.map(o => o.created))
+    const now = new Date().getTime() / 1000
 
-    // console.log(latest)
-    // console.log(oldest)
+    const createdMax     = Math.max(...input.map(o => o.created))
+    const createdMin     = Math.min(...input.map(o => o.created))
 
-    const viewed = Math.max(...input.map(o => o.views.length))
-    const blackd = Math.min(...input.map(o => o.views.length))
+    const addedMax       = Math.max(...input.map(o => o.added))
+    const addedMin       = Math.min(...input.map(o => o.added))
 
-    const flickred = Math.max(...input.map(o => o.views_flickr.length))
-    const flicked = Math.min(...input.map(o => o.views_flickr.length))
+    const viewsMax       = Math.max(...input.map(o => o.views.length))
+    const viewsMin       = Math.min(...input.map(o => o.views.length))
+
+    const viewsFlickrMax = Math.max(...input.map(o => o.views_flickr.length))
+    const viewsFlickrMin = Math.min(...input.map(o => o.views_flickr.length))
 
     for(let i = 0; i < input.length; i++) {
-      const a = Math.map(input[i].created, oldest, latest, 0, 1)
-      const b = Math.map(input[i].views.length, blackd, viewed, 0, 1)
-      const c = Math.map(input[i].views_flickr.length, flicked, flickred, 0, 1)
 
+      let viewScale = []
+      for (let j = 0; j < input[i].views.length; j++) {
+        const scale = (input[i].views[j].server - addedMin) / (now - addedMin)
+        viewScale.push( Math.pow(scale, 16) )
+      }
+      input[i].viewScale = viewScale.reduce((a, b) => a + b, 0)
+
+      let flickrScale = []
+      for (let j = 0; j < input[i].views_flickr.length; j++) {
+        const scale = (input[i].views_flickr[j].server - addedMin) / (now - addedMin)
+        flickrScale.push( Math.pow(scale, 16) )
+      }
+      input[i].flickrScale = flickrScale.reduce((a, b) => a + b, 0)
+
+    }
+
+    const viewScaleMax = Math.max(...input.map(o => o.viewScale))
+    const viewScaleMin = Math.min(...input.map(o => o.viewScale))
+
+    const flickrScaleMax = Math.max(...input.map(o => o.flickrScale))
+    const flickrScaleMin = Math.min(...input.map(o => o.flickrScale))
+
+    for(let i = 0; i < input.length; i++) {
+
+      // created
+      const a = Math.map(input[i].created, createdMin, createdMax, 0.5, 1)
+
+      // views
+      // const b = Math.map(input[i].views.length, viewsMin, viewsMax, 0, 1)
+
+      const d = Math.map(input[i].viewScale, viewScaleMin, viewScaleMax, 0, 1)
+
+      // flickr views
+      const c = Math.map(input[i].views_flickr.length, viewsFlickrMin, viewsFlickrMax, 0, 1)
+
+      const e = Math.map(input[i].flickrScale, flickrScaleMin, flickrScaleMax, 0, 1)
       // console.log(a + ' ' + Math.pow(a, 0.5))
 
-      input[i].algorithm = (Math.pow(a, 1) + Math.pow(b, 1) + Math.pow(c, 1)) / 3 //
+      input[i].algorithm = (Math.pow(a, 1) + Math.pow(d, 1) * 4 + Math.pow(e, 1) * 4) / 9 //
       // console.log(input[i].algorithm)
     }
+
+    console.log(input[0])
 
     return input
   } // algorithm
@@ -66,22 +103,13 @@ class Algorithm {
     input.sort((x,y) => (x.created > y.created) ? -1 : ((x.created < y.created) ? 1 : 0))
     output.sort((x,y) => (x.created > y.created) ? -1 : ((x.created < y.created) ? 1 : 0))
 
-    const big = Math.max(...input.map(o => o.algorithm))
-    const sml = Math.min(...input.map(o => o.algorithm))
+    const big = Math.max(...output.map(o => o.algorithm))
+    const sml = Math.min(...output.map(o => o.algorithm))
+
     const dif = big - sml
 
-    const p1 = ((dif / 3) * 2) + sml //
-    const p2 = ((dif / 3) * 2.95) + sml
-
-    // console.log(big) //
-    //
-    // console.log(sml)
-    //
-    // console.log(dif)
-    //
-    // console.log(p1)
-    //
-    // console.log(p2)
+    const p1 = ((dif / 3) * 1) + sml
+    const p2 = ((dif / 3) * 3) + sml
 
     for(let i = 0; i < output.length; i++) {
 
@@ -153,10 +181,8 @@ class Algorithm {
     	    if(input[i].tags.search(category) >= 0) select.push(input[i])
     	}
 
-
     }
     return select
   } // category
-
 
 }
