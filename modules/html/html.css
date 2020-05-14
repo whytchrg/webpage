@@ -25,17 +25,29 @@ code {
 
 figure {
   margin: 0px;
+  display: flex;
+  flex-flow: column;
 }
 
 figcaption {
-  display: none;
+  display: block;
+  position: absolute;
+  width: 100%;
+  bottom: 0px;
+  padding: 3px 3px 3px 5px;
+  background-color: rgba(250, 250, 250, 0.5);
+  color: rgba(0, 0, 0, 0.8);
 }
 
-details {
-  display: none;
+figcaption i {
+  margin-right: 6px;
 }
-summary {
-  display: none;
+
+.figSmall {
+  visibility: hidden;
+}
+.figLarge {
+  visibility: visible;
 }
 
 .activ, .active, .link {

@@ -27,6 +27,8 @@ class Display {
       const template = document.importNode(raw, true)
 
       let img = template.querySelector('img')
+      let figcaption = template.querySelector('figcaption')
+      let title = figcaption.firstChild
 
       template.dataset.filename    = data[i].filename
       template.dataset.created     = data[i].created
@@ -36,9 +38,14 @@ class Display {
       template.classList.add('isvisible')
       template.classList.add('hidden')
 
-      loaded.push(img.onload = () => { return true })
+      title.innerHTML = data[i].name
+      const dC = new Date(parseInt(data[i].created))
+      const text = document.createTextNode(plusNull(dC.getDate()) + '.' + plusNull(dC.getMonth() + 1) + '.' + dC.getFullYear() + ', ' + plusNull(dC.getHours()) + ':' + plusNull(dC.getMinutes()) + ':' + plusNull(dC.getSeconds()))
+      title.after(text)
 
       if( data[i].size === 'A') {
+
+        figcaption.classList.add('figSmall')
 
         img.src = this.source + data[i].thumbnail
       }
@@ -46,11 +53,20 @@ class Display {
       if( data[i].size === 'B') {
         template.classList.add('w2')
 
-        img.src = this.source + data[i].thumbnail
+        figcaption.classList.add('figSmall')
+
+        if(data[i].orientation == 'landscape') {
+          img.src = this.source + data[i].display
+        } else {
+          img.src = this.source + data[i].thumbnail
+        }
+
       }
 
       if( data[i].size === 'C') {
         template.classList.add('w4')
+
+        figcaption.classList.add('figSmall')
 
         img.src = this.source + data[i].display
       }
@@ -59,12 +75,14 @@ class Display {
         if(state.charAt(i) === 'i') {
           template.classList.add('w8')
 
+          figcaption.classList.add('figLarge')
+
           img.src = this.source + data[i].display
         }
       }
+      loaded.push(img.onload = () => { return true })
 
       main.appendChild(template)
-
     }
 
     article = main.querySelectorAll('article')

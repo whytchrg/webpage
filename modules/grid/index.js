@@ -93,6 +93,8 @@ class Grid {
 
       if(this.elements[i].classList.contains(this.sizeClass + '8')) { // Size 8
         this.elements[i].querySelector('img').src  = this.elements[i].dataset.display
+        this.elements[i].querySelector('figcaption').classList.remove('figSmall')
+        this.elements[i].querySelector('figcaption').classList.add('figLarge')
         if(this.elements[i].dataset.orientation == 'landscape') {
           // Landscape
           width  = width  * 16 + gutter * 15;
@@ -105,6 +107,8 @@ class Grid {
 
       } else if(this.elements[i].classList.contains(this.sizeClass + '4')) { // Size 4
         this.elements[i].querySelector('img').src  = this.elements[i].dataset.display
+        this.elements[i].querySelector('figcaption').classList.remove('figLarge')
+        this.elements[i].querySelector('figcaption').classList.add('figSmall')
         if(this.elements[i].dataset.orientation == 'landscape') {
           // Landscape
           width  = width  * 8 + gutter * 7;
@@ -116,7 +120,14 @@ class Grid {
         }
 
       } else if(this.elements[i].classList.contains(this.sizeClass + '2')) { // Size 2
-        this.elements[i].querySelector('img').src  = this.elements[i].dataset.thumbnail
+        if(this.elements[i].dataset.orientation == 'landscape') {
+          this.elements[i].querySelector('img').src  = this.elements[i].dataset.display
+        } else {
+          this.elements[i].querySelector('img').src  = this.elements[i].dataset.thumbnail
+        }
+
+        this.elements[i].querySelector('figcaption').classList.remove('figLarge')
+        this.elements[i].querySelector('figcaption').classList.add('figSmall')
         if(this.elements[i].dataset.orientation == 'landscape') {
           // Landscape
           width  = width  * 4 + gutter * 3;
@@ -129,6 +140,8 @@ class Grid {
 
       } else { // Basic size
         this.elements[i].querySelector('img').src  = this.elements[i].dataset.thumbnail
+        this.elements[i].querySelector('figcaption').classList.remove('figLarge')
+        this.elements[i].querySelector('figcaption').classList.add('figSmall')
         if(this.elements[i].dataset.orientation == 'landscape') {
           // Landscape
           width  = width  * 2 + gutter;
@@ -166,7 +179,6 @@ class Grid {
 
         if(this.elements[i].classList.contains('w8')) {
           this.elements[i].classList.remove('w8')
-
         } else {
           for(let j = 0; j < this.elements.length; j++) {
             if(this.elements[j].classList.contains('w8')) this.elements[j].classList.remove('w8');

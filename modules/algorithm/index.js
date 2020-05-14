@@ -11,9 +11,9 @@ class Algorithm {
 
   async evaluate(input, category, color) {
 
-    const A = await this.algorithm(input)
+    // const A = await this.algorithm(input) // redundant !!
 
-    const B = await this.filter(A, category, color)
+    const B = await this.filter(input, category, color)
 
     const C = await this.cut(B)
 
@@ -21,7 +21,7 @@ class Algorithm {
 
   } // evaluate
 
-  algorithm(input) {
+  algorithm(input) { // redundant !!
 
     const now = new Date().getTime() / 1000
 
@@ -102,6 +102,9 @@ class Algorithm {
 
     input.sort((x,y) => (x.created > y.created) ? -1 : ((x.created < y.created) ? 1 : 0))
     output.sort((x,y) => (x.created > y.created) ? -1 : ((x.created < y.created) ? 1 : 0))
+
+    console.log("input: " + input[0].algorithm);
+    console.log("output: " + output[0].algorithm);
 
     const big = Math.max(...output.map(o => o.algorithm))
     const sml = Math.min(...output.map(o => o.algorithm))
