@@ -1,0 +1,23 @@
+{
+  "name": "homepage",
+  "version": "0.0.0",
+  "description": "",
+  "main": "client.js",
+  "scripts": {
+    "start": "browserify homepage.js | terser -c toplevel,sequences=false,drop_console=true --mangle --  > client.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/whyturbocharge/homepage.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/whyturbocharge/homepage/issues"
+  },
+  "homepage": "https://github.com/whyturbocharge/homepage#readme",
+  "dependencies": {
+    "masonry-layout": "^4.2.2",
+    "tinysort": "^3.2.7"
+  }
+}

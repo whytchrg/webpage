@@ -1,6 +1,8 @@
 
 'use strict'
 
+const Extend = require('../extend')
+
 class Navigation extends Extend {
 
   constructor(options) {
@@ -185,3 +187,5 @@ class Navigation extends Extend {
   } // recieveHistory
 
 } // Navigation
+
+module.exports = Navigation

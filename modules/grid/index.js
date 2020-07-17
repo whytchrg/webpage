@@ -1,6 +1,8 @@
 
 'use strict'
 
+const Masonry = require('masonry-layout')
+
 class Grid {
 
   constructor(options) {
@@ -200,4 +202,6 @@ class Grid {
 
   } // click
 
-}
+} // Grid
+
+module.exports = Grid

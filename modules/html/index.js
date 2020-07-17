@@ -1,6 +1,8 @@
 
 'use strict'
 
+const Extend = require('../extend')
+
 class Html extends Extend{
 
   constructor() {
@@ -18,6 +20,7 @@ class Html extends Extend{
 
   async init() {
     const meta       = await this.meta()
+
     const title      = this.title(meta)
     const headline   = this.headline(meta)
     const navigation = this.navigation()
@@ -25,9 +28,9 @@ class Html extends Extend{
     const address    = this.address()
     const footer     = this.footer(meta)
 
-    if(await Promise.all([title, headline, navigation, main, footer])) {
+    await Promise.all([title, headline, navigation, main, footer])
       return true
-    }
+
   } // init
 
   meta() {
@@ -50,7 +53,7 @@ class Html extends Extend{
       meta.headline = ''
       meta.copyright = 'Florian de Brün'
     }
-    if(window.location.host.includes('whyturbocharge.com')) {
+    if(window.location.host.includes('whyturbocharge.')) {
       meta.title = 'Whyturbocharge?'
       meta.headline = ''
       meta.copyright = 'Florian de Brün'
@@ -165,3 +168,5 @@ class Html extends Extend{
   } // getState
 
 } // Html
+
+module.exports = Html

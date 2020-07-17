@@ -1,6 +1,13 @@
 
 'use strict'
 
+const Html       = require('../html')
+const Navigation = require('../navigation')
+const Mysql      = require('../mysql')
+const Algorithm  = require('../algorithm')
+const Display    = require('../display')
+const Grid       = require('../grid')
+
 class Homepage {
 
   constructor(options) {
@@ -53,22 +60,21 @@ class Homepage {
   } // constructor
 
   async init() {
-    const html     = await this.html.init()
+    await this.html.init()
 
     const category = this.category.init()
     const color    = this.color.init()
     const mysql    = this.mysql.init()
+    await Promise.all([category, color, mysql])
 
-    if(await Promise.all([category, color, mysql])) {
-      const overview = await this.overview()
-      this.listener()
+    await this.overview()
 
-      return true
-    }
+    this.listener()
+    return true
   } // init
 
   async overview() {
-    const result     = await this.algorithm.evaluate(this.mysql.data, this.category.state, this.color.state)
+    const result = await this.algorithm.evaluate(this.mysql.data, this.category.state, this.color.state)
 
     const display    = await this.display.init(result, this.block.state)
     const grid       = await this.grid.init()
@@ -110,3 +116,5 @@ class Homepage {
   } // listener
 
 } // Homepage
+
+module.exports = Homepage

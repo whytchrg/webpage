@@ -1,6 +1,8 @@
 
 'use strict'
 
+require('../math')
+
 class Algorithm {
 
   constructor(options) {
@@ -188,4 +190,6 @@ class Algorithm {
     return select
   } // category
 
-}
+} // Algorithm
+
+module.exports = Algorithm

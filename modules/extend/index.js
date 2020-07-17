@@ -37,4 +37,6 @@ class Extend {
     return str.substring(0, i) + replace + str.substring(i + 1)
   } // replaceCharAt
 
-}
+} // Extend
+
+module.exports = Extend

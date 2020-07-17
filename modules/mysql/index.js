@@ -89,7 +89,7 @@ class Mysql {
           resolve(response)
         }
       }
-      xhttp.open("POST", "./request/", true)
+      xhttp.open("POST", "./request.php", true)
       xhttp.setRequestHeader("Content-Type", "application/json")
       xhttp.send(json)
     })
@@ -102,3 +102,5 @@ class Mysql {
   } // event
 
 } // Mysql
+
+module.exports = Mysql

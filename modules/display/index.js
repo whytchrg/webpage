@@ -1,6 +1,8 @@
 
 'use strict'
 
+require('tinysort')
+
 class Display {
 
   constructor(options) {
@@ -119,4 +121,6 @@ class Display {
     }
   } // click
 
-}
+} // Display
+
+module.exports = Display
