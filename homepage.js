@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     client: 'homepage',
     table: 'A5',
     size: 56,
-    limit: 86
+    limit: 72
   })
 
 }) // DOMContentLoaded

@@ -20,7 +20,7 @@ class Extend {
 
     // check against test
     if(key == test)
-      Html.key(length, test)
+      this.key(length, type, test)
 
     return key
   } // key
@@ -36,6 +36,12 @@ class Extend {
   replaceCharAt(str, i, replace) {
     return str.substring(0, i) + replace + str.substring(i + 1)
   } // replaceCharAt
+
+  htmlToElements(html) {
+    var template = document.createElement('template')
+    template.innerHTML = html
+    return template.content.childNodes
+  }
 
 } // Extend
 

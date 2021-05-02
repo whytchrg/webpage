@@ -3,9 +3,12 @@
 
 require('tinysort')
 
-class Display {
+const Extend = require('../extend')
+
+class Display extends Extend {
 
   constructor(options) {
+    super()
 
     this.source = './src/' + options.table + '/'
     this.active = options.active
@@ -44,6 +47,33 @@ class Display {
       const dC = new Date(parseInt(data[i].created))
       const text = document.createTextNode(plusNull(dC.getDate()) + '.' + plusNull(dC.getMonth() + 1) + '.' + dC.getFullYear() + ', ' + plusNull(dC.getHours()) + ':' + plusNull(dC.getMinutes()) + ':' + plusNull(dC.getSeconds()))
       title.after(text)
+
+      let description = this.htmlToElements(data[i].description.replace(/"/g, '').replace(/\\/g, ''))
+      let des =  Array.from(description);
+
+      if(des.length > 0) {
+        let br = document.createElement('br')
+        figcaption.append(br)
+      }
+
+      for (var j = 0; j < des.length; j++) {
+        if(des[j].constructor.name == 'HTMLAnchorElement') {
+          des[j].setAttribute('target', 'a')
+        }
+
+        figcaption.append(des[j])
+      }
+
+      // var a = figcaption.querySelector('a')   // Get the first <h1> element in the document
+      // var att = document.createAttribute('target')       // Create a "class" attribute
+      // att.value = 'a'                           // Set the value of the class attribute
+      // a.setAttributeNode(att)
+
+
+      // console.log(figcaption.querySelector('a'))
+      //
+      // let a = figcaption.querySelector('a')
+      // a.setAttribute('target', 'a')
 
       if( data[i].size === 'A') {
 

@@ -15,7 +15,7 @@ class Html extends Extend{
     this.content = document.querySelector('body main')
     this.addressState = this.getState()
     this.navigationState = ''
-
+  
   } // constructor
 
   async init() {
@@ -123,12 +123,12 @@ class Html extends Extend{
     const note = copy + ' ' + year + ' ' + link
 
     footer.insertAdjacentHTML('afterbegin', note)
-    this.click()
+    this.footerClick()
 
     return true
   } // footer
 
-  click() {
+  footerClick() {
     const main = document.querySelector('body main')
     const address = document.querySelector('body address')
 
@@ -138,6 +138,8 @@ class Html extends Extend{
     link.addEventListener('click', () => {
       this.addressState = this.getState()
       if(this.addressState) {
+        console.log(typeof this.addressState)
+
         window.history.pushState('object or string', 'display',  this.navigationState)
         main.style.display = 'block'
         address.style.display = 'none'

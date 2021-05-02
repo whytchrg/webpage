@@ -89,7 +89,7 @@ class Mysql {
           resolve(response)
         }
       }
-      xhttp.open("POST", "./request.php", true)
+      xhttp.open("POST", "./request.php", true) // change url here 
       xhttp.setRequestHeader("Content-Type", "application/json")
       xhttp.send(json)
     })
