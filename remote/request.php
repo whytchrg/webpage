@@ -93,7 +93,7 @@ if($decoded['client'] === 'manager') {
       $result = $conn->query($sql);
     }
 
-    $decoded['data'] = $data;
+    $decoded['data'] = count($data);
 
   } // insert
 
