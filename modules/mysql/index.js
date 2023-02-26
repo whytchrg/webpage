@@ -39,6 +39,7 @@ class Mysql {
   } // views
 
   process(request) {
+
     request.sort((x,y) => (x.created > y.created) ? -1 : ((x.created < y.created) ? 1 : 0))
 
     for(let i = 0; i < request.length; i++) {
@@ -65,6 +66,11 @@ class Mysql {
         flickrViews = JSON.parse(request[i].views_flickr)
       }
       request[i].views_flickr = flickrViews
+
+    //   request[i].created = Math.floor(request[i].created / 1000)
+    //   const str = request[i].tags.replace(/(^|[^\\])(\\\\)*\\$/, "$&\\");
+
+    //   request[i].tags = JSON.parse(str);
 
       // console.log(request[i].filename + '  ' + request[i].views.length)
       // for(let j = 0; j < request[i].views.length; j++) {

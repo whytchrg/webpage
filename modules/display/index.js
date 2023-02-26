@@ -10,7 +10,7 @@ class Display extends Extend {
   constructor(options) {
     super()
 
-    this.source = './src/' + options.table + '/'
+    this.source = './' + options.table + '/'
     this.active = options.active
 
   }
@@ -44,7 +44,7 @@ class Display extends Extend {
       template.classList.add('hidden')
 
       title.innerHTML = data[i].name
-      const dC = new Date(parseInt(data[i].created))
+      const dC = new Date(parseInt(data[i].created * 1000))
       const text = document.createTextNode(plusNull(dC.getDate()) + '.' + plusNull(dC.getMonth() + 1) + '.' + dC.getFullYear() + ', ' + plusNull(dC.getHours()) + ':' + plusNull(dC.getMinutes()) + ':' + plusNull(dC.getSeconds()))
       title.after(text)
 

@@ -16,6 +16,7 @@ class Algorithm {
     // const A = await this.algorithm(input) // redundant !!
 
     const B = await this.filter(input, category, color)
+    // console.log(B);
 
     const C = await this.cut(B)
 
@@ -25,9 +26,13 @@ class Algorithm {
 
   async filter(input, category, color) {
 
+    // console.log(color);
     const A = await this.color(input, color)
+    // console.log(A);
 
+    // console.log(category);
     const B = await this.category(A, category)
+    // console.log(B);
 
     return B
   } // filter
@@ -70,6 +75,7 @@ class Algorithm {
     let select = []
 
     for(let i = 0; i < input.length; i++) {
+    console.log(input[i].tags);
 
       if(color === 'io') {
         if(input[i].tags.search('bw') >= 0) select.push(input[i])
