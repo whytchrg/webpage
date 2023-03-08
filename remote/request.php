@@ -49,7 +49,7 @@ if($decoded['client'] === 'manager' || $decoded['client'] === 'homepage') {
         views LONGTEXT CHARACTER SET utf8,
         created BIGINT(20),
         modified BIGINT(20),
-        algorithm INT(10) UNSIGNED,
+        algorithm FLOAT,
         description VARCHAR(255) CHARACTER SET utf8 )";
       if($conn->query($sql) !== TRUE) {
         echo 'Error creating table: ' . $conn->error;
@@ -86,7 +86,6 @@ if($decoded['client'] === 'manager') {
       $created = intval($data[$i]['created'], 10);
       $modified = intval($data[$i]['modified'], 10);
       $algorithm = floatval($data[$i]['algorithm']);
-      // $views_flickr = $conn->real_escape_string($data[$i]['views_flickr']);
       $orientation = $conn->real_escape_string($data[$i]['orientation']);
       $description = $conn->real_escape_string($data[$i]['description']);
       $sql = "INSERT INTO $table (filename, name, tags, display, thumbnail, created, modified, algorithm, orientation, description) VALUES ('$filename', '$name', '$tags', '$display', '$thumbnail', $created, $modified, $algorithm, '$orientation', '$description')";
@@ -109,7 +108,6 @@ if($decoded['client'] === 'manager') {
       $created = intval($data[$i]['created'], 10);
       $modified = intval($data[$i]['modified'], 10);
       $algorithm = floatval($data[$i]['algorithm']);
-      // $views_flickr = $conn->real_escape_string($data[$i]['views_flickr']);
       $orientation = $conn->real_escape_string($data[$i]['orientation']);
       $description = $conn->real_escape_string($data[$i]['description']);
       $sql = "UPDATE $table SET name = '$name', tags = '$tags', display = '$display', thumbnail = '$thumbnail', created = $created, algorithm = $algorithm, orientation = '$orientation', description = '$description' WHERE filename = '$filename'";

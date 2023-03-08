@@ -118,7 +118,7 @@ class Homepage {
     window.addEventListener('popstate', (event) => {
       // The popstate event is fired each time when the current history entry changes.
 
-      console.log('back - back')
+    //   console.log('back - back')
 
       this.category.init()
       this.color.init()

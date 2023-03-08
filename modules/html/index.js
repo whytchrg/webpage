@@ -138,7 +138,7 @@ class Html extends Extend{
     link.addEventListener('click', () => {
       this.addressState = this.getState()
       if(this.addressState) {
-        console.log(typeof this.addressState)
+        // console.log(typeof this.addressState)
 
         window.history.pushState('object or string', 'display',  this.navigationState)
         main.style.display = 'block'

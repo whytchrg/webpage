@@ -45,16 +45,22 @@ class Algorithm {
     input.sort((x,y) => (x.created > y.created) ? -1 : ((x.created < y.created) ? 1 : 0))
     output.sort((x,y) => (x.created > y.created) ? -1 : ((x.created < y.created) ? 1 : 0))
 
-    console.log("input: " + input[0].algorithm);
-    console.log("output: " + output[0].algorithm);
+    // console.log("input: " + input[0].algorithm);
+    // console.log("output: " + output[0].algorithm);
 
     const big = Math.max(...output.map(o => o.algorithm))
     const sml = Math.min(...output.map(o => o.algorithm))
 
     const dif = big - sml
 
-    const p1 = ((dif / 3) * 1) + sml
-    const p2 = ((dif / 3) * 3) + sml
+    const p1 = ((dif / 2) * 1) + sml
+    const p2 = ((dif / 2) * 10) + sml
+
+    console.log('big: ' + big);
+    console.log('sml: ' + sml);
+
+    console.log('p1: ' + p1);
+    console.log('p2: ' + p2);
 
     for(let i = 0; i < output.length; i++) {
 
@@ -75,7 +81,7 @@ class Algorithm {
     let select = []
 
     for(let i = 0; i < input.length; i++) {
-    console.log(input[i].tags);
+    // console.log(input[i].tags);
 
       if(color === 'io') {
         if(input[i].tags.search('bw') >= 0) select.push(input[i])

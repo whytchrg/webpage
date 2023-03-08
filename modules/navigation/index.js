@@ -42,7 +42,7 @@ class Navigation extends Extend {
         element[i].style.cursor = 'pointer'
       if (state.charAt(i)  == 'i' && !element[i].classList.contains(this.active)) {
         element[i].classList.add(this.active)
-        console.log(element[i].dataset.data)
+        // console.log(element[i].dataset.data)
       }
       if (state.charAt(i) == 'o' && element[i].classList.contains(this.active)) {
         element[i].classList.remove(this.active)
@@ -170,7 +170,7 @@ class Navigation extends Extend {
 
     }
 
-    console.log(state)
+    // console.log(state)
 
     return state
   } // getState
