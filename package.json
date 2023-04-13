@@ -16,7 +16,7 @@
   "bugs": {
     "url": "https://github.com/whyturbocharge/homepage/issues"
   },
-  "homepage": "http://debruen.com/",
+  "homepage": "https://debruen.com/",
   "dependencies": {
     "masonry-layout": "^4.2.2",
     "tinysort": "^3.2.7"

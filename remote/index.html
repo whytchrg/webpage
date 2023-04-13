@@ -1,19 +1,28 @@
 <!DOCTYPE html>
 <html><head>
 
-  <meta charset="UTF-8">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4PD963J16D"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-4PD963J16D');
+    </script>
 
-  <title>title</title>
+    <meta charset="UTF-8">
 
-  <base href="/">
+    <title>title</title>
 
-  <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <base href="/">
 
-  <link rel="stylesheet" href="https://necolas.github.io/normalize.css/8.0.1/normalize.css">
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
 
-  <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://necolas.github.io/normalize.css/8.0.1/normalize.css">
 
-  <script src="./client.js"></script>
+    <link rel="stylesheet" href="./style.css">
+
+    <script src="./client.js"></script>
 
 </head><body>
 
@@ -26,16 +35,22 @@
     &#160; | &#160;
     <span class="color" data-data="bw">Black & White</span> &#160;
     <span class="color" data-data="color">Color</span>
-
   </nav>
 
   <main>
 
-    <template>
+    <template id="image">
       <article class="block">
         <figure>
           <img src="" alt="">
-          <figcaption><i></i></figcaption>
+          <video width="" height="" autoplay>
+            <source src="" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <figcaption><audio width="" height="" controls autoplay>
+            <source src="" type="audio/mpeg">
+            Your browser does not support the audio element.
+          </audio><i></i></figcaption>
         </figure>
       </article>
     </template>

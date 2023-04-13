@@ -53,14 +53,8 @@ class Algorithm {
 
     const dif = big - sml
 
-    const p1 = ((dif / 2) * 1) + sml
-    const p2 = ((dif / 2) * 10) + sml
-
-    console.log('big: ' + big);
-    console.log('sml: ' + sml);
-
-    console.log('p1: ' + p1);
-    console.log('p2: ' + p2);
+    const p1 = ((dif / 3) * 1) + sml
+    const p2 = ((dif / 3) * 2) + sml
 
     for(let i = 0; i < output.length; i++) {
 
@@ -81,12 +75,12 @@ class Algorithm {
     let select = []
 
     for(let i = 0; i < input.length; i++) {
-    // console.log(input[i].tags);
+    // console.log(input[i].keywords);
 
       if(color === 'io') {
-        if(input[i].tags.search('bw') >= 0) select.push(input[i])
+        if(input[i].keywords.search('bw') >= 0) select.push(input[i])
       } else if(color === 'oi') {
-        if(input[i].tags.search('color') >= 0) select.push(input[i])
+        if(input[i].keywords.search('color') >= 0) select.push(input[i])
       } else {
         select.push(input[i])
       }
@@ -101,40 +95,40 @@ class Algorithm {
     for(let i = 0; i < input.length; i++) {
 
       if(category=='ioo'){
-    		if(input[i].tags.search('abc') >= 0) select.push(input[i])
+    		if(input[i].keywords.search('abc') >= 0) select.push(input[i])
 
     	} else if(category=='oio'){
-    		if(input[i].tags.search('acb') >= 0) select.push(input[i])
+    		if(input[i].keywords.search('acb') >= 0) select.push(input[i])
     	} else if(category=='ooi'){
-    		if(input[i].tags.search('cba') >= 0) select.push(input[i])
+    		if(input[i].keywords.search('cba') >= 0) select.push(input[i])
     	} else if(category=='iio'){
-    		if(input[i].tags.search('abc') >= 0){
+    		if(input[i].keywords.search('abc') >= 0){
     			select.push(input[i])
-    		} else if(input[i].tags.search('acb') >= 0){
+    		} else if(input[i].keywords.search('acb') >= 0){
     			select.push(input[i])
     		}
     	} else if(category=='ioi'){
-    		if(input[i].tags.search('abc') >= 0){
+    		if(input[i].keywords.search('abc') >= 0){
     			select.push(input[i])
-    		} else if(input[i].tags.search('cba') >= 0){
+    		} else if(input[i].keywords.search('cba') >= 0){
     			select.push(input[i])
     		}
     	} else if(category=='oii'){
-    		if(input[i].tags.search('acb') >= 0){
+    		if(input[i].keywords.search('acb') >= 0){
     			select.push(input[i])
-    		} else if(input[i].tags.search('cba') >= 0){
+    		} else if(input[i].keywords.search('cba') >= 0){
     			select.push(input[i])
     		}
     	} else if(category=='iii' || category=='ooo'){
-        if(input[i].tags.search('abc') >= 0){
+        if(input[i].keywords.search('abc') >= 0){
           select.push(input[i])
-        } else if(input[i].tags.search('acb') >= 0){
+        } else if(input[i].keywords.search('acb') >= 0){
     			select.push(input[i])
-    		}else if(input[i].tags.search('cba') >= 0){
+    		}else if(input[i].keywords.search('cba') >= 0){
           select.push(input[i])
         }
     	} else {
-    	    if(input[i].tags.search(category) >= 0) select.push(input[i])
+    	    if(input[i].keywords.search(category) >= 0) select.push(input[i])
     	}
 
     }

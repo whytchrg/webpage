@@ -36,24 +36,26 @@ if($decoded['client'] === 'manager' || $decoded['client'] === 'homepage') {
   if($decoded['request'] === 'init') {
 
     if($decoded['client'] === 'manager') {
-      $sql = "CREATE TABLE IF NOT EXISTS ".$table." ( id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        filename VARCHAR(255) CHARACTER SET utf8,
-        name VARCHAR(255) CHARACTER SET utf8,
+        $sql = "CREATE TABLE IF NOT EXISTS ".$table." (
+            id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 
-        display VARCHAR(255) CHARACTER SET utf8,
-        thumbnail VARCHAR(255) CHARACTER SET utf8,
-
-        tags VARCHAR(255) CHARACTER SET utf8,
-        orientation VARCHAR(255) CHARACTER SET utf8,
-
-        views LONGTEXT CHARACTER SET utf8,
-        created BIGINT(20),
-        modified BIGINT(20),
-        algorithm FLOAT,
-        description VARCHAR(255) CHARACTER SET utf8 )";
-      if($conn->query($sql) !== TRUE) {
-        echo 'Error creating table: ' . $conn->error;
-      }
+            name VARCHAR(255) CHARACTER SET utf8,
+            type VARCHAR(255) CHARACTER SET utf8,
+            created BIGINT(20),
+            modified BIGINT(20),
+            title VARCHAR(255) CHARACTER SET utf8,
+            keywords VARCHAR(255) CHARACTER SET utf8,
+            description VARCHAR(255) CHARACTER SET utf8,
+            algorithm FLOAT,
+            orientation VARCHAR(255) CHARACTER SET utf8,
+            display VARCHAR(255) CHARACTER SET utf8,
+            medium VARCHAR(255) CHARACTER SET utf8,
+            thumbnail VARCHAR(255) CHARACTER SET utf8,
+            views LONGTEXT CHARACTER SET utf8
+        )";
+        if($conn->query($sql) !== TRUE) {
+            echo 'Error creating table: ' . $conn->error;
+        }
     }
 
     $sql = "SELECT * FROM $table";
@@ -78,17 +80,19 @@ if($decoded['client'] === 'manager') {
     $data = json_decode($decoded['data'], true);
 
     for($i = 0; $i < count($data); $i++) {
-      $filename = $conn->real_escape_string($data[$i]['filename']);
       $name = $conn->real_escape_string($data[$i]['name']);
-      $tags = $conn->real_escape_string($data[$i]['tags']);
-      $display = $conn->real_escape_string($data[$i]['display']);
-      $thumbnail = $conn->real_escape_string($data[$i]['thumbnail']);
+      $type = $conn->real_escape_string($data[$i]['type']);
       $created = intval($data[$i]['created'], 10);
       $modified = intval($data[$i]['modified'], 10);
+      $title = $conn->real_escape_string($data[$i]['title']);
+      $keywords = $conn->real_escape_string($data[$i]['keywords']);
+      $description = $conn->real_escape_string($data[$i]['description']);
       $algorithm = floatval($data[$i]['algorithm']);
       $orientation = $conn->real_escape_string($data[$i]['orientation']);
-      $description = $conn->real_escape_string($data[$i]['description']);
-      $sql = "INSERT INTO $table (filename, name, tags, display, thumbnail, created, modified, algorithm, orientation, description) VALUES ('$filename', '$name', '$tags', '$display', '$thumbnail', $created, $modified, $algorithm, '$orientation', '$description')";
+      $display = $conn->real_escape_string($data[$i]['display']);
+      $medium = $conn->real_escape_string($data[$i]['medium']);
+      $thumbnail = $conn->real_escape_string($data[$i]['thumbnail']);
+      $sql = "INSERT INTO $table (type, name, created, modified, title, keywords, description, algorithm, orientation, display, medium, thumbnail) VALUES ('$type',  '$name', '$created', '$modified', '$title', '$keywords', '$description', $algorithm, '$orientation', '$display', '$medium', '$thumbnail')";
       $result = $conn->query($sql);
     }
 
@@ -100,17 +104,19 @@ if($decoded['client'] === 'manager') {
     $data = json_decode($decoded['data'], true);
 
     for($i = 0; $i < count($data); $i++) {
-      $filename = $conn->real_escape_string($data[$i]['filename']);
       $name = $conn->real_escape_string($data[$i]['name']);
-      $tags = $conn->real_escape_string($data[$i]['tags']);
-      $display = $conn->real_escape_string($data[$i]['display']);
-      $thumbnail = $conn->real_escape_string($data[$i]['thumbnail']);
+      $type = $conn->real_escape_string($data[$i]['type']);
       $created = intval($data[$i]['created'], 10);
       $modified = intval($data[$i]['modified'], 10);
+      $title = $conn->real_escape_string($data[$i]['title']);
+      $keywords = $conn->real_escape_string($data[$i]['keywords']);
+      $description = $conn->real_escape_string($data[$i]['description']);
       $algorithm = floatval($data[$i]['algorithm']);
       $orientation = $conn->real_escape_string($data[$i]['orientation']);
-      $description = $conn->real_escape_string($data[$i]['description']);
-      $sql = "UPDATE $table SET name = '$name', tags = '$tags', display = '$display', thumbnail = '$thumbnail', created = $created, algorithm = $algorithm, orientation = '$orientation', description = '$description' WHERE filename = '$filename'";
+      $display = $conn->real_escape_string($data[$i]['display']);
+      $medium = $conn->real_escape_string($data[$i]['medium']);
+      $thumbnail = $conn->real_escape_string($data[$i]['thumbnail']);
+      $sql = "UPDATE $table SET title = '$title', type = '$type', keywords = '$keywords', display = '$display', medium = '$medium', thumbnail = '$thumbnail', created = '$created', algorithm = '$algorithm', orientation = '$orientation', description = '$description' WHERE name = '$name'";
       $result = $conn->query($sql);
     }
 
@@ -123,8 +129,8 @@ if($decoded['client'] === 'manager') {
     $data = json_decode($decoded['data'], true);
 
     for($i = 0; $i < count($data); $i++) {
-      $filename = $data[$i]['filename'];
-      $sql = "DELETE FROM $table WHERE filename = '$filename'";
+      $name = $data[$i]['name'];
+      $sql = "DELETE FROM $table WHERE name = '$name'";
       $result = $conn->query($sql);
     }
 
@@ -138,14 +144,14 @@ if($decoded['client'] === 'homepage') {
 
   if($decoded['request'] === 'views') {
 
-    $filename = $decoded['filename'];
+    $name = $decoded['name'];
 
     $date = new DateTime();
     $sTime = $date->getTimestamp();
 
     $newView  = '{ "client": "'.$decoded['cTime'].'", "server": "'.$sTime.'" }';
 
-    $sql = "SELECT views FROM $table WHERE filename = '$filename'";
+    $sql = "SELECT views FROM $table WHERE name = '$name'";
     $result = $conn->query($sql);
 
     $raw = mysqli_fetch_array($result);
@@ -162,7 +168,7 @@ if($decoded['client'] === 'homepage') {
 
     $newViews = implode(';', $views);
 
-    $sql = "UPDATE $table SET views = '$newViews' WHERE filename = '$filename'";
+    $sql = "UPDATE $table SET views = '$newViews' WHERE name = '$name'";
     $result = $conn->query($sql);
 
     $decoded['data'] = true;

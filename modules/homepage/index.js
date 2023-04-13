@@ -64,7 +64,6 @@ class Homepage {
 
     const category = this.category.init()
     const color    = this.color.init()
-    // const tags    = this.tags.init()
     const mysql    = this.mysql.init()
 
     await Promise.all([category, color, mysql])
@@ -101,7 +100,7 @@ class Homepage {
 
     document.addEventListener('display', (event) => {
       if(!event.detail.active) {
-        this.mysql.views(event.detail.filename)
+        this.mysql.views(event.detail.name)
       }
     })
 
@@ -116,9 +115,7 @@ class Homepage {
     })
 
     window.addEventListener('popstate', (event) => {
-      // The popstate event is fired each time when the current history entry changes.
-
-    //   console.log('back - back')
+        // The popstate event is fired each time when the current history entry changes.
 
       this.category.init()
       this.color.init()

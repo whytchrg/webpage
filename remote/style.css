@@ -63,3 +63,11 @@ figcaption i {
 .hidden.isvisible {
   opacity: 1;
 }
+
+.mediaSmall {
+    display: none;
+}
+
+.mediaLarge {
+    display: inline-block;
+}

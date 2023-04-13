@@ -27,10 +27,10 @@ class Mysql {
 
   } // init
 
-  async views(filename) {
+  async views(name) {
 
     this.message.request  = 'views'
-    this.message.filename = filename
+    this.message.name = name
     this.message.cTime    = new Date().getTime()
 
     const views = await this.request(this.message)
@@ -60,22 +60,22 @@ class Mysql {
       }
       request[i].views = views
 
-      // Flickr views
-      let flickrViews = []
-      if(typeof request[i].views_flickr === 'string') {
-        flickrViews = JSON.parse(request[i].views_flickr)
-      }
-      request[i].views_flickr = flickrViews
+    //   // Flickr views
+    //   let flickrViews = []
+    //   if(typeof request[i].views_flickr === 'string') {
+    //     flickrViews = JSON.parse(request[i].views_flickr)
+    //   }
+    //   request[i].views_flickr = flickrViews
 
-    //   request[i].created = Math.floor(request[i].created / 1000)
-    //   const str = request[i].tags.replace(/(^|[^\\])(\\\\)*\\$/, "$&\\");
+    // //   request[i].created = Math.floor(request[i].created / 1000)
+    // //   const str = request[i].keywords.replace(/(^|[^\\])(\\\\)*\\$/, "$&\\");
 
-    //   request[i].tags = JSON.parse(str);
+    // //   request[i].keywords = JSON.parse(str);
 
-      // console.log(request[i].filename + '  ' + request[i].views.length)
-      // for(let j = 0; j < request[i].views.length; j++) {
-      //   console.log(request[i].views[j])
-      // }
+    //   // console.log(request[i].filename + '  ' + request[i].views.length)
+    //   // for(let j = 0; j < request[i].views.length; j++) {
+    //   //   console.log(request[i].views[j])
+    //   // }
     }
 
 

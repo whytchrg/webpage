@@ -15,7 +15,7 @@ class Html extends Extend{
     this.content = document.querySelector('body main')
     this.addressState = this.getState()
     this.navigationState = ''
-  
+
   } // constructor
 
   async init() {
@@ -56,11 +56,6 @@ class Html extends Extend{
     if(window.location.host.includes('whyturbocharge.')) {
       meta.title = 'Whyturbocharge?'
       meta.headline = ''
-      meta.copyright = 'Florian de Brün'
-    }
-    if(window.location.host.includes('tejat')) {
-      meta.title = '~whyturbocharge'
-      meta.headline = '~whyturbocharge'
       meta.copyright = 'Florian de Brün'
     }
     if(window.location.host.includes('github')) {
