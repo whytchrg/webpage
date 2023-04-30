@@ -1,13 +1,14 @@
+
 body {
 	font-family: 'Times New Roman', Times, serif;
 	font-size: 12px;
 	background-color: rgba(250, 250, 250, 1);
 	color: rgba(64, 64, 64, 0.5);
-  margin: 8px;
+    margin: 8px;
 }
 
 h1, h2, h3, h4, h5 {
-  display: inline;
+    display: inline;
 }
 
 a {
@@ -17,51 +18,50 @@ a {
 }
 
 address {
-  cursor: default;
+    cursor: default;
 }
 
 code {
-  font-size: 8px;
+    font-size: 8px;
 }
 
 figure {
-  margin: 0px;
-  display: flex;
-  flex-flow: column;
+    margin: 0px;
+    display: flex;
+    flex-flow: column;
 }
 
 figcaption {
-  display: block;
-  position: absolute;
-  width: 100%;
-  bottom: 0px;
-  padding: 3px 3px 3px 5px;
-  background-color: rgba(250, 250, 250, 0.5);
-  color: rgba(0, 0, 0, 0.8);
+    display: block;
+    position: absolute;
+    width: 100%;
+    bottom: 0px;
+    padding: 3px 3px 3px 5px;
+    background-color: rgba(250, 250, 250, 0.5);
+    color: rgba(0, 0, 0, 0.8);
 }
 
 figcaption i {
-  margin-right: 6px;
+    margin-right: 6px;
 }
 
 .figSmall {
-  visibility: hidden;
+    visibility: hidden;
 }
 .figLarge {
-  visibility: visible;
+    visibility: visible;
 }
 
 .activ, .active, .link {
-  color: rgba(0, 0, 0, 0.8);
+    color: rgba(0, 0, 0, 0.8);
 }
 
 .hidden {
-  opacity: 0;
-  transition: opacity 0.2s ease-in-out;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
 }
-
 .hidden.isvisible {
-  opacity: 1;
+    opacity: 1;
 }
 
 .mediaSmall {

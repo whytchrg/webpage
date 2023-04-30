@@ -28,12 +28,12 @@ $mysql_key = $my_key;
 $mysql_dbs = $my_dbs;
 
 if($decoded['client'] === 'manager' || $decoded['client'] === 'homepage') {
-  $conn = new mysqli($mysql_sev, $mysql_usr, $mysql_key, $mysql_dbs); // connect to Database
-  if($conn->connect_error) die('Connection failed: '.$conn->connect_error);
+    $conn = new mysqli($mysql_sev, $mysql_usr, $mysql_key, $mysql_dbs); // connect to Database
+    if($conn->connect_error) die('Connection failed: '.$conn->connect_error);
 
-  $table = $decoded['table'];
+    $table = $decoded['table'];
 
-  if($decoded['request'] === 'init') {
+    if($decoded['request'] === 'init') {
 
     if($decoded['client'] === 'manager') {
         $sql = "CREATE TABLE IF NOT EXISTS ".$table." (
@@ -51,7 +51,8 @@ if($decoded['client'] === 'manager' || $decoded['client'] === 'homepage') {
             display VARCHAR(255) CHARACTER SET utf8,
             medium VARCHAR(255) CHARACTER SET utf8,
             thumbnail VARCHAR(255) CHARACTER SET utf8,
-            views LONGTEXT CHARACTER SET utf8
+            views LONGTEXT CHARACTER SET utf8,
+            seen LONGTEXT CHARACTER SET utf8
         )";
         if($conn->query($sql) !== TRUE) {
             echo 'Error creating table: ' . $conn->error;
@@ -64,7 +65,7 @@ if($decoded['client'] === 'manager' || $decoded['client'] === 'homepage') {
     $dbdata = array();
     //Fetch into associative array
     while($row = $result->fetch_assoc())  {
-      $dbdata[]=$row;
+        $dbdata[]=$row;
     }
 
     $data = json_encode($dbdata);
@@ -174,6 +175,35 @@ if($decoded['client'] === 'homepage') {
     $decoded['data'] = true;
   } // delete
 
+}
+
+if($decoded['client'] === 'homepage' && $decoded['request'] === 'seen') {
+
+    $names = $decoded['names'];
+
+    $date = new DateTime();
+    $sTime = $date->getTimestamp();
+
+    for($i = 0; $i < count($names); $i++) {
+        $newseen  = '{ "client": "'.$decoded['cTime'].'", "server": "'.$sTime.'" }';
+        $name = $names[i];
+        $sql = "SELECT seen FROM $table WHERE name = '$name'";
+        $result = $conn->query($sql);
+        $raw = mysqli_fetch_array($result);
+        $array = explode(';', $raw['seen']);
+        $array[] = $newseen;
+        $seen = array();
+        for($j = 0; $j < count($array); $j++) {
+            if (strpos($array[$j], 'server') !== false) {
+                $seen[] = $array[$j];
+            }
+        }
+        $newseens = implode(';', $seen);
+        $sql = "UPDATE $table SET views = '$newseens' WHERE name = '$name'";
+        $result = $conn->query($sql);
+    }
+
+    $decoded['data'] = true;
 }
 
 if($decoded['client'] === 'manager' || $decoded['client'] === 'homepage') {

@@ -21,7 +21,7 @@ class Display extends Extend {
 
     const main = document.querySelector('body main')
     let article = main.querySelectorAll('article')
-
+    
     for(let i = 0; i < article.length; i++) {
       article[i].parentNode.removeChild(article[i])
     }
@@ -29,7 +29,7 @@ class Display extends Extend {
     const raw = document.getElementById('image').content.querySelector('article')
 
     let loaded = []
-
+    let list = []
     for(let i = 0; i < data.length; i++) {
       const template = document.importNode(raw, true)
 
@@ -124,7 +124,7 @@ class Display extends Extend {
             }
         }
         loaded.push(img.onload = () => { return true })
-
+        list.append(data[i].name)
         main.appendChild(template)
     }
 
@@ -141,6 +141,11 @@ class Display extends Extend {
         }
       })
 
+    const detail = { names: list, active: active }
+
+    let event = new CustomEvent('seen', { 'detail': detail })
+    document.dispatchEvent(event)
+    
     this.click(article)
 
     return true
@@ -156,7 +161,7 @@ class Display extends Extend {
 
         const detail = { name: article[i].dataset.name, active: active }
 
-        let event = new CustomEvent('display', { 'detail': detail })
+        let event = new CustomEvent('views', { 'detail': detail })
         document.dispatchEvent(event)
       })
     }
