@@ -147,8 +147,8 @@ if($decoded['client'] === 'homepage') {
 
     $name = $decoded['name'];
 
-    $date = new DateTime();
-    $sTime = $date->getTimestamp();
+    // $date = new DateTime();
+    $sTime = floor(microtime(true) * 1000);
 
     $newView  = '{ "client": "'.$decoded['cTime'].'", "server": "'.$sTime.'" }';
 
@@ -172,7 +172,17 @@ if($decoded['client'] === 'homepage') {
     $sql = "UPDATE $table SET views = '$newViews' WHERE name = '$name'";
     $result = $conn->query($sql);
 
-    $decoded['data'] = true;
+    $myObj->type = gettype($name);
+    $myObj->content = $name;
+    $myObj->result = $result;
+    $myObj->sTime = $sTime;
+    $myObj->cTime = $cTime;
+    
+    $myJSON = json_encode($myObj);
+
+    $decoded['data'] = $myJSON;
+
+    // $decoded['data'] = true;
   } // delete
 
 }
@@ -180,13 +190,17 @@ if($decoded['client'] === 'homepage') {
 if($decoded['client'] === 'homepage' && $decoded['request'] === 'seen') {
 
     $names = $decoded['names'];
-
-    $date = new DateTime();
-    $sTime = $date->getTimestamp();
-
+    $names = str_replace('[', '', $names);
+    $names = str_replace(']', '', $names);
+    $names = str_replace('"', '', $names);
+    $names = explode(',', $names);
+    // $names = json_decode($$decoded['names'], true);
+    // $date = new DateTime();
+    $sTime = floor(microtime(true) * 1000);
+    $cTime = $decoded['cTime'];
     for($i = 0; $i < count($names); $i++) {
-        $newseen  = '{ "client": "'.$decoded['cTime'].'", "server": "'.$sTime.'" }';
-        $name = $names[i];
+        $newseen  = '{ "client": "'.$cTime.'", "server": "'.$sTime.'" }';
+        $name = $names[$i];
         $sql = "SELECT seen FROM $table WHERE name = '$name'";
         $result = $conn->query($sql);
         $raw = mysqli_fetch_array($result);
@@ -199,11 +213,21 @@ if($decoded['client'] === 'homepage' && $decoded['request'] === 'seen') {
             }
         }
         $newseens = implode(';', $seen);
-        $sql = "UPDATE $table SET views = '$newseens' WHERE name = '$name'";
+        $sql = "UPDATE $table SET seen = '$newseens' WHERE name = '$name'";
         $result = $conn->query($sql);
     }
+    $myObj->type = gettype($names);
+    $myObj->name = $name;
+    $myObj->newseens = $newseens;
+    $myObj->content = $names;
+    $myObj->result = $result;
+    $myObj->sTime = $sTime;
+    $myObj->cTime = $cTime;
+    $myObj->first = $names[0];
+    
+    $myJSON = json_encode($myObj);
 
-    $decoded['data'] = true;
+    $decoded['data'] = $myJSON;
 }
 
 if($decoded['client'] === 'manager' || $decoded['client'] === 'homepage') {

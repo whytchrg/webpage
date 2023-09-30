@@ -124,7 +124,7 @@ class Display extends Extend {
             }
         }
         loaded.push(img.onload = () => { return true })
-        list.append(data[i].name)
+        list.push(data[i].name)
         main.appendChild(template)
     }
 
@@ -141,31 +141,29 @@ class Display extends Extend {
         }
       })
 
-    const detail = { names: list, active: active }
+        // const detail = { names: list }
+        // console.log(detail)
 
-    let event = new CustomEvent('seen', { 'detail': detail })
-    document.dispatchEvent(event)
-    
-    this.click(article)
+        // let event = new CustomEvent('seen', { 'detail': detail })
+        // document.dispatchEvent(event)
 
-    return true
-  } // evaluate
+        this.click(article)
+        return list
+    } // evaluate
 
-  click(article) {
-    for (let i = 0; i < article.length; i++) {
-      article[i].addEventListener('click', () => {
-        let active = false
-        if(article[i].classList.contains(this.active)) {
-          active = true
+    click(article) {
+        for (let i = 0; i < article.length; i++) {
+            article[i].addEventListener('click', () => {
+                let active = false
+                if(article[i].classList.contains(this.active)) {
+                    active = true
+                }
+                const detail = { name: article[i].dataset.name, active: active }
+                let event = new CustomEvent('views', { 'detail': detail })
+                document.dispatchEvent(event)
+            })
         }
-
-        const detail = { name: article[i].dataset.name, active: active }
-
-        let event = new CustomEvent('views', { 'detail': detail })
-        document.dispatchEvent(event)
-      })
-    }
-  } // click
+    } // click
 
 } // Display
 

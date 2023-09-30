@@ -24,8 +24,12 @@ class Mysql {
         this.message.request = 'views'
         this.message.name    = name
         this.message.cTime   = new Date().getTime()
+        console.log(this.message)
 
-        return await this.request(this.message) // true
+        const view = await this.request(this.message)
+
+        console.log(view)
+        return view // true
     } // views
 
     async seen(names) {
@@ -34,27 +38,30 @@ class Mysql {
         this.message.names = JSON.stringify(names)
         this.message.cTime = new Date().getTime()
 
-        const views = await this.request(this.message)
-        return views // true
+        console.log(this.message)
+
+        const saw = await this.request(this.message)
+        console.log(saw)
+        return saw // true
     } // seen
 
     process(request) {
         request.sort((x,y) => (x.created > y.created) ? -1 : ((x.created < y.created) ? 1 : 0))
-        for(let i = 0; i < request.length; i++) {
-            let views = []
-            if(typeof request[i].views === 'string') {
-                const rawArray = request[i].views.split(';')
-                for(let j = 0; j < rawArray.length; j++) {
-                    if(rawArray[j].includes('server')){
-                        let view = JSON.parse(rawArray[j])
-                        view.client = Math.floor(view.client / 1000)
-                        view.server = parseInt(view.server, 10)
-                        views.push(view)
-                    }
-                }
-            }
-            request[i].views = views
-        }
+        // for(let i = 0; i < request.length; i++) {
+        //     let views = []
+        //     if(typeof request[i].views === 'string') {
+        //         const rawArray = request[i].views.split(';')
+        //         for(let j = 0; j < rawArray.length; j++) {
+        //             if(rawArray[j].includes('server')){
+        //                 let view = JSON.parse(rawArray[j])
+        //                 view.client = Math.floor(view.client / 1000)
+        //                 view.server = parseInt(view.server, 10)
+        //                 views.push(view)
+        //             }
+        //         }
+        //     }
+        //     request[i].views = views
+        // }
         return request
     } // process
 

@@ -78,10 +78,10 @@ class Homepage {
         // console.log(this.mysql.data)
         const result = await this.algorithm.evaluate(this.mysql.data, this.category.state, this.color.state)
 
-        const display    = await this.display.init(result, this.block.state)
+        const names    = await this.display.init(result, this.block.state)
         const grid       = await this.grid.init()
         const navigation = await this.block.init()
-
+        this.mysql.seen(names)
         return true
     } // overview
 
@@ -104,11 +104,10 @@ class Homepage {
             }
         })
 
-        document.addEventListener('seen', (event) => {
-            if(!event.detail.active) {
-                this.mysql.seen(event.detail.names)
-            }
-        })
+        // document.addEventListener('seen', (event) => {
+        //     console.log(event.detail.names)
+        //     this.mysql.seen(event.detail.names)
+        // })
 
         document.addEventListener('address', (event) => {
             if(event.detail === false) {

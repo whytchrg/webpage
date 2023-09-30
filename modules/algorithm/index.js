@@ -53,8 +53,8 @@ class Algorithm {
 
     const dif = big - sml
 
-    const p1 = ((dif / 3) * 1) + sml
-    const p2 = ((dif / 3) * 2) + sml
+    const p1 = ((dif / 3) * 2.5) + sml
+    const p2 = ((dif / 3) * 3) + sml
 
     for(let i = 0; i < output.length; i++) {
 
