@@ -57,140 +57,140 @@ class Grid {
 
     } // gutter
 
-reload(width) {
-    this.msnry.destroy()
-    this.grid.style.width = width + 'px'
-    this.size()
-    this.msnry = new Masonry( this.grid, {
-      itemSelector: '.' + this.elementClass,
-      columnWidth: this.width + this.gutterSize * this.gutterFactor,
-      transitionDuration: '0.4s'
-    })
-    this.click()
-  } // reload
+    reload(width) {
+        this.msnry.destroy()
+        this.grid.style.width = width + 'px'
+        this.size()
+        this.msnry = new Masonry( this.grid, {
+            itemSelector: '.' + this.elementClass,
+            columnWidth: this.width + this.gutterSize * this.gutterFactor,
+            transitionDuration: '0.4s'
+        })
+        this.click()
+    } // reload
 
-  size(input = this.sizeFactor) { //
-    // size sizeSize
-    let r = false;
-    if(input != this.sizeFactor){
-        this.sizeFactor = input;
-        r = true;
-    }
-    let size = this.sizeSize * this.sizeFactor
-
-    // get grid width
-    let gridWidth = this.grid.clientWidth
-
-    let a = Math.floor(gridWidth / (size + (this.gutterSize * this.gutterFactor)));
-    let b = a * size + a * (this.gutterSize * this.gutterFactor);
-    //let c = gridWidth - b;
-    //let d = (gridWidth - b) / a;
-
-    this.width = (size + (gridWidth - b) / a);
-
-    for(let i = 0; i < this.elements.length; i++) {
-        let width  = this.width;
-        let height = this.width * Math.SQRT2;
-        let gutter = this.gutterSize * this.gutterFactor;
-
-        if(this.elements[i].classList.contains(this.sizeClass + '8')) { // Size 8
-
-            if(this.elements[i].dataset.type == 'audio/mpeg') {
-                this.elements[i].querySelector('img').src  = this.elements[i].dataset.display
-                this.elements[i].querySelector('audio').src  = this.elements[i].dataset.media
-                this.elements[i].querySelector('img').classList.remove('mediaSmall')
-                this.elements[i].querySelector('img').classList.add('mediaLarge')
-                this.elements[i].querySelector('audio').classList.remove('mediaSmall')
-                this.elements[i].querySelector('audio').classList.add('mediaLarge')
-            } else if(this.elements[i].dataset.type == 'video/mp4') {
-                this.elements[i].querySelector('video').src  = this.elements[i].dataset.media
-                this.elements[i].querySelector('img').src  = ''
-                this.elements[i].querySelector('img').classList.remove('mediaLarge')
-                this.elements[i].querySelector('img').classList.add('mediaSmall')
-                this.elements[i].querySelector('video').classList.remove('mediaSmall')
-                this.elements[i].querySelector('video').classList.add('mediaLarge')
-            } else {
-                this.elements[i].querySelector('img').classList.remove('mediaSmall')
-                this.elements[i].querySelector('img').classList.add('mediaLarge')
-                this.elements[i].querySelector('img').src  = this.elements[i].dataset.display
-            }
-
-            this.elements[i].querySelector('figcaption').classList.remove('figSmall')
-            this.elements[i].querySelector('figcaption').classList.add('figLarge')
-                
-            if(this.elements[i].dataset.orientation == 'long') {
-                // long
-                width  = width  * 16 + gutter * 15;
-                height = height * 4 + gutter;
-            } else if(this.elements[i].dataset.orientation == 'landscape') {
-                // Landscape
-                width  = width  * 16 + gutter * 15;
-                height = height * 8 + gutter * 7;
-            } else {
-                // Portrait
-                width  = width  * 8 + gutter * 7;
-                height = height * 8 + gutter * 7;
-            }
-
-        } else if(this.elements[i].classList.contains(this.sizeClass + '4')) { // Size 4
-
-            this.elements[i].querySelector('img').src  = this.elements[i].dataset.display
-
-            this.make_element_small(this.elements[i])
-
-            if(this.elements[i].dataset.orientation == 'long') {
-                // long
-                width  = width  * 8 + gutter * 7;
-                height = height * 2 + gutter;
-            } else if(this.elements[i].dataset.orientation == 'landscape') {
-                // Landscape
-                width  = width  * 8 + gutter * 7;
-                height = height * 4 + gutter * 3;
-            } else {
-                // Portrait
-                width  = width  * 4 + gutter * 3;
-                height = height * 4 + gutter * 3;
-            }
-
-        } else if(this.elements[i].classList.contains(this.sizeClass + '2')) { // Size 2
-            this.elements[i].querySelector('img').src  = this.elements[i].dataset.medium
-
-            this.make_element_small(this.elements[i])
-
-            if(this.elements[i].dataset.orientation == 'long') {
-                // long
-                width  = width  * 4 + gutter * 3;
-                height = height;
-            } else if(this.elements[i].dataset.orientation == 'landscape') {
-                // Landscape
-                width  = width  * 4 + gutter * 3;
-                height = height * 2 + gutter;
-            } else {
-                // Portrait
-                width  = width  * 2 + gutter;
-                height = height * 2 + gutter;
-            }
-
-        } else { // Basic size
-            this.elements[i].querySelector('img').src  = this.elements[i].dataset.thumbnail
-
-            this.make_element_small(this.elements[i])
-            
-            if(this.elements[i].dataset.orientation == 'long') {
-                // long
-                width  = width  * 4 + gutter * 3;
-                height = height;
-            } else if(this.elements[i].dataset.orientation == 'landscape') {
-                // Landscape
-                width  = width  * 2 + gutter;
-                height = height;
-            } else {
-                // Portrait
-                width  = width;
-                height = height;
-            }
-
+    size(input = this.sizeFactor) { //
+        // size sizeSize
+        let r = false;
+        if(input != this.sizeFactor){
+            this.sizeFactor = input;
+            r = true;
         }
+        let size = this.sizeSize * this.sizeFactor
+
+        // get grid width
+        let gridWidth = this.grid.clientWidth
+
+        let a = Math.floor(gridWidth / (size + (this.gutterSize * this.gutterFactor)));
+        let b = a * size + a * (this.gutterSize * this.gutterFactor);
+        //let c = gridWidth - b;
+        //let d = (gridWidth - b) / a;
+
+        this.width = (size + (gridWidth - b) / a);
+
+        for(let i = 0; i < this.elements.length; i++) {
+            let width  = this.width;
+            let height = this.width * Math.SQRT2;
+            let gutter = this.gutterSize * this.gutterFactor;
+
+            if(this.elements[i].classList.contains(this.sizeClass + '8')) { // Size 8
+
+                if(this.elements[i].dataset.type == 'audio/mpeg') {
+                    this.elements[i].querySelector('img').src  = this.elements[i].dataset.display
+                    this.elements[i].querySelector('audio').src  = this.elements[i].dataset.media
+                    this.elements[i].querySelector('img').classList.remove('mediaSmall')
+                    this.elements[i].querySelector('img').classList.add('mediaLarge')
+                    this.elements[i].querySelector('audio').classList.remove('mediaSmall')
+                    this.elements[i].querySelector('audio').classList.add('mediaLarge')
+                } else if(this.elements[i].dataset.type == 'video/mp4') {
+                    this.elements[i].querySelector('video').src  = this.elements[i].dataset.media
+                    this.elements[i].querySelector('img').src  = ''
+                    this.elements[i].querySelector('img').classList.remove('mediaLarge')
+                    this.elements[i].querySelector('img').classList.add('mediaSmall')
+                    this.elements[i].querySelector('video').classList.remove('mediaSmall')
+                    this.elements[i].querySelector('video').classList.add('mediaLarge')
+                } else {
+                    this.elements[i].querySelector('img').classList.remove('mediaSmall')
+                    this.elements[i].querySelector('img').classList.add('mediaLarge')
+                    this.elements[i].querySelector('img').src  = this.elements[i].dataset.display
+                }
+
+                this.elements[i].querySelector('figcaption').classList.remove('figSmall')
+                this.elements[i].querySelector('figcaption').classList.add('figLarge')
+                
+                if(this.elements[i].dataset.orientation == 'long') {
+                    // long
+                    width  = width  * 16 + gutter * 15;
+                    height = height * 4 + gutter;
+                } else if(this.elements[i].dataset.orientation == 'landscape') {
+                    // Landscape
+                    width  = width  * 16 + gutter * 15;
+                    height = height * 8 + gutter * 7;
+                } else {
+                    // Portrait
+                    width  = width  * 8 + gutter * 7;
+                    height = height * 8 + gutter * 7;
+                }
+
+            } else if(this.elements[i].classList.contains(this.sizeClass + '4')) { // Size 4
+
+                this.elements[i].querySelector('img').src  = this.elements[i].dataset.display
+
+                this.make_element_small(this.elements[i])
+
+                if(this.elements[i].dataset.orientation == 'long') {
+                    // long
+                    width  = width  * 8 + gutter * 7;
+                    height = height * 2 + gutter;
+                } else if(this.elements[i].dataset.orientation == 'landscape') {
+                    // Landscape
+                    width  = width  * 8 + gutter * 7;
+                    height = height * 4 + gutter * 3;
+                } else {
+                    // Portrait
+                    width  = width  * 4 + gutter * 3;
+                    height = height * 4 + gutter * 3;
+                }
+
+            } else if(this.elements[i].classList.contains(this.sizeClass + '2')) { // Size 2
+                this.elements[i].querySelector('img').src  = this.elements[i].dataset.medium
+
+                this.make_element_small(this.elements[i])
+
+                if(this.elements[i].dataset.orientation == 'long') {
+                    // long
+                    width  = width  * 4 + gutter * 3;
+                    height = height;
+                } else if(this.elements[i].dataset.orientation == 'landscape') {
+                    // Landscape
+                    width  = width  * 4 + gutter * 3;
+                    height = height * 2 + gutter;
+                } else {
+                    // Portrait
+                    width  = width  * 2 + gutter;
+                    height = height * 2 + gutter;
+                }
+
+            } else { // Basic size
+                this.elements[i].querySelector('img').src  = this.elements[i].dataset.thumbnail
+
+                this.make_element_small(this.elements[i])
+            
+                if(this.elements[i].dataset.orientation == 'long') {
+                    // long
+                    width  = width  * 4 + gutter * 3;
+                    height = height;
+                } else if(this.elements[i].dataset.orientation == 'landscape') {
+                    // Landscape
+                    width  = width  * 2 + gutter;
+                    height = height;
+                } else {
+                    // Portrait
+                    width  = width;
+                    height = height;
+                }
+
+            }
 
         this.elements[i].style.width  = width  + 'px'
         this.elements[i].style.height = height + 'px'

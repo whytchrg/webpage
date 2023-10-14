@@ -7,126 +7,144 @@ const Extend = require('../extend')
 
 class Display extends Extend {
 
-  constructor(options) {
-    super()
+    constructor(options) {
+        super()
 
-    this.source = './' + options.table + '/'
-    this.active = options.active
+        this.source = './' + options.table + '/'
+        this.active = options.active
 
-  }
-
-  init(data, state) {
-
-    console.log(data[0]['type'])
-
-    const main = document.querySelector('body main')
-    let article = main.querySelectorAll('article')
-    
-    for(let i = 0; i < article.length; i++) {
-      article[i].parentNode.removeChild(article[i])
     }
 
-    const raw = document.getElementById('image').content.querySelector('article')
+    play(data, state) {
 
-    let loaded = []
-    let list = []
-    for(let i = 0; i < data.length; i++) {
-      const template = document.importNode(raw, true)
+        console.log(data[0])
+        console.log(state)
+        const main = document.querySelector('body main')
 
-      let video = template.querySelector('video')
-      let img = template.querySelector('img')
-      let figcaption = template.querySelector('figcaption')
-      let audio = template.querySelector('figcaption > audio')
-      let title = template.querySelector('figcaption > i')
+        console.log(main.clientWidth)
 
-      template.dataset.name        = data[i].name
-      template.dataset.created     = data[i].created
-      template.dataset.orientation = data[i].orientation
-      template.dataset.type        = data[i].type
-      template.dataset.media       = this.source + data[i].name
-      template.dataset.display     = this.source + data[i].display
-      template.dataset.medium      = this.source + data[i].medium
-      template.dataset.thumbnail   = this.source + data[i].thumbnail
-      template.classList.add('isvisible')
-      template.classList.add('hidden')
+        console.log(data.length)
+        data.sort((x,y) => (x.created > y.created) ? -1 : ((x.created < y.created) ? 1 : 0))
 
-      title.innerHTML = data[i].title
-      const dC = new Date(parseInt(data[i].created * 1000))
-      const text = document.createTextNode(plusNull(dC.getDate()) + '.' + plusNull(dC.getMonth() + 1) + '.' + dC.getFullYear() + ', ' + plusNull(dC.getHours()) + ':' + plusNull(dC.getMinutes()) + ':' + plusNull(dC.getSeconds()))
-      title.after(text)
+        console.log(data[0])
 
-      let description = this.htmlToElements(data[i].description.replace(/"/g, '').replace(/\\/g, ''))
-      let des =  Array.from(description);
+        // for(let i = 0; i < data.length; i++) {
+        // }
 
-      if(des.length > 0) {
-        let br = document.createElement('br')
-        figcaption.append(br)
-      }
+    }
 
-      for (var j = 0; j < des.length; j++) {
-        if(des[j].constructor.name == 'HTMLAnchorElement') {
-          des[j].setAttribute('target', 'a')
+    init(data, state) {
+
+        this.play(data, state)
+
+        const main = document.querySelector('body main')
+        let article = main.querySelectorAll('article')
+
+        for(let i = 0; i < article.length; i++) {
+            article[i].parentNode.removeChild(article[i])
         }
 
-        figcaption.append(des[j])
-      }
+        const raw = document.getElementById('image').content.querySelector('article')
 
-      if( data[i].size === 'A') {
+        let loaded = []
+        let list = []
+        for(let i = 0; i < data.length; i++) {
+            const template = document.importNode(raw, true)
 
-        video.classList.add('mediaSmall')
-        figcaption.classList.add('figSmall')
-        audio.classList.add('mediaSmall')
+            let video = template.querySelector('video')
+            let img = template.querySelector('img')
+            let figcaption = template.querySelector('figcaption')
+            let audio = template.querySelector('figcaption > audio')
+            let title = template.querySelector('figcaption > i')
 
-        img.src = this.source + data[i].thumbnail
-      }
+            template.dataset.name        = data[i].name
+            template.dataset.created     = data[i].created
+            template.dataset.orientation = data[i].orientation
+            template.dataset.type        = data[i].type
+            template.dataset.media       = this.source + data[i].name
+            template.dataset.display     = this.source + data[i].display
+            template.dataset.medium      = this.source + data[i].medium
+            template.dataset.thumbnail   = this.source + data[i].thumbnail
+            template.classList.add('isvisible')
+            template.classList.add('hidden')
 
-      if( data[i].size === 'B') {
-        template.classList.add('w2')
+            title.innerHTML = data[i].title
+            const dC = new Date(parseInt(data[i].created * 1000))
+            const text = document.createTextNode(plusNull(dC.getDate()) + '.' + plusNull(dC.getMonth() + 1) + '.' + dC.getFullYear() + ', ' + plusNull(dC.getHours()) + ':' + plusNull(dC.getMinutes()) + ':' + plusNull(dC.getSeconds()))
+            title.after(text)
 
-        video.classList.add('mediaSmall')
-        figcaption.classList.add('figSmall')
-        audio.classList.add('mediaSmall')
+            let description = this.htmlToElements(data[i].description.replace(/"/g, '').replace(/\\/g, ''))
+            let des =  Array.from(description);
 
-        img.src = this.source + data[i].medium
+            if(des.length > 0) {
+                let br = document.createElement('br')
+                figcaption.append(br)
+            }
 
-      }
-
-      if( data[i].size === 'C') {
-        template.classList.add('w4')
-
-        video.classList.add('mediaSmall')
-        figcaption.classList.add('figSmall')
-        audio.classList.add('mediaSmall')
-
-        img.src = this.source + data[i].display
-      }
-
-        if(state) {
-            if(state.charAt(i) === 'i') {
-                template.classList.add('w8')
-
-                figcaption.classList.add('figLarge')
-
-                if(data[i]['type'] == 'audio/mpeg') {
-                    img.src = this.source + data[i].display
-                    audio.src = this.source + data[i].name
-                } else if(data[i]['type'] == 'video/mp4') {
-                    video.classList.add('mediaLarge')
-                    video.src = this.source + data[i].name
-                    img.src = ""
-                    audio.classList.add('mediaSmall')
-                } else {
-                    video.classList.add('mediaSmall')
-                    img.src = this.source + data[i].display
-                    audio.classList.add('mediaSmall')
+            for (var j = 0; j < des.length; j++) {
+                if(des[j].constructor.name == 'HTMLAnchorElement') {
+                des[j].setAttribute('target', 'a')
                 }
 
+                figcaption.append(des[j])
             }
+
+            if( data[i].size === 'A') {
+
+                video.classList.add('mediaSmall')
+                figcaption.classList.add('figSmall')
+                audio.classList.add('mediaSmall')
+
+                img.src = this.source + data[i].thumbnail
+            }
+
+            if( data[i].size === 'B') {
+                template.classList.add('w2')
+
+                video.classList.add('mediaSmall')
+                figcaption.classList.add('figSmall')
+                audio.classList.add('mediaSmall')
+
+                img.src = this.source + data[i].medium
+
+            }
+
+            if( data[i].size === 'C') {
+                template.classList.add('w4')
+
+                video.classList.add('mediaSmall')
+                figcaption.classList.add('figSmall')
+                audio.classList.add('mediaSmall')
+
+                img.src = this.source + data[i].display
+            }
+
+                if(state) {
+                    if(state.charAt(i) === 'i') {
+                        template.classList.add('w8')
+
+                        figcaption.classList.add('figLarge')
+
+                        if(data[i]['type'] == 'audio/mpeg') {
+                            img.src = this.source + data[i].display
+                            audio.src = this.source + data[i].name
+                        } else if(data[i]['type'] == 'video/mp4') {
+                            video.classList.add('mediaLarge')
+                            video.src = this.source + data[i].name
+                            img.src = ""
+                            audio.classList.add('mediaSmall')
+                        } else {
+                            video.classList.add('mediaSmall')
+                            img.src = this.source + data[i].display
+                            audio.classList.add('mediaSmall')
+                        }
+
+                    }
+                }
+                loaded.push(img.onload = () => { return true })
+                list.push(data[i].name)
+                main.appendChild(template)
         }
-        loaded.push(img.onload = () => { return true })
-        list.push(data[i].name)
-        main.appendChild(template)
-    }
 
     article = main.querySelectorAll('article')
 

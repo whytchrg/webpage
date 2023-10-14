@@ -19,6 +19,9 @@
   "homepage": "https://debruen.com/",
   "dependencies": {
     "masonry-layout": "^4.2.2",
-    "tinysort": "^3.2.7"
+    "tinysort": "^3.2.8"
+  },
+  "devDependencies": {
+    "ftp-deploy": "^2.4.5"
   }
 }

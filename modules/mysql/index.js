@@ -24,11 +24,11 @@ class Mysql {
         this.message.request = 'views'
         this.message.name    = name
         this.message.cTime   = new Date().getTime()
-        console.log(this.message)
+        // console.log(this.message)
 
         const view = await this.request(this.message)
 
-        console.log(view)
+        // console.log(view)
         return view // true
     } // views
 
@@ -38,10 +38,10 @@ class Mysql {
         this.message.names = JSON.stringify(names)
         this.message.cTime = new Date().getTime()
 
-        console.log(this.message)
+        // console.log(this.message)
 
         const saw = await this.request(this.message)
-        console.log(saw)
+        // console.log(saw)
         return saw // true
     } // seen
 

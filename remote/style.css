@@ -11,6 +11,11 @@ h1, h2, h3, h4, h5 {
     display: inline;
 }
 
+main {
+    display: grid;
+    gap: 2px;
+    padding: 0px;
+}
 a {
 	white-space: nowrap;
 	/* text-decoration: none;

@@ -78,7 +78,7 @@ class Homepage {
         // console.log(this.mysql.data)
         const result = await this.algorithm.evaluate(this.mysql.data, this.category.state, this.color.state)
 
-        const names    = await this.display.init(result, this.block.state)
+        const names      = await this.display.init(result, this.block.state)
         const grid       = await this.grid.init()
         const navigation = await this.block.init()
         this.mysql.seen(names)
