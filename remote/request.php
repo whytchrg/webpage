@@ -3,12 +3,12 @@
 
 // Make sure that it is a POST request.
 if(strcasecmp($_SERVER['REQUEST_METHOD'], 'POST') != 0){
-  throw new Exception('Request method must be POST!');
+    throw new Exception('Request method must be POST!');
 }
 // Make sure that the content type of the POST request has been set to application/json
 $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
 if(strcasecmp($contentType, 'application/json') != 0){
-  throw new Exception('Content type must be: application/json');
+    throw new Exception('Content type must be: application/json');
 }
 // Receive the RAW post data.
 $content = trim(file_get_contents("php://input"));
@@ -16,16 +16,10 @@ $content = trim(file_get_contents("php://input"));
 $decoded = json_decode($content, true);
 // If json_decode failed, the JSON is invalid.
 if(!is_array($decoded)){
-  throw new Exception('Received content contained invalid JSON!');
+    throw new Exception('Received content contained invalid JSON!');
 }
 
 include 'my_data.php';
-
-// MySQL settings
-$mysql_sev = $my_sev;
-$mysql_usr = $my_usr;
-$mysql_key = $my_key;
-$mysql_dbs = $my_dbs;
 
 if($decoded['client'] === 'manager' || $decoded['client'] === 'homepage') {
     $conn = new mysqli($mysql_sev, $mysql_usr, $mysql_key, $mysql_dbs); // connect to Database
@@ -35,44 +29,55 @@ if($decoded['client'] === 'manager' || $decoded['client'] === 'homepage') {
 
     if($decoded['request'] === 'init') {
 
-    if($decoded['client'] === 'manager') {
-        $sql = "CREATE TABLE IF NOT EXISTS ".$table." (
-            id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        if($decoded['client'] === 'manager') {
+            $sql = "CREATE TABLE IF NOT EXISTS ".$table." (
+                id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 
-            name VARCHAR(255) CHARACTER SET utf8,
-            type VARCHAR(255) CHARACTER SET utf8,
-            created BIGINT(20),
-            modified BIGINT(20),
-            title VARCHAR(255) CHARACTER SET utf8,
-            keywords VARCHAR(255) CHARACTER SET utf8,
-            description VARCHAR(255) CHARACTER SET utf8,
-            algorithm FLOAT,
-            orientation VARCHAR(255) CHARACTER SET utf8,
-            display VARCHAR(255) CHARACTER SET utf8,
-            medium VARCHAR(255) CHARACTER SET utf8,
-            thumbnail VARCHAR(255) CHARACTER SET utf8,
-            views LONGTEXT CHARACTER SET utf8,
-            seen LONGTEXT CHARACTER SET utf8
-        )";
-        if($conn->query($sql) !== TRUE) {
-            echo 'Error creating table: ' . $conn->error;
+                name VARCHAR(255) CHARACTER SET utf8,
+                type VARCHAR(255) CHARACTER SET utf8,
+                created BIGINT(20),
+                modified BIGINT(20),
+                title VARCHAR(255) CHARACTER SET utf8,
+                keywords VARCHAR(255) CHARACTER SET utf8,
+                description VARCHAR(255) CHARACTER SET utf8,
+                algorithm FLOAT,
+                orientation VARCHAR(255) CHARACTER SET utf8,
+                display VARCHAR(255) CHARACTER SET utf8,
+                medium VARCHAR(255) CHARACTER SET utf8,
+                thumbnail VARCHAR(255) CHARACTER SET utf8,
+                views LONGTEXT CHARACTER SET utf8,
+                seen LONGTEXT CHARACTER SET utf8
+            )";
+            if($conn->query($sql) !== TRUE) {
+                echo 'Error creating table: ' . $conn->error;
+            }
         }
-    }
 
-    $sql = "SELECT * FROM $table";
-    $result = $conn->query($sql);
+        $sql = "SELECT * FROM $table";
+        $result = $conn->query($sql);
 
-    $dbdata = array();
-    //Fetch into associative array
-    while($row = $result->fetch_assoc())  {
-        $dbdata[]=$row;
-    }
+        // empty seen and views on manager initialization
+        if($decoded['client'] === 'manager') {
+            $sql = "UPDATE $table set seen = NULL";
+            if($conn->query($sql) !== TRUE) {
+                echo 'Error deleting seen: ' . $conn->error;
+            }
+            $sql = "UPDATE $table set views = NULL";
+            if($conn->query($sql) !== TRUE) {
+                echo 'Error deleting views: ' . $conn->error;
+            }
+        }
 
-    $data = json_encode($dbdata);
-    $decoded['data'] = $data;
+        $dbdata = array();
+        //Fetch into associative array
+        while($row = $result->fetch_assoc())  {
+            $dbdata[]=$row;
+        }
 
-  } // init
+        $data = json_encode($dbdata);
+        $decoded['data'] = $data;
 
+    } // init
 }
 
 if($decoded['client'] === 'manager') {
