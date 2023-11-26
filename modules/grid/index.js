@@ -5,7 +5,7 @@ const Masonry = require('masonry-layout')
 
 class Grid {
 
-  constructor(options) {
+    constructor(options) {
 
     this.grid         = options.grid
     this.elementClass = options.elements || 'block' // constructor, reload (masonry)
@@ -22,7 +22,7 @@ class Grid {
     // this.size()
     this.msnry
 
-  } // constructor
+    } // constructor
 
     init() {
         this.elements     = document.querySelectorAll('.' + this.elementClass)
