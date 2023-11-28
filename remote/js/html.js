@@ -20,13 +20,12 @@ class Html extends Extend{
     const meta       = await this.meta()
 
     const title      = this.title(meta)
-    const headline   = this.headline(meta)
     const navigation = this.navigation()
     const main       = this.main()
     const address    = this.address()
     const footer     = this.footer(meta)
 
-    await Promise.all([title, headline, navigation, main, footer])
+    await Promise.all([title, navigation, main, footer])
       return true
 
   } // init
@@ -36,24 +35,20 @@ class Html extends Extend{
       module: 'html',
       name: 'html',
       title: 'title',
-      headline: 'headline',
       link: 'contact',
       copyright: 'whyturbocharge'
     }
 
     if(window.location.host.includes('localhost')) {
       meta.title = 'localhost'
-      meta.headline = 'localhost'
       meta.copyright = 'localhost'
     }
     if(window.location.host.includes('debruen.com')) {
       meta.title = 'Florian de Brün'
-      meta.headline = ''
       meta.copyright = 'Florian de Brün'
     }
     if(window.location.host.includes('whyturbocharge.')) {
       meta.title = 'Whyturbocharge?'
-      meta.headline = ''
       meta.copyright = 'Florian de Brün'
     }
     if(window.location.host.includes('github')) {
@@ -67,20 +62,11 @@ class Html extends Extend{
     return true
   } // title
 
-  headline(meta) {
-    let headline = document.querySelector('body header h1')
-    headline.style.cursor = 'default'
-    headline.style.marginBottom = document.querySelector('body header').offsetTop / 2 + 'px'
-    headline.innerHTML = meta.headline
-
-    return true
-  } // headline
-
   navigation() {
     let navigation = document.querySelector('body nav')
     navigation.style.cursor = 'default'
     navigation.style.userSelect = 'none'
-    navigation.style.marginBottom = document.querySelector('body header').offsetTop / 2 + 'px'
+    navigation.style.marginBottom = document.querySelector('body nav').offsetTop / 2 + 'px'
 
     return true
   } // navigation
@@ -90,7 +76,7 @@ class Html extends Extend{
     if(this.addressState) {
       main.style.display = 'none'
     }
-    main.style.paddingBottom = document.querySelector('body header').offsetTop / 2 + 'px'
+    main.style.paddingBottom = document.querySelector('body nav').offsetTop / 2 + 'px'
 
     return true
   } // main
@@ -101,7 +87,7 @@ class Html extends Extend{
     if(this.addressState) {
       address.style.display = 'block'
     }
-    address.style.paddingBottom = document.querySelector('body header').offsetTop / 2 + 'px'
+    address.style.paddingBottom = document.querySelector('body nav').offsetTop / 2 + 'px'
 
     return true
   } // main

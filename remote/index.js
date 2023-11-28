@@ -3,8 +3,9 @@ window.onload = async (event) => {
     const options = {
         client: 'homepage',
         table: 'A5',
-        size: 64,
-        limit: 72
+        size: 80,
+        gap: 2,
+        limit: 36
     }
 
     const html = new Html()
@@ -35,13 +36,14 @@ window.onload = async (event) => {
     const display = new Display({
         table:  options.table,
         size:   options.size,
+        gap:    options.gap,
         active: html.active
     })
 
-    let category_state = category.init()
-    let color_state    = color.init()
+    // let category_state = category.init()
+    // let color_state    = color.init()
 
-    await Promise.all([category_state, color_state])
+    await Promise.all([category.init(), color.init()])
 
     const algorithm = new Algorithm({
         limit: options.limit
@@ -54,6 +56,7 @@ window.onload = async (event) => {
         console.log(color.state)
 
         console.log(filtered_data)
+        display.play(filtered_data)
 
         return true
     }
