@@ -1,10 +1,9 @@
 
 'use strict'
 
-class Display extends Extend {
+class Grid {
 
     constructor(options) {
-        super()
 
         this.size   = options.size
         this.table  = options.table
@@ -14,23 +13,7 @@ class Display extends Extend {
         this.active = options.active
     }
 
-    check_template(data, colums, x, y, width, height) {
-        let test = true
-        if(x + width > colums) {
-            test = false
-        } else {
-            for(let y1 = 0; y1 < height; y1++) {
-                for(let x1 = 0; x1 < width; x1++) {
-                    if(data[y + y1][x + x1] != 'X') {
-                        test = false
-                    }
-                }
-            }
-        }
-        return test
-    }
-
-    get_item_settings(data, columns) {
+    get_item_area(data, columns) {
         // create template grid
         const template_rows = []
         const media_item_number = []
@@ -53,33 +36,36 @@ class Display extends Extend {
                             let width = 0
                             let height = 0
                             if(data[media_item_number[i]].size == 'C') {
-                                if(data[media_item_number[i]].orientation == 'portrait') {
-                                    width = 4
-                                    height = 4
-                                } else {
-                                    width = 4
+                                width = 4
+                                height = 4
+                                if(data[media_item_number[i]].orientation == 'landscape')
                                     height = 2
-                                }
                             }
                             else if(data[media_item_number[i]].size == 'B') {
-                                if(data[media_item_number[i]].orientation == 'portrait') {
-                                    width = 2
-                                    height = 2
-                                } else {
-                                    width = 2
+                                width = 2
+                                height = 2
+                                if(data[media_item_number[i]].orientation == 'landscape')
                                     height = 1
-                                }
                             }
                             else if(data[media_item_number[i]].size == 'A') {
-                                if(data[media_item_number[i]].orientation == 'portrait') {
-                                    width = 1
-                                    height = 1
-                                } else {
+                                width = 1
+                                height = 1
+                                if(data[media_item_number[i]].orientation == 'landscape')
                                     width = 2
-                                    height = 1
+                            }
+                            let test = true
+                            if(x + width > columns) {
+                                test = false
+                            } else {
+                                for(let y1 = 0; y1 < height; y1++) {
+                                    for(let x1 = 0; x1 < width; x1++) {
+                                        if(template_rows[y + y1][x + x1] != 'X') {
+                                            test = false
+                                        }
+                                    }
                                 }
                             }
-                            if(this.check_template(template_rows, columns, x, y, width, height)) {
+                            if(test) {
                                 for(let y1 = 0; y1 < height; y1++) {
                                     for(let x1 = 0; x1 < width; x1++) {
                                         template_rows[y + y1][x + x1] = media_item_number[i]
@@ -119,7 +105,7 @@ class Display extends Extend {
 
         const row_height = column_width * Math.SQRT2
     
-        const media_item_pos = this.get_item_settings(data, columns)
+        const media_item_pos = this.get_item_area(data, columns)
 
         let rows = 0
         for (let i = 0; i < media_item_pos.length; i++) {
@@ -130,7 +116,9 @@ class Display extends Extend {
 
         // set container styles
         container.style.display = 'grid'
-        container.style.gap = this.gap + 'px'
+        
+        const gap = getComputedStyle(container).gap
+
         const column_width_percent = column_width / container_width * 100
         let colums_to_css = ''
         for(let i = 0; i < columns; i++) {

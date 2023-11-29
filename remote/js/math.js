@@ -1,4 +1,4 @@
-plusNull = function(a) {
+  plusNull = function(a) {
     let b = a
     if(a < 10) b = '0' + a
     return b

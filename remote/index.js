@@ -1,4 +1,4 @@
-window.onload = async (event) => {
+window.onload = () => {
 
     const options = {
         client: 'homepage',
@@ -8,55 +8,48 @@ window.onload = async (event) => {
         limit: 36
     }
 
-    const html = new Html()
-    await html.init()
+    const id = new ID()
 
-    const mysql = new Mysql({
+    const get = new Get({
         client: options.client,
         table:  options.table
     })
-
-    const data = await mysql.init()
-    console.log(data)
 
     const category = new Navigation({
         selector: 'category',
         rule:     'random',
         url:      true,
-        active:   html.active
+        active:   id.active
     })
 
     const color = new Navigation({
         selector: 'color',
         rule:     'random',
         url:      true,
-        active:   html.active
+        active:   id.active
     })
 
-    const display = new Display({
-        table:  options.table,
-        size:   options.size,
-        gap:    options.gap,
-        active: html.active
-    })
-
-    // let category_state = category.init()
-    // let color_state    = color.init()
-
-    await Promise.all([category.init(), color.init()])
-
-    const algorithm = new Algorithm({
+    const filter = new Filter({
         limit: options.limit
     })
 
+    const grid = new Grid({
+        table:  options.table,
+        size:   options.size,
+        gap:    options.gap,
+        active: id.active
+    })
+
     const overview = async () => {
-        const filtered_data = await algorithm.evaluate(data, category.state, color.state)
+        const filtered_data = await filter.evaluate(get.data, category.state, color.state)
+
+        console.log(get.data)
 
         console.log(category.state)
         console.log(color.state)
 
         console.log(filtered_data)
-        display.play(filtered_data)
+        grid.play(filtered_data)
 
         return true
     }
@@ -76,21 +69,21 @@ window.onload = async (event) => {
 
         // document.addEventListener('views', (event) => {
         //     if(!event.detail.active) {
-        //         this.mysql.views(event.detail.name)
+        //         this.get.views(event.detail.name)
         //     }
         // })
 
         // document.addEventListener('seen', (event) => {
         //     console.log(event.detail.names)
-        //     this.mysql.seen(event.detail.names)
+        //     this.get.seen(event.detail.names)
         // })
 
         document.addEventListener('address', (event) => {
             if(event.detail === false) {
                 overview()
             } else {
-                category.recieveHistory(html.navigationState)
-                color.recieveHistory(html.navigationState)
+                category.recieveHistory(id.navigationState)
+                color.recieveHistory(id.navigationState)
             }
         })
 
@@ -104,8 +97,16 @@ window.onload = async (event) => {
         return true
     } // listener
 
-    overview()
+    const main = async () => {
 
-    listener()
+        await id.init()
+        await Promise.all([get.init(), category.init(), color.init()])
 
+        overview()
+
+        listener()
+
+    }
+
+    main()
 }

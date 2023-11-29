@@ -1,22 +1,23 @@
 
 'use strict'
 
-class Mysql {
+class Get {
 
     constructor(options) {
         this.message = {
             client: options.client,
             table: options.table,
         }
-    } // constructor
+        this.data = []
+    }
 
     async init() {
         this.message.request = 'init'
-        const data = await this.request(this.message)
-        // const data = await this.process(request)
-        data.sort((x,y) => (x.created > y.created) ? -1 : ((x.created < y.created) ? 1 : 0))
-        return data
-    } // init
+        this.data = await this.request(this.message)
+        this.data.sort((x,y) => (x.created > y.created) ? -1 : ((x.created < y.created) ? 1 : 0))
+
+        return true
+    }
 
     async views(name) {
         this.message.request = 'views'
@@ -34,11 +35,6 @@ class Mysql {
         return await this.request(this.message) // = true
     }
 
-    // async process(data) {
-    //     data.sort((x,y) => (x.created > y.created) ? -1 : ((x.created < y.created) ? 1 : 0))
-    //     return data
-    // } // process
-
     request(request) {
         return new Promise((resolve, reject) => {
             const json = JSON.stringify(request)
@@ -53,12 +49,6 @@ class Mysql {
             xhttp.setRequestHeader("Content-Type", "application/json")
             xhttp.send(json)
         })
-    } // request
-
-    // event() {
-    //     const event = new CustomEvent('mysql')
-    //     document.dispatchEvent(event)
-    //     return true
-    // }
+    }
 
 }

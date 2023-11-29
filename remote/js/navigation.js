@@ -1,11 +1,10 @@
 
 'use strict'
 
-class Navigation extends Extend {
+class Navigation {
 
-  constructor(options) {
-    super()
-
+    constructor(options) {
+    
         this.active   = options.active || 'active'
         this.selector = options.selector
         this.rule     = options.rule || 'random'
@@ -174,4 +173,7 @@ class Navigation extends Extend {
         this.history = path
     }
 
+    replaceCharAt(str, i, replace) {
+        return str.substring(0, i) + replace + str.substring(i + 1)
+    }
 }

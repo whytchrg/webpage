@@ -1,7 +1,7 @@
 
 'use strict'
 
-class Algorithm {
+class Filter {
 
     constructor(options) {
 

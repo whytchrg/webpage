@@ -1,10 +1,9 @@
 
 'use strict'
 
-class Html extends Extend{
+class ID {
 
   constructor() {
-    super()
 
     // CSS settings
     this.link   = 'link'
