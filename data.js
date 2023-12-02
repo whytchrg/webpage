@@ -15,7 +15,6 @@ class Get {
         this.message.request = 'init'
         this.data = await this.request(this.message)
         this.data.sort((x,y) => (x.created > y.created) ? -1 : ((x.created < y.created) ? 1 : 0))
-
         return true
     }
 
@@ -23,15 +22,16 @@ class Get {
         this.message.request = 'views'
         this.message.name    = name
         this.message.cTime   = new Date().getTime()
-
         return await this.request(this.message) // = true
     }
 
-    async seen(names) {
+    async seen(data) {
+        const names = []
+        for(let i = 0; i < data.length; i++)
+            names.push(data[i].name)
         this.message.request = 'seen'
         this.message.names = JSON.stringify(names)
         this.message.cTime = new Date().getTime()
-
         return await this.request(this.message) // = true
     }
 

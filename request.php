@@ -19,7 +19,7 @@ if(!is_array($decoded)){
     throw new Exception('Received content contained invalid JSON!');
 }
 
-include 'my_data.php';
+include 'data.php';
 
 if($decoded['client'] === 'manager' || $decoded['client'] === 'homepage') {
     $conn = new mysqli($mysql_sev, $mysql_usr, $mysql_key, $mysql_dbs); // connect to Database

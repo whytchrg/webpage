@@ -4,7 +4,6 @@
 class Navigation {
 
     constructor(options) {
-    
         this.active   = options.active || 'active'
         this.selector = options.selector
         this.rule     = options.rule || 'random'
@@ -24,6 +23,7 @@ class Navigation {
 
         this.setStyle()
         this.click()
+
         return this.state
     }
 
@@ -119,7 +119,7 @@ class Navigation {
 
             this.setStyle()
             let event = new CustomEvent('navigation', { 'detail': this.selector })
-                document.dispatchEvent(event)
+            document.dispatchEvent(event)
             })
         }
     }

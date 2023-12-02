@@ -1,5 +1,2 @@
-node_modules
-client.js
-my_data.php
-package-lock.json
 .DS_Store
+data.php
