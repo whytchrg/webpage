@@ -115,10 +115,8 @@ class Grid {
         }
 
         // set container styles
-        container.style.display = 'grid'
+        this.container.style.display = 'grid'
         
-        const gap = getComputedStyle(container).gap
-
         const column_width_percent = column_width / container_width * 100
         let colums_to_css = ''
         for(let i = 0; i < columns; i++) {
