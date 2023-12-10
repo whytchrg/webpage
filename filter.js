@@ -27,11 +27,35 @@ class Filter {
     }
 
     cut(input) {
+        const add_seen = Math.floor(this.limit * 0.09)
+
         input.sort((x,y) => (x.algorithm > y.algorithm) ? -1 : ((x.algorithm < y.algorithm) ? 1 : 0))
 
-        let output = input.slice(0, this.limit);
+        const output = input.slice(0, this.limit - add_seen)
+        const seen_base = input.slice(this.limit - add_seen, input.length);
 
-        input.sort((x,y) => (x.created > y.created) ? -1 : ((x.created < y.created) ? 1 : 0))
+        // input.sort((x,y) => (x.created > y.created) ? -1 : ((x.created < y.created) ? 1 : 0))
+
+        seen_base.sort((x,y) => (x.seen_value > y.seen_value) ? -1 : ((x.seen_value < y.seen_value) ? 1 : 0))
+
+        const seen_to_add = seen_base.splice(add_seen * -2)
+
+        let arr = []
+        while(arr.length < add_seen - 1){
+            var r = Math.floor(Math.random() * (add_seen * 2)) + 1
+            if(arr.indexOf(r) === -1) arr.push(r)
+        }
+        console.log(arr)
+
+        let seen_select = []
+        for (let i = 0; i < arr.length; i++) {
+            seen_select.push(seen_to_add[arr[i]])
+        }
+        console.log(seen_select)
+
+        output.concat(seen_select)
+
+        output.sort((x,y) => (x.algorithm > y.algorithm) ? -1 : ((x.algorithm < y.algorithm) ? 1 : 0))
 
         const if_big = Math.floor(Math.random() * 2)
         const cut = Math.floor(output.length * 0.15)

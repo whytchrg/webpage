@@ -31,11 +31,11 @@ window.onload = () => {
 
     const grid = new Grid(options)
 
-    document.addEventListener('navigation', async (event) => {
+    document.addEventListener('navigation', (event) => {
         if(event.detail === 'category' || event.detail === 'color') {
-            await filter.evaluate(get.data, category.state, color.state)
+            filter.evaluate(get.data, category.state, color.state)
             grid.play(filter.data, '')
-            get.seen(filter.data,)
+            get.seen(filter.data)
         }
     })
 
@@ -67,11 +67,11 @@ window.onload = () => {
     }, false)
 
     const main = async () => {
-
         await id.init()
         await Promise.all([get.init(), category.init(), color.init()])
 
         await filter.evaluate(get.data, category.state, color.state)
+        get.seen(filter.data)
 
         grid.play(filter.data, '')
     }

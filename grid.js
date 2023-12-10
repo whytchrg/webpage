@@ -16,9 +16,17 @@ class Grid {
         this.container.style.gap = this.gap + 'px'
 
         this.select = ''
+
+        this.data = []
+
+        this.touchstartX = 0
+        this.touchendX = 0
+        this.swipeDetection()
     }
 
     play(data, select) {
+
+        this.data = data
 
         // clear the grid
         const past_articles = this.container.querySelectorAll('article')
@@ -29,6 +37,7 @@ class Grid {
         const container_width = this.container.clientWidth
 
         let columns = Math.floor(container_width / this.size)
+        if(columns % 2 != 0) columns = columns - 1
         if(columns < 4) columns = 4
 
         const column_width = container_width / (columns)
@@ -68,6 +77,7 @@ class Grid {
 
         this.container.style.gridTemplateRows = rows_to_css
 
+        let movie = ''
         // itterate over the grid
         for(let i = 0; i < data.length; i++) {
 
@@ -89,21 +99,23 @@ class Grid {
             const figure = document.createElement("figure")
  
             // media
-            let media
+            let media = ''
             if(data[i].name == select) {
                 if (data[i].type == 'video/mp4') {
                     media = document.createElement("video")
                     media.playsInline = true
                     media.src = './' + this.table + '/' + data[i].name
-                    
+                    media.load()
                     var playPromise = media.play()
 
                     if (playPromise !== undefined) {
-                      playPromise.then(_ => {
-                      })
-                      .catch(error => {
-                      })
+                        playPromise.then(_ => {
+                        })
+                        .catch(error => {
+                            console.log(error)
+                        })
                     }
+                    movie = media
                 } else {
                     media = new Image()
                     media.src = './' + this.table + '/' + data[i].name
@@ -157,10 +169,33 @@ class Grid {
             if(articles[i].dataset.name == select)
                 articles[i].scrollIntoView({ behavior: "smooth", block: "center"})
 
+        // setTimeout(() => {
+        //     if (movie != '') {
+        //         var playPromise = movie.play()
+    
+        //         if (playPromise !== undefined) {
+        //             playPromise.then(_ => {
+        //             })
+        //             .catch(error => {
+        //                 console.log(error)
+        //             })
+        //         }
+        //     }            
+        // }, 50);
         this.click()
     }
 
     click() {
+        // const video = document.querySelector('video')
+
+        // if (video) {
+        //     video.oncanplaythrough = (event) => {
+        //         video.play()
+        //         console.log(event)
+        //         console.log("I think I can play through the entire video without having to stop to buffer.")
+        //     }
+        // }
+
         const articles = this.container.querySelectorAll('article')
 
         for (let i = 0; i < articles.length; i++) {
@@ -204,8 +239,6 @@ class Grid {
         }
 
         const visible_rows = Math.floor(window.innerHeight / row_height)
-        console.log(visible_rows)
-        console.log(columns)
 
         let screen_relation = ''
         if(visible_rows * 2 >= columns) {
@@ -331,6 +364,62 @@ class Grid {
             }
         }
         return media_item_pos
+    }
+
+    checkDirection() {
+
+        if (this.select != '') {
+                
+            let swipe = ''
+
+            if (this.touchendX < this.touchstartX - 20) {
+                swipe = 'right'
+            } else if (this.touchendX > this.touchstartX + 20) {
+                swipe = 'left'
+            }
+
+            if (swipe == 'right' || swipe == 'left') {     
+                let index = -1
+                for (let i = 0; i < this.data.length; i++) {
+                    if (this.data[i].name == this.select) {
+                        index = i
+                        break;
+                    }
+                }
+
+                let next_index = -1
+                if (swipe == 'right') {
+                    next_index = index + 1
+                } else if (swipe == 'left') {
+                    next_index = index - 1
+                }
+
+                if (next_index >= this.data.length) {
+                    next_index = 0
+                }
+
+                if (next_index < 0) {
+                    next_index = this.data.length - 1
+                }
+
+                console.log('next index: ' + this.data[next_index].name)
+                this.select = this.data[next_index].name
+                let event = new CustomEvent('display', { 'detail': this.select})
+                document.dispatchEvent(event)
+            }
+        }
+
+    }
+    
+    swipeDetection() {
+        document.addEventListener('touchstart', e => {
+            this.touchstartX = e.changedTouches[0].screenX
+        })
+          
+        document.addEventListener('touchend', e => {
+            this.touchendX = e.changedTouches[0].screenX
+            this.checkDirection()
+        })
     }
 
     stop_video(article) {

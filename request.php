@@ -19,6 +19,7 @@ if(!is_array($decoded)){
     throw new Exception('Received content contained invalid JSON!');
 }
 
+// get: $mysql_sev, $mysql_usr, $mysql_key, $mysql_dbs
 include 'data.php';
 
 if($decoded['client'] === 'manager' || $decoded['client'] === 'homepage') {
@@ -41,6 +42,7 @@ if($decoded['client'] === 'manager' || $decoded['client'] === 'homepage') {
                 keywords VARCHAR(255) CHARACTER SET utf8,
                 description VARCHAR(255) CHARACTER SET utf8,
                 algorithm FLOAT,
+                seen_value FLOAT,
                 orientation VARCHAR(255) CHARACTER SET utf8,
                 display VARCHAR(255) CHARACTER SET utf8,
                 medium VARCHAR(255) CHARACTER SET utf8,
@@ -94,11 +96,12 @@ if($decoded['client'] === 'manager') {
       $keywords = $conn->real_escape_string($data[$i]['keywords']);
       $description = $conn->real_escape_string($data[$i]['description']);
       $algorithm = floatval($data[$i]['algorithm']);
+      $seen_value = floatval($data[$i]['seen_value']);
       $orientation = $conn->real_escape_string($data[$i]['orientation']);
       $display = $conn->real_escape_string($data[$i]['display']);
       $medium = $conn->real_escape_string($data[$i]['medium']);
       $thumbnail = $conn->real_escape_string($data[$i]['thumbnail']);
-      $sql = "INSERT INTO $table (type, name, created, modified, title, keywords, description, algorithm, orientation, display, medium, thumbnail) VALUES ('$type',  '$name', '$created', '$modified', '$title', '$keywords', '$description', $algorithm, '$orientation', '$display', '$medium', '$thumbnail')";
+      $sql = "INSERT INTO $table (type, name, created, modified, title, keywords, description, algorithm, seen_value, orientation, display, medium, thumbnail) VALUES ('$type',  '$name', '$created', '$modified', '$title', '$keywords', '$description', $algorithm, '$seen_value', '$orientation', '$display', '$medium', '$thumbnail')";
       $result = $conn->query($sql);
     }
 
@@ -118,11 +121,12 @@ if($decoded['client'] === 'manager') {
       $keywords = $conn->real_escape_string($data[$i]['keywords']);
       $description = $conn->real_escape_string($data[$i]['description']);
       $algorithm = floatval($data[$i]['algorithm']);
+      $seen_value = floatval($data[$i]['seen_value']);
       $orientation = $conn->real_escape_string($data[$i]['orientation']);
       $display = $conn->real_escape_string($data[$i]['display']);
       $medium = $conn->real_escape_string($data[$i]['medium']);
       $thumbnail = $conn->real_escape_string($data[$i]['thumbnail']);
-      $sql = "UPDATE $table SET title = '$title', type = '$type', keywords = '$keywords', display = '$display', medium = '$medium', thumbnail = '$thumbnail', created = '$created', algorithm = '$algorithm', orientation = '$orientation', description = '$description' WHERE name = '$name'";
+      $sql = "UPDATE $table SET title = '$title', type = '$type', keywords = '$keywords', display = '$display', medium = '$medium', thumbnail = '$thumbnail', created = '$created', algorithm = '$algorithm', seen_value = '$seen_value', orientation = '$orientation', description = '$description' WHERE name = '$name'";
       $result = $conn->query($sql);
     }
 

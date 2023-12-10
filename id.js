@@ -12,6 +12,7 @@ class ID {
     this.content = document.querySelector('body main')
     this.addressState = this.getState()
     this.navigationState = ''
+    this.id = ''
 
   } // constructor
 
@@ -45,10 +46,12 @@ class ID {
     if(window.location.host.includes('debruen.com')) {
       meta.title = 'Florian de Brün'
       meta.copyright = 'Florian de Brün'
+      this.id = 'fdb'
     }
     if(window.location.host.includes('whyturbocharge.')) {
       meta.title = 'Whyturbocharge?'
       meta.copyright = 'Florian de Brün'
+      this.id = 'wtc'
     }
     if(window.location.host.includes('github')) {
     }
@@ -66,7 +69,6 @@ class ID {
     navigation.style.cursor = 'default'
     navigation.style.userSelect = 'none'
     navigation.style.marginBottom = document.querySelector('body nav').offsetTop / 2 + 'px'
-
     return true
   } // navigation
 
@@ -76,7 +78,6 @@ class ID {
       main.style.display = 'none'
     }
     main.style.paddingBottom = document.querySelector('body nav').offsetTop / 2 + 'px'
-
     return true
   } // main
 
