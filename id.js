@@ -42,6 +42,7 @@ class ID {
     if(window.location.host.includes('localhost')) {
       meta.title = 'localhost'
       meta.copyright = 'localhost'
+      this.id = 'fdb'
     }
     if(window.location.host.includes('debruen.com')) {
       meta.title = 'Florian de Brün'
